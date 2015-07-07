@@ -1,0 +1,3 @@
+---
+- include: sshd.yml tags=base,base-sshd
+- include: admins.yml tags=base,base-admins
