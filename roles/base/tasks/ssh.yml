@@ -1,4 +1,4 @@
 ---
-- name: install sshd config file
+- name: install ssh config file
   copy: dest=/etc/ssh/sshd_config src=sshd_config mode=0600
-  notify: restart sshd
+  notify: restart ssh

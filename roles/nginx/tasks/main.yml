@@ -1,0 +1,66 @@
+---
+- name: Install python dependencies for managing apt repositories
+  apt: pkg=python-pycurl
+  tags: [nginx, repo]
+
+- name: Add nginx repository signing key
+  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+  tags: [nginx, repo]
+
+- name: Add nginx repository
+  apt_repository: repo='deb http://nginx.org/packages/ubuntu/ trusty nginx' state=present update_cache=yes
+  tags: [nginx, repo]
+
+- name: Install nginx
+  apt: pkg=nginx state=latest
+  tags: [nginx, install]
+
+- name: Install nginx config file
+  copy: src=nginx.conf dest=/etc/nginx/nginx.conf
+  notify: restart nginx
+
+- name: Create Diffie-Hellman key exchange parameter file (NOTE this may take a long time)
+  command: openssl dhparam -out /etc/nginx/dhparam.pem 2048
+  args:
+    creates: /etc/nginx/dhparam.pem
+  notify: restart nginx
+
+- name: Ensure nginx config directories exist
+  file: path={{ item }} state=directory
+  with_items:
+    - /etc/nginx
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+
+- name: Remove default nginx configs
+  file: path={{ item }} state=absent
+  with_items:
+    - /etc/nginx/sites-available/default
+    - /etc/nginx/sites-enabled/default
+    - /etc/nginx/conf.d
+  notify: restart nginx
+  tags: [nginx, config]
+
+- name: "Deploy SSL certificates"
+  copy: src=../../../files/etc/ssl/certs/{{ item }} dest=/etc/ssl/certs/{{ item }}
+  with_items:
+    - _wildcard_.tracon.fi+intermediate.crt
+  notify: restart nginx
+  tags: [nginx, ssl]
+
+- name: Deploy SSL OCSP stapling CA bundle for Geotrust RapidSSL
+  copy: src=../../../files/etc/ssl/private/geotrust-stapling.pem dest=/etc/ssl/private/geotrust-stapling.pem
+
+- name: Deploy SSL private keys (NOTE you must have obtained them from elsewhere - ask Santtu)
+  copy: src=../../../files/etc/ssl/private/{{ item }} dest=/etc/ssl/private
+  with_items:
+    - _wildcard_.tracon.fi.key
+  notify: restart nginx
+  tags: [nginx, ssl]
+
+- name: Allow http and https in firewall
+  ufw: rule=allow proto=tcp port={{ item }}
+  with_items:
+    - http
+    - https
+  tags: [nginx, ufw]

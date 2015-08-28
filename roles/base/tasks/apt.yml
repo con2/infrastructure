@@ -1,0 +1,5 @@
+- name: Disable APT::Install-Recommends and APT::Install-Suggests
+  copy: src=00jumalauta.conf dest=/etc/apt/apt.conf.d/00jumalauta.conf
+
+- name: Install some basic packages
+  apt: name=python-apt,ca-certificates state=installed

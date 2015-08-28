@@ -2,6 +2,7 @@
   roles:
     - base
 
-# - hosts: logstash-servers
-#   roles:
-#     - logstash-server
+- hosts: logstash-centrals
+  roles:
+    - logstash-central
+    - kibana

@@ -1,0 +1,8 @@
+- name: install ufw
+  apt: package=ufw state=installed
+
+- name: allow ssh in firewall
+  ufw: rule=allow name=OpenSSH
+
+- name: enable firewall
+  ufw: state=enabled policy=reject
