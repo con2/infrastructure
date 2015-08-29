@@ -1,8 +1,9 @@
-- hosts: all
-  roles:
-    - base
-
 - hosts: logstash-centrals
   roles:
+    - base
     - logstash-central
     - kibana
+
+- hosts: rsyslog-to-logstash
+  roles:
+    - rsyslog-to-logstash

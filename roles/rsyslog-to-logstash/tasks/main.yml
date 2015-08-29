@@ -1,0 +1,13 @@
+- name: install rsyslog (debianesque)
+  apt: name=rsyslog state=installed
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  notify: restart rsyslog
+
+- name: install rsyslog (redhatish)
+  yum: name=rsyslog state=installed
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  notify: restart rsyslog
+
+- name: setup rsyslog config for logstash
+  copy: src=00-logstash.conf dest=/etc/rsyslog.d/00-logstash.conf
+  notify: restart rsyslog

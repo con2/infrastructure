@@ -15,3 +15,9 @@
 
 - name: start logstash first time
   service: name=logstash state=started enabled=yes
+
+- name: allow syslog in firewall
+  ufw: rule=allow port={{ item }}
+  with_items:
+    - 5514
+    - 5959
