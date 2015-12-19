@@ -12,6 +12,8 @@
 - name: install logstash config file
   copy: src=central.conf dest=/etc/logstash/conf.d/central.conf
   notify: restart logstash
+  tags:
+    - logstash-central-config
 
 - name: start logstash first time
   service: name=logstash state=started enabled=yes
