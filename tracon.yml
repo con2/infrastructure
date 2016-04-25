@@ -7,3 +7,10 @@
 - hosts: rsyslog-to-logstash
   roles:
     - rsyslog-to-logstash
+
+- hosts: postgresql-servers
+  roles:
+    - base
+    - postgresql
+  vars:
+    ansible_python_interpreter: /usr/bin/python2.7

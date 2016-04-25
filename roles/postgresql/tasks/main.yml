@@ -1,0 +1,9 @@
+- name: install postgresql
+  apt: name=postgresql state=installed
+
+- name: setup pg_hba.conf
+  template: src=pg_hba.conf.j2 dest=/etc/postgresql/{{ postgresql.version }}/main/pg_hba.conf
+  notify: restart postgresql
+
+- name: allow postgresql in firewall
+  ufw: "rule=allow port=5432 from={{ postgresql.access_network }}"
