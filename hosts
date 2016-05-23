@@ -4,3 +4,7 @@ monokkeli.tracon.fi
 [rsyslog-to-logstash]
 monokkeli.tracon.fi
 kurikka.tracon.fi
+
+[pending-further-configuration]
+nuoli.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
+neula.kompassi.eu ansible_python_interpreter=/usr/bin/python2.7

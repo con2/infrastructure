@@ -1,16 +1,30 @@
+- hosts: all
+  roles:
+    - role: base
+      tags: [base]
+
 - hosts: logstash-centrals
   roles:
-    - base
-    - logstash-central
-    - kibana
+    - role: logstash-central
+      tags: [logstash-central]
+    - role: kibana
+      tags: [kibana]
 
 - hosts: rsyslog-to-logstash
   roles:
-    - rsyslog-to-logstash
+    - role: rsyslog-to-logstash
+      tags: [rsyslog-to-logstash]
 
 - hosts: postgresql-servers
   roles:
-    - base
-    - postgresql
+    - role: base
+      tags: [base]
+    - role: postgresql
+      tags: [postgresql]
   vars:
     ansible_python_interpreter: /usr/bin/python2.7
+
+- hosts: nuoli.tracon.fi
+  roles:
+    - role: nodejs
+      tags: [nodejs]

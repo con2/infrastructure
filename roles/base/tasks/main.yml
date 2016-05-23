@@ -1,5 +1,5 @@
 ---
-- include: ssh.yml tags=base,base-ssh
-- include: apt.yml tags=base,base-apt
-- include: admins.yml tags=base,base-admins
-- include: firewall.yml tags=base,base-firewall,firewall
+- include: ssh.yml
+- include: apt.yml
+- include: admins.yml
+- include: firewall.yml

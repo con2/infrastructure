@@ -1,0 +1,8 @@
+- name: add nodesource signing key to APT
+  apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
+
+- name: add nodesource Node.js repository
+  apt_repository: repo='deb https://deb.nodesource.com/node_6.x xenial main' state=present update_cache=yes
+
+- name: install node.js
+  apt: name=nodejs state=present
