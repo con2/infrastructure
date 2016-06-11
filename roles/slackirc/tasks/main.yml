@@ -1,0 +1,5 @@
+- name: Create slackirc user
+  user: name=slackirc comment=Slack-Irc-Bridge
+
+- name: Copy config to user home directory
+  copy: src=slackirc.json dest=/home/slackirc/slackirc.json
