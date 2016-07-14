@@ -13,7 +13,7 @@ SyslogFacility AUTH
 LogLevel INFO
 
 LoginGraceTime 120
-PermitRootLogin forced-commands-only
+PermitRootLogin without-password
 StrictModes yes
 
 RSAAuthentication yes
