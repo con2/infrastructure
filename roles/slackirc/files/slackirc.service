@@ -1,0 +1,12 @@
+[Unit]
+Description=Slack-IRC gateway
+
+[Service]
+ExecStart=/usr/bin/slack-irc --config /srv/slackirc/slackirc.json
+Restart=always
+User=slackirc
+Group=slackirc
+Environment=NODE_ENV=development
+
+[Install]
+WantedBy=multi-user.target

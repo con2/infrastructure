@@ -1,5 +1,25 @@
+- name: Install oidentd
+  apt: name=oidentd state=present
+  notify: restart oidentd
+
+- name: Configure oidentd
+  copy: src=oidentd.conf dest=/etc/oidentd.conf
+  notify: restart oidentd
+
+- name: Allow oidentd through the firewall
+  ufw: rule=allow port=113 proto=tcp
+
 - name: Create slackirc user
-  user: name=slackirc comment=Slack-Irc-Bridge
+  user: name=slackirc home=/srv/slackirc comment=Slack-Irc-Bridge
+
+- name: Install slack-irc
+  npm: name=slack-irc global=yes
+  notify: restart slackirc
 
 - name: Copy config to user home directory
-  copy: src=slackirc.json dest=/home/slackirc/slackirc.json
+  copy: src=slackirc.json dest=/srv/slackirc/slackirc.json
+  notify: restart slackirc
+
+- name: Install slack-irc systemd config
+  copy: src=slackirc.service dest=/etc/systemd/system/
+  notify: restart slackirc
