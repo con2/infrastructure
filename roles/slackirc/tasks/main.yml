@@ -23,3 +23,6 @@
 - name: Install slack-irc systemd config
   copy: src=slackirc.service dest=/etc/systemd/system/
   notify: restart slackirc
+
+- name: Install daily restart script
+  copy: src=slackirc.crondaily.sh dest=/etc/cron.daily/slackirc mode=0755
