@@ -1,0 +1,20 @@
+---
+- name: "Check that LC_CTYPE locale is installed (NOTE: Failure here can be safely ignored)"
+  command: grep LC_CTYPE={{ locale.LC_CTYPE }} /etc/default/locale
+  register: lc_ctype
+  changed_when: False
+  ignore_errors: True
+
+- name: "Check that LANG locale is installed (NOTE: Failure here can be safely ignored)"
+  command: grep LANG={{ locale.LANG }} /etc/default/locale
+  register: lang
+  changed_when: False
+  ignore_errors: True
+
+- name: Create locales
+  command: locale-gen {{ locale.LC_CTYPE }} {{ locale.LANG }}
+  when: lc_ctype|failed or lang|failed
+
+- name: Set LC_CTYPE=fi_FI.UTF-8 and LANG=en_US.UTF-8
+  command: update-locale LC_CTYPE={{ locale.LC_CTYPE }} LANG={{ locale.LANG }}
+  when: lc_ctype|failed or lang|failed
