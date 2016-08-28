@@ -1,0 +1,1 @@
+kompassi_secret_key: "{{ vault_kompassi_secret_key }}"

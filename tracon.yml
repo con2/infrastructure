@@ -27,6 +27,7 @@
 - hosts: kompassi-servers
   roles:
     - role: docker
+    - role: nginx
     - role: kompassi
 
 - hosts: nuoli.tracon.fi

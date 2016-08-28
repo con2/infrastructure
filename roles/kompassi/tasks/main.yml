@@ -1,3 +1,9 @@
+- name: "Create host data directory"
+  file: path=/srv/{{ kompassi_hostname }} state=directory owner=root group=www-data mode=0710
+
+- name: "Create env file"
+  template: src=env.j2 dest=/srv/{{ kompassi_hostname }}/env mode=0600
+
 - name: "Create {{ kompassi_hostname }}-postgres container"
   docker_container:
     name: "{{ kompassi_hostname }}-postgres"
@@ -19,6 +25,7 @@
   docker_container:
     name: "{{ kompassi_hostname }}-gunicorn"
     image: tracon/kompassi-gunicorn
+    env_file: /srv/{{ kompassi_hostname }}/env
     ports:
       - 8000:8000
     links:
@@ -30,6 +37,7 @@
   docker_container:
     name: "{{ kompassi_hostname }}-celery"
     image: tracon/kompassi-celery
+    env_file: /srv/{{ kompassi_hostname }}/env
     links:
       - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
       - "{{ kompassi_hostname }}-postgres:postgres"
