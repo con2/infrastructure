@@ -13,10 +13,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     virtualbox.memory = 1024
   end
 
+  config.vm.provision :shell do |shell|
+    shell.inline = "apt-get update && apt-get -y dist-upgrade && apt-get -y install python"
+  end
+
   config.vm.provision :ansible do |ansible|
     ansible.playbook = "tracon.yml"
+    # ansible.extra_vars = {
+    #   "ansible_python_interpreter" => "/usr/bin/python2.7"
+    # }
     ansible.groups = {
-      "postgresql-servers" => ["default"]
+      "kompassi-servers" => ["default"]
     }
     ansible.host_key_checking = false
   end

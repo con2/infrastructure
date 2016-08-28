@@ -24,6 +24,11 @@
   vars:
     ansible_python_interpreter: /usr/bin/python2.7
 
+- hosts: kompassi-servers
+  roles:
+    - role: docker
+    - role: kompassi
+
 - hosts: nuoli.tracon.fi
   roles:
     - role: nodejs
