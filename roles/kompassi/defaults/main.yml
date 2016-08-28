@@ -1,1 +1,15 @@
 kompassi_hostname: kompassi.eu
+kompassi_port: 8000
+kompassi_ssl: false
+kompassi_letsencrypt: false
+kompassi_ssl_certificate: /etc/ssl/certs/kompassi.eu+intermediate.crt
+kompassi_ssl_certificate_key: /etc/ssl/private/kompassi.eu.key
+kompassi_allowed_hosts: "{{ kompassi_hostname }}"
+kompassi_installation_slug: turska
+kompassi_default_from_email: suunnistajat@kompassi.eu
+kompassi_smtp_host: sr1.gw0.fi
+kompassi_crowd_application_name: kompassi
+kompassi_broker_url: amqp://guest:guest@rabbitmq/
+kompassi_database_url: psql://postgres/kompassi
+kompassi_cache_url: memcache://memcache
+kompassi_admins: "Santtu Pajukanta <japsu@tracon.fi>"

@@ -20,9 +20,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :ansible do |ansible|
     ansible.playbook = "tracon.yml"
     ansible.vault_password_file = ".vault_pass.txt"
-    # ansible.extra_vars = {
-    #   "ansible_python_interpreter" => "/usr/bin/python2.7"
-    # }
+    ansible.extra_vars = {
+      "kompassi_allowed_hosts": "*",
+      "kompassi_smtp_host": "",
+      "kompassi_crowd_application_password": "",
+      "kompassi_desuprofile_oauth2_client_id": "",
+    }
     ansible.groups = {
       "kompassi-servers" => ["default"]
     }

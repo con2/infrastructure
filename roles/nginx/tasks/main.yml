@@ -51,12 +51,12 @@
 - name: Deploy SSL OCSP stapling CA bundle for Geotrust RapidSSL
   copy: src=../../../files/etc/ssl/private/geotrust-stapling.pem dest=/etc/ssl/private/geotrust-stapling.pem
 
-- name: Deploy SSL private keys (NOTE you must have obtained them from elsewhere - ask Santtu)
-  copy: src=../../../files/etc/ssl/private/{{ item }} dest=/etc/ssl/private
-  with_items:
-    - _wildcard_.tracon.fi.key
-  notify: restart nginx
-  tags: [nginx, ssl]
+# - name: Deploy SSL private keys (NOTE you must have obtained them from elsewhere - ask Santtu)
+#   copy: src=../../../files/etc/ssl/private/{{ item }} dest=/etc/ssl/private
+#   with_items:
+#     - _wildcard_.tracon.fi.key
+#   notify: restart nginx
+#   tags: [nginx, ssl]
 
 - name: Allow http and https in firewall
   ufw: rule=allow proto=tcp port={{ item }}
