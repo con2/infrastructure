@@ -1,6 +1,6 @@
 kompassi_hostname: kompassi.eu
 kompassi_port: 8000
-kompassi_ssl: false
+kompassi_ssl: true
 kompassi_letsencrypt: false
 kompassi_ssl_certificate: /etc/ssl/certs/kompassi.eu+intermediate.crt
 kompassi_ssl_certificate_key: /etc/ssl/private/kompassi.eu.key

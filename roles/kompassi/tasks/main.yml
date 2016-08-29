@@ -82,6 +82,20 @@
   command: >
     /usr/bin/docker cp {{ kompassi_hostname }}-gunicorn:/usr/src/app/static /srv/{{ kompassi_hostname }}/public_html/
 
+- name: "Copy SSL certificate for {{ kompassi_hostname }}"
+  when: "{{ kompassi_ssl }} and not {{ kompassi_letsencrypt }}"
+  copy:
+    src: "../../../files/etc/ssl/certs/{{ kompassi_hostname }}+intermediate.crt"
+    dest: "{{ kompassi_ssl_certificate }}"
+  notify: restart nginx
+
+- name: "Copy SSL private key for {{ kompassi_hostname }}"
+  when: "{{ kompassi_ssl }} and not {{ kompassi_letsencrypt }}"
+  copy:
+    content: "{{ kompassi_ssl_certificate_key_data }}"
+    dest: "{{ kompassi_ssl_certificate_key }}"
+  notify: restart nginx
+
 - name: "Setup nginx vhost for {{ kompassi_hostname }}"
   template: src=kompassi.nginx.j2 dest=/etc/nginx/sites-available/{{ kompassi_hostname }} mode=0644
   notify: restart nginx
