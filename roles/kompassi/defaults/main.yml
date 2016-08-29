@@ -7,7 +7,7 @@ kompassi_ssl_certificate_key: /etc/ssl/private/kompassi.eu.key
 kompassi_allowed_hosts: "{{ kompassi_hostname }}"
 kompassi_installation_slug: turska
 kompassi_default_from_email: suunnistajat@kompassi.eu
-kompassi_smtp_host: sr1.gw0.fi
+kompassi_email_host: sr1.gw0.fi
 kompassi_crowd_application_name: kompassi
 kompassi_broker_url: amqp://guest:guest@rabbitmq/
 kompassi_database_url: psql://postgres/kompassi

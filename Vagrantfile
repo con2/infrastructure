@@ -22,7 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.vault_password_file = ".vault_pass.txt"
     ansible.extra_vars = {
       "kompassi_allowed_hosts": "*",
-      "kompassi_smtp_host": "",
+      "kompassi_email_host": "",
       "kompassi_crowd_application_password": "",
       "kompassi_desuprofile_oauth2_client_id": "",
     }

@@ -2,7 +2,7 @@
 monokkeli.tracon.fi
 
 [kompassi-servers]
-neula.kompassi.eu ansible_python_interpreter=/usr/bin/python2.7
+neula.kompassi.eu kompassi_allowed_hosts="kompassi.eu neula.kompassi.eu"
 
 [rsyslog-to-logstash]
 monokkeli.tracon.fi
