@@ -1,0 +1,68 @@
+- name: "Update Kompassi docker images from the registry"
+  docker_image:
+    name: "{{ item }}"
+    force: yes
+  with_items:
+    - tracon/kompassi-gunicorn
+    - tracon/kompassi-celery
+
+- name: "Create {{ kompassi_hostname }}-postgres container"
+  docker_container:
+    name: "{{ kompassi_hostname }}-postgres"
+    image: postgres
+    volumes:
+      - "{{ kompassi_hostname }}-postgres-data:/var/lib/postgresql/data"
+
+- name: "Create {{ kompassi_hostname }}-rabbitmq container"
+  docker_container:
+    name: "{{ kompassi_hostname }}-rabbitmq"
+    image: rabbitmq
+
+- name: "Create {{ kompassi_hostname }}-memcache container"
+  docker_container:
+    name: "{{ kompassi_hostname }}-memcache"
+    image: memcached
+
+- name: "Create {{ kompassi_hostname }}-gunicorn container"
+  docker_container:
+    name: "{{ kompassi_hostname }}-gunicorn"
+    image: tracon/kompassi-gunicorn
+    env_file: /srv/{{ kompassi_hostname }}/env
+    recreate: yes
+    ports:
+      - 8000:8000
+    links:
+      - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
+      - "{{ kompassi_hostname }}-postgres:postgres"
+      - "{{ kompassi_hostname }}-memcache:memcache"
+
+- name: "Create {{ kompassi_hostname }}-celery container"
+  docker_container:
+    name: "{{ kompassi_hostname }}-celery"
+    image: tracon/kompassi-celery
+    env_file: /srv/{{ kompassi_hostname }}/env
+    recreate: yes
+    links:
+      - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
+      - "{{ kompassi_hostname }}-postgres:postgres"
+      - "{{ kompassi_hostname }}-memcache:memcache"
+
+# PROBLEMS:
+# - rsync not installed inside container, apt-get install rsync fails
+# - cleanup parameter added in ansible 2.2 (not yet released at the time of writing)
+
+# - name: "Extract static files from inside container (docker_container version)"
+#   docker_container:
+#     name: "{{ kompassi_hostname }}-extract-static"
+#     cleanup: yes
+#     detach: no
+#     image: tracon/kompassi-gunicorn
+#     command: "rsync -aqH --delete-after /usr/src/app/static /tmp/kompassi-static-files/"
+#     volumes:
+#       - "/tmp/kompassi-static-files:/srv/{{ kompassi_hostname }}/public_html"
+
+# PROBLEMS:
+# - does not remove stale files
+- name: "Extract static files from inside container (command version)"
+  command: >
+    /usr/bin/docker cp {{ kompassi_hostname }}-gunicorn:/usr/src/app/static /srv/{{ kompassi_hostname }}/public_html/
