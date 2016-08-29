@@ -1,2 +1,3 @@
 slackirc_api_token: "{{ vault_slackirc_api_token }}"
 kompassi_ssl_certificate_key_data: "{{ vault_kompassi_ssl_certificate_key_data }}"
+base_admin_users: "{{ vault_base_admin_users }}"
