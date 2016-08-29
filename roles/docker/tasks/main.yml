@@ -4,6 +4,12 @@
 - name: Add docker APT repository
   apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-xenial main' state=present update_cache=yes
 
+- name: Install dmsetup (needed on Ubuntu 16.04 Xenial to stop apt-get install docker-engine from hanging indefinitely)
+  apt: name=dmsetup state=present
+
+- name: Make device mapper device nodes (see above)
+  command: /sbin/dmsetup mknodes
+
 - name: Install Docker Engine and other required packages
   apt: name={{ item }} state=present
   with_items:

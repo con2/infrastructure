@@ -10,6 +10,7 @@
     - curl
     - git
     - htop
+    - man-db
     - ntp
     - python-apt
     - python3-dev
