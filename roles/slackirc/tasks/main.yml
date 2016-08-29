@@ -17,7 +17,9 @@
   notify: restart slackirc
 
 - name: Copy config to user home directory
-  copy: src=slackirc.json dest=/srv/slackirc/slackirc.json
+  copy:
+    content: "{{ slackirc_config|to_nice_json }}"
+    dest: /srv/slackirc/slackirc.json
   notify: restart slackirc
 
 - name: Install slack-irc systemd config
