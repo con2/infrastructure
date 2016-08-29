@@ -1,0 +1,1 @@
+slackirc_api_token: "{{ vault_slackirc_api_token }}"

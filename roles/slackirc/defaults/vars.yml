@@ -1,0 +1,15 @@
+slackirc_config:
+  - channelMapping:
+      "#putki": "#mansecon.random"
+      "#traconforce": "#traconforce"
+      conitea: "#mansecon"
+      hallitus: "#mansecon.hallitus"
+      hitpointconitea: "#hitpoint_conitea"
+      isosali: "#mansecon.is"
+      ohjelma: "#mansecon.ohjelma"
+      tekniikka: "#mansecon.tekniikka"
+    nickname: sir
+    server: tampere.fi.b2irc.net
+    token: "{{ slackirc_api_token }}"
+    ircOptions:
+      messageSplit: 200
