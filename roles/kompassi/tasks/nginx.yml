@@ -12,6 +12,17 @@
     dest: "{{ kompassi_ssl_certificate_key }}"
   notify: restart nginx
 
+- name: "Setup nginx default site"
+  template: src=default.nginx.j2 dest=/etc/nginx/sites-available/{{ inventory_hostname }} mode=0644
+  notify: restart nginx
+
+- name: "Enable nginx default site"
+  file: >
+    src=/etc/nginx/sites-available/{{ inventory_hostname }}
+    path=/etc/nginx/sites-enabled/{{ inventory_hostname }}
+    state=link
+  notify: restart nginx
+
 - name: "Setup nginx vhost for {{ kompassi_hostname }}"
   template: src=kompassi.nginx.j2 dest=/etc/nginx/sites-available/{{ kompassi_hostname }} mode=0644
   notify: restart nginx

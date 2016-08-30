@@ -4,7 +4,7 @@ kompassi_ssl: true
 kompassi_letsencrypt: false
 kompassi_ssl_certificate: /etc/ssl/certs/kompassi.eu+intermediate.crt
 kompassi_ssl_certificate_key: /etc/ssl/private/kompassi.eu.key
-kompassi_allowed_hosts: "{{ kompassi_hostname }}"
+kompassi_allowed_hosts: "{{ kompassi_hostname }} vara.kompassi.eu"
 kompassi_installation_slug: turska
 kompassi_default_from_email: suunnistajat@kompassi.eu
 kompassi_email_host: sr1.gw0.fi

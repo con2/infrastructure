@@ -1,0 +1,26 @@
+server {
+    listen 80 default_server;
+    server_name {{ inventory_hostname }} localhost;
+
+{% if kompassi_letsencrypt %}
+    location /.well-known/acme-challenge/ {
+        alias /srv/letsencrypt/challenges/;
+        try_files $uri =404;
+    }
+
+{% endif %}
+    return 302 https://{{ kompassi_hostname }}$request_uri;
+}
+
+{% if kompassi_ssl %}
+server {
+    listen 443 http2 default_server;
+    server_name {{ inventory_hostname }} localhost;
+
+    ssl on;
+    ssl_certificate {{ kompassi_ssl_certificate }};
+    ssl_certificate_key {{ kompassi_ssl_certificate_key }};
+
+    return 302 https://{{ kompassi_hostname }}$request_uri;
+}
+{% endif %}

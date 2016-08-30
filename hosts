@@ -2,7 +2,7 @@
 monokkeli.tracon.fi
 
 [kompassi-servers]
-neula.kompassi.eu kompassi_allowed_hosts="kompassi.eu neula.kompassi.eu" kompassi_basicauth=1
+neula.kompassi.eu kompassi_basicauth=1
 
 [rsyslog-to-logstash]
 monokkeli.tracon.fi
