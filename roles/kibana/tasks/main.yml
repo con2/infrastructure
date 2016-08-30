@@ -1,0 +1,36 @@
+- name: download kibana
+  get_url: >
+    url="https://download.elastic.co/kibana/kibana/kibana-4.1.1-linux-x64.tar.gz"
+    dest=/usr/local/src/kibana-4.1.1-linux-x64.tar.gz
+  register: kibana_tarball
+  notify: restart kibana
+
+- name: unpack kibana
+  unarchive: >
+    src="/usr/local/src/kibana-4.1.1-linux-x64.tar.gz"
+    dest=/opt
+    copy=no
+  when: kibana_tarball|changed
+  notify: restart kibana
+
+- name: symlink kibana
+  file: state=link src=/opt/kibana-4.1.1-linux-x64 path=/opt/kibana
+
+- name: install upstart conf
+  copy: src=kibana.upstart.conf dest=/etc/init/kibana.conf
+  notify: restart kibana
+
+- name: start kibana first time
+  service: name=kibana state=started enabled=yes
+
+- name: setup htpasswd file
+  copy: src=logstash.htpasswd dest=/etc/nginx/logstash.tracon.fi.htpasswd
+  notify: restart nginx
+
+- name: setup nginx vhost
+  copy: src=vhost.conf dest=/etc/nginx/sites-available/logstash.tracon.fi
+  notify: restart nginx
+
+- name: enable nginx vhost
+  file: state=link src=/etc/nginx/sites-available/logstash.tracon.fi dest=/etc/nginx/sites-enabled/logstash.tracon.fi
+  notify: restart nginx
