@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider :virtualbox do |virtualbox|
     virtualbox.cpus = 4
-    virtualbox.memory = 1024
+    virtualbox.memory = 2048
   end
 
   config.vm.provision :shell do |shell|
