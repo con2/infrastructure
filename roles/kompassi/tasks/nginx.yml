@@ -22,3 +22,7 @@
     path=/etc/nginx/sites-enabled/{{ kompassi_hostname }}
     state=link
   notify: restart nginx
+
+- name: "Setup htpasswd file for {{ kompassi_hostname }}"
+  template: src=kompassi.htpasswd.j2 dest=/etc/nginx/{{ kompassi_hostname }}.htpasswd
+  notify: restart nginx

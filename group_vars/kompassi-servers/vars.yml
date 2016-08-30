@@ -9,3 +9,4 @@ kompassi_desuprofile_oauth2_client_secret: "{{ vault_kompassi_desuprofile_oauth
 kompassi_postgresql_password: "{{ vault_kompassi_postgresql_password }}"
 kompassi_rabbitmq_password: "{{ vault_kompassi_rabbitmq_password }}"
 kompassi_rabbitmq_cookie: "{{ vault_kompassi_rabbitmq_cookie }}"
+kompassi_basicauth_password: "{{ vault_kompassi_basicauth_password }}"

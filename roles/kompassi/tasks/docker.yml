@@ -42,8 +42,9 @@
     image: tracon/kompassi-gunicorn
     env_file: /srv/{{ kompassi_hostname }}/env
     recreate: yes
+    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ kompassi_workers }} turska.wsgi:application"
     ports:
-      - 8000:8000
+      - "{{ kompassi_port }}:8000"
     links:
       - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
       - "{{ kompassi_hostname }}-postgres:postgres"

@@ -16,3 +16,6 @@ kompassi_rabbitmq_username: kompassi
 kompassi_rabbitmq_vhost: kompassi
 kompassi_postgresql_username: kompassi
 kompassi_postgresql_database: kompassi
+kompassi_basicauth_username: kompassi
+kompassi_basicauth: false
+kompassi_workers: 16
