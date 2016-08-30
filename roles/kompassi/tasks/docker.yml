@@ -5,23 +5,36 @@
   with_items:
     - tracon/kompassi-gunicorn
     - tracon/kompassi-celery
+  tags: [kompassi-deploy]
 
 - name: "Create {{ kompassi_hostname }}-postgres container"
   docker_container:
     name: "{{ kompassi_hostname }}-postgres"
     image: postgres
+    env:
+      POSTGRES_USER: "{{ kompassi_postgresql_username }}"
+      POSTGRES_PASSWORD: "{{ kompassi_postgresql_password }}"
+      POSTGRES_DB: "{{ kompassi_postgresql_database }}"
     volumes:
       - "{{ kompassi_hostname }}-postgres-data:/var/lib/postgresql/data"
+  tags: [kompassi-deploy]
 
 - name: "Create {{ kompassi_hostname }}-rabbitmq container"
   docker_container:
     name: "{{ kompassi_hostname }}-rabbitmq"
     image: rabbitmq
+    env:
+      RABBITMQ_ERLANG_COOKIE: "{{ kompassi_rabbitmq_cookie }}"
+      RABBITMQ_DEFAULT_USER: "{{ kompassi_rabbitmq_username }}"
+      RABBITMQ_DEFAULT_PASS: "{{ kompassi_rabbitmq_password }}"
+      RABBITMQ_DEFAULT_VHOST: "{{ kompassi_rabbitmq_vhost }}"
+  tags: [kompassi-deploy]
 
 - name: "Create {{ kompassi_hostname }}-memcache container"
   docker_container:
     name: "{{ kompassi_hostname }}-memcache"
     image: memcached
+  tags: [kompassi-deploy]
 
 - name: "Create {{ kompassi_hostname }}-gunicorn container"
   docker_container:
@@ -35,6 +48,7 @@
       - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
       - "{{ kompassi_hostname }}-postgres:postgres"
       - "{{ kompassi_hostname }}-memcache:memcache"
+  tags: [kompassi-deploy]
 
 - name: "Create {{ kompassi_hostname }}-celery container"
   docker_container:
@@ -46,6 +60,7 @@
       - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
       - "{{ kompassi_hostname }}-postgres:postgres"
       - "{{ kompassi_hostname }}-memcache:memcache"
+  tags: [kompassi-deploy]
 
 # PROBLEMS:
 # - rsync not installed inside container, apt-get install rsync fails
@@ -66,3 +81,4 @@
 - name: "Extract static files from inside container (command version)"
   command: >
     /usr/bin/docker cp {{ kompassi_hostname }}-gunicorn:/usr/src/app/static /srv/{{ kompassi_hostname }}/public_html/
+  tags: [kompassi-deploy]

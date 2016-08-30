@@ -9,7 +9,10 @@ kompassi_installation_slug: turska
 kompassi_default_from_email: suunnistajat@kompassi.eu
 kompassi_email_host: sr1.gw0.fi
 kompassi_crowd_application_name: kompassi
-kompassi_broker_url: amqp://guest:guest@rabbitmq/
 kompassi_database_url: psql://postgres/kompassi
 kompassi_cache_url: memcache://memcache
 kompassi_admins: "Santtu Pajukanta <japsu@tracon.fi>"
+kompassi_rabbitmq_username: kompassi
+kompassi_rabbitmq_vhost: kompassi
+kompassi_postgresql_username: kompassi
+kompassi_postgresql_database: kompassi
