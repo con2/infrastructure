@@ -32,6 +32,8 @@
       tags: [nginx]
     - role: kompassi
       tags: [kompassi]
+    - role: atlasso
+      tags: [atlasso]
 
 - hosts: nuoli.tracon.fi
   roles:

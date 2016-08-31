@@ -1,3 +1,4 @@
+atlasso_image: tracon/atlasso
 atlasso_hostname: atlasso.tracon.fi
 atlasso_port: 8001
 atlasso_ssl: true

@@ -1,24 +1,3 @@
-- name: "Create host data directory"
-  file: path=/srv/{{ atlasso_hostname }} state=directory
-
-- name: "Create env file"
-  template: src=atlasso.env.j2 dest=/srv/{{ atlasso_hostname }}/env mode=0600
-  tags: [atlasso-deploy]
-
-# - name: "Copy SSL certificate for {{ atlasso_hostname }}"
-#   when: "{{ atlasso_ssl }} and not {{ atlasso_letsencrypt }}"
-#   copy:
-#     src: "../../../files/etc/ssl/certs/{{ atlasso_hostname }}+intermediate.crt"
-#     dest: "{{ atlasso_ssl_certificate }}"
-#   notify: restart nginx
-#
-# - name: "Copy SSL private key for {{ atlasso_hostname }}"
-#   when: "{{ atlasso_ssl }} and not {{ atlasso_letsencrypt }}"
-#   copy:
-#     content: "{{ atlasso_ssl_certificate_key_data }}"
-#     dest: "{{ atlasso_ssl_certificate_key }}"
-#   notify: restart nginx
-
 - name: "Setup nginx vhost for {{ atlasso_hostname }}"
   template: src=atlasso.nginx.j2 dest=/etc/nginx/sites-available/{{ atlasso_hostname }} mode=0644
   notify: restart nginx
@@ -38,7 +17,7 @@
 
 - name: "Create Atlasso container for {{ atlasso_hostname }}"
   docker_container:
-    name: {{ atlasso_hostname }}
+    name: "{{ atlasso_hostname }}"
     image: tracon/atlasso
     recreate: yes
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ atlasso_workers }} turska.wsgi:application"

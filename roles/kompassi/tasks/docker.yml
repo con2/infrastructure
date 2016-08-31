@@ -1,6 +1,6 @@
 - name: "Update Kompassi docker image from the registry"
   docker_image:
-    name: tracon/kompassi
+    name: "{{ kompassi_image }}"
     force: yes
   tags: [kompassi-deploy]
 
@@ -36,7 +36,7 @@
 - name: "Create {{ kompassi_hostname }}-gunicorn container"
   docker_container:
     name: "{{ kompassi_hostname }}-gunicorn"
-    image: tracon/kompassi
+    image: "{{ kompassi_image }}"
     env_file: /srv/{{ kompassi_hostname }}/env
     recreate: yes
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ kompassi_workers }} turska.wsgi:application"
@@ -51,7 +51,7 @@
 - name: "Create {{ kompassi_hostname }}-celery container"
   docker_container:
     name: "{{ kompassi_hostname }}-celery"
-    image: tracon/kompassi
+    image: "{{ kompassi_image }}"
     command: "celery -A turska.celery_app:app worker"
     env_file: /srv/{{ kompassi_hostname }}/env
     recreate: yes
@@ -70,7 +70,7 @@
 #     name: "{{ kompassi_hostname }}-extract-static"
 #     cleanup: yes
 #     detach: no
-#     image: tracon/kompassi
+#     image: "{{ kompassi_image }}"
 #     command: "rsync -aqH --delete-after /usr/src/app/static /tmp/kompassi-static-files/"
 #     volumes:
 #       - "/tmp/kompassi-static-files:/srv/{{ kompassi_hostname }}/public_html"
