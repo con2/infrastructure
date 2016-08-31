@@ -1,0 +1,16 @@
+atlasso_hostname: atlasso.tracon.fi
+atlasso_port: 8001
+atlasso_ssl: true
+atlasso_letsencrypt: false
+atlasso_ssl_certificate: /etc/ssl/certs/_wildcard_.tracon.fi+intermediate.crt
+atlasso_ssl_certificate_key: /etc/ssl/private/_wildcard_.tracon.fi.key
+atlasso_allowed_hosts: "{{ atlasso_hostname }}"
+atlasso_default_from_email: suunnistajat@kompassi.eu
+atlasso_email_host: sr1.gw0.fi
+atlasso_crowd_application_name: atlasso
+atlasso_database_url: psql://postgres/atlasso
+atlasso_admins: "Santtu Pajukanta <japsu@tracon.fi>"
+atlasso_postgresql_container: kompassi.eu-postgres
+atlasso_postgresql_username: atlasso
+atlasso_postgresql_database: atlasso
+atlasso_workers: 2

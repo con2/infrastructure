@@ -12,3 +12,4 @@
 
 - name: "Create env file"
   template: src=kompassi.env.j2 dest=/srv/{{ kompassi_hostname }}/env mode=0600
+  tags: [kompassi-deploy]

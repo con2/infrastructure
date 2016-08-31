@@ -1,0 +1,59 @@
+- name: "Create host data directory"
+  file: path=/srv/{{ atlasso_hostname }} state=directory
+
+- name: "Create env file"
+  template: src=atlasso.env.j2 dest=/srv/{{ atlasso_hostname }}/env mode=0600
+  tags: [atlasso-deploy]
+
+# - name: "Copy SSL certificate for {{ atlasso_hostname }}"
+#   when: "{{ atlasso_ssl }} and not {{ atlasso_letsencrypt }}"
+#   copy:
+#     src: "../../../files/etc/ssl/certs/{{ atlasso_hostname }}+intermediate.crt"
+#     dest: "{{ atlasso_ssl_certificate }}"
+#   notify: restart nginx
+#
+# - name: "Copy SSL private key for {{ atlasso_hostname }}"
+#   when: "{{ atlasso_ssl }} and not {{ atlasso_letsencrypt }}"
+#   copy:
+#     content: "{{ atlasso_ssl_certificate_key_data }}"
+#     dest: "{{ atlasso_ssl_certificate_key }}"
+#   notify: restart nginx
+
+- name: "Setup nginx vhost for {{ atlasso_hostname }}"
+  template: src=atlasso.nginx.j2 dest=/etc/nginx/sites-available/{{ atlasso_hostname }} mode=0644
+  notify: restart nginx
+
+- name: "Enable nginx vhost for {{ atlasso_hostname }}"
+  file: >
+    src=/etc/nginx/sites-available/{{ atlasso_hostname }}
+    path=/etc/nginx/sites-enabled/{{ atlasso_hostname }}
+    state=link
+  notify: restart nginx
+
+- name: "Update Atlasso docker image from the registry"
+  docker_image:
+    name: tracon/atlasso
+    force: yes
+  tags: [atlasso-deploy]
+
+- name: "Create Atlasso container for {{ atlasso_hostname }}"
+  docker_container:
+    name: {{ atlasso_hostname }}
+    image: tracon/atlasso
+    recreate: yes
+    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ atlasso_workers }} turska.wsgi:application"
+    ports:
+      - "{{ atlasso_port }}:8000"
+    links:
+      - "{{ atlasso_postgresql_container }}:postgres"
+    env:
+      SECRET_KEY: "{{ atlasso_secret_key }}"
+      ALLOWED_HOSTS: "{{ atlasso_allowed_hosts }}"
+      ADMINS: "{{ atlasso_admins }}"
+      EMAIL_HOST: "{{ atlasso_email_host }}"
+      DEFAULT_FROM_EMAIL: "{{ atlasso_default_from_email }}"
+      KOMPASSI_OAUTH2_CLIENT_ID: "{{ atlasso_kompassi_oauth2_client_id }}"
+      KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ atlasso_kompassi_oauth2_client_secret }}"
+      KOMPASSI_CROWD_APPLICATION_NAME: "{{ atlasso_crowd_application_name }}"
+      KOMPASSI_CROWD_APPLICATION_PASSWORD: "{{ atlasso_crowd_application_password }}"
+      DATABASE_URL: "postgres://{{ atlasso_postgresql_username }}:{{ atlasso_postgresql_password }}@postgres/{{ atlasso_postgresql_database }}"
