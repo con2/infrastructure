@@ -1,7 +1,7 @@
 - name: "Copy SSL certificate for {{ kompassi_hostname }}"
   when: "{{ kompassi_ssl }} and not {{ kompassi_letsencrypt }}"
   copy:
-    src: "../../../files/etc/ssl/certs/{{ kompassi_hostname }}+intermediate.crt"
+    src: "{{ kompassi_hostname }}+intermediate.crt"
     dest: "{{ kompassi_ssl_certificate }}"
   notify: restart nginx
 

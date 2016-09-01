@@ -35,6 +35,13 @@
     - role: atlasso
       tags: [atlasso]
 
+# - hosts: management-servers
+#   roles:
+#     - role: docker
+#       tags: [docker]
+#     - role: jenkins
+#       tags: [jenkins]
+
 - hosts: nuoli.tracon.fi
   roles:
     - role: nodejs

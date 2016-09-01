@@ -20,7 +20,7 @@
     name: "{{ atlasso_hostname }}"
     image: tracon/atlasso
     recreate: yes
-    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ atlasso_workers }} turska.wsgi:application"
+    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ atlasso_workers }} atlasso.wsgi:application"
     ports:
       - "{{ atlasso_port }}:8000"
     links:
