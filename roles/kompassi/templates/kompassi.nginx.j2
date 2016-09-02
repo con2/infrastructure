@@ -14,12 +14,11 @@ server {
 }
 
 server {
-    listen 443 http2;
+    listen 443 ssl http2;
     server_name {{ kompassi_allowed_hosts }};
 
     add_header Strict-Transport-Security max-age=15768000;
 
-    ssl on;
     ssl_certificate {{ kompassi_ssl_certificate }};
     ssl_certificate_key {{ kompassi_ssl_certificate_key }};
 

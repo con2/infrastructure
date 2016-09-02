@@ -1,0 +1,20 @@
+- name: "Setup nginx vhost for {{ jenkins_hostname }}"
+  template: src=jenkins.nginx.j2 dest=/etc/nginx/sites-available/{{ jenkins_hostname }} mode=0644
+  notify: restart nginx
+
+- name: "Enable nginx vhost for {{ jenkins_hostname }}"
+  file: >
+    src=/etc/nginx/sites-available/{{ jenkins_hostname }}
+    path=/etc/nginx/sites-enabled/{{ jenkins_hostname }}
+    state=link
+  notify: restart nginx
+
+- name: "Create Jenkins container for {{ jenkins_hostname }}"
+  docker_container:
+    name: "{{ jenkins_hostname }}"
+    image: "{{ jenkins_image }}"
+    volumes:
+      - "{{ jenkins_hostname }}-data:/var/jenkins_home"
+    ports:
+      - "{{ jenkins_port }}:8080"
+      - "{{ jenkins_api_port }}:50000"

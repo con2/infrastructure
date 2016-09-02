@@ -5,7 +5,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "bento/ubuntu-16.04"
   config.vm.network "private_network", type: "dhcp"
 
   config.vm.provider :virtualbox do |virtualbox|
@@ -13,22 +13,34 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     virtualbox.memory = 2048
   end
 
-  config.vm.provision :shell do |shell|
-    shell.inline = "apt-get update && apt-get -y dist-upgrade && apt-get -y install python"
+  config.vm.define "neula" do |neula|
+    neula.vm.provision :ansible do |ansible|
+      ansible.playbook = "tracon.yml"
+      ansible.vault_password_file = ".vault_pass.txt"
+      ansible.extra_vars = {
+          "kompassi_allowed_hosts" => "kompassi.eu local.kompassi.eu",
+          "kompassi_email_host" => "",
+          "kompassi_crowd_application_password" => "",
+          "kompassi_desuprofile_oauth2_client_id" => "",
+      }
+      ansible.groups = {
+        "kompassi-servers" => ["neula"]
+      }
+      ansible.host_key_checking = false
+    end
   end
 
-  config.vm.provision :ansible do |ansible|
-    ansible.playbook = "tracon.yml"
-    ansible.vault_password_file = ".vault_pass.txt"
-    ansible.extra_vars = {
-      "kompassi_allowed_hosts": "kompassi.eu local.kompassi.eu",
-      "kompassi_email_host": "",
-      "kompassi_crowd_application_password": "",
-      "kompassi_desuprofile_oauth2_client_id": "",
-    }
-    ansible.groups = {
-      "kompassi-servers" => ["default"]
-    }
-    ansible.host_key_checking = false
+  config.vm.define "monokkeli" do |monokkeli|
+    monokkeli.vm.provision :ansible do |ansible|
+      ansible.playbook = "tracon.yml"
+      ansible.vault_password_file = ".vault_pass.txt"
+      ansible.extra_vars = {
+
+      }
+      ansible.groups = {
+        "management-servers" => ["monokkeli"]
+      }
+      ansible.host_key_checking = false
+    end
   end
 end

@@ -8,19 +8,20 @@ There are numerous vaults for Secret Stuff™. You need to put the vault passwor
 
 If you're lucky, Vagrant might be configured for some part of the repository so you can try it out locally.
 
-    vagrant up
+    vagrant up neula
+    vagrant up monokkeli
 
 ## Putting stuff in the cloud
 
 Use eg. `-l neula.kompassi.eu` to limit the scope to single machines, or `-t nginx,ssh` to limit to certain tags.
 
-    ansible-playbook --vault-password-file=.vault_pass.txt -bK tracon.yml
-
+    ansible-playbook --vault-password-file=.vault_pass.txt -sK tracon.yml
 
 ## License
 
     ansible-tracon – 5th generation Tracon infrastructure with Ansible & Docker
-    Copyright © 2016 Santtu Pajukanta
+    Copyright © 2015–2016 Santtu Pajukanta
+    Copyright © 2016 Miika Ojamo
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
