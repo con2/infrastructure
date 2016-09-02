@@ -35,7 +35,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "tracon.yml"
       ansible.vault_password_file = ".vault_pass.txt"
       ansible.extra_vars = {
-
+          "jenkins_hostname" => "jenkins.local",
+          "jenkins_allowed_hosts" => "jenkins.local",
       }
       ansible.groups = {
         "management-servers" => ["monokkeli"]
