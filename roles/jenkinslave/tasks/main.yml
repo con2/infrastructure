@@ -1,0 +1,61 @@
+- name: create jenkinslave group
+  group:
+    name: jenkinslave
+    state: present
+    system: yes
+
+- name: create jenkinslave user
+  user:
+    name: jenkinslave
+    group: jenkinslave
+    groups: docker
+    append: yes
+    state: present
+    system: yes
+    home: /srv/jenkinslave
+
+- name: create jenkinslave .ssh dir
+  file:
+    path: /srv/jenkinslave/.ssh
+    state: directory
+    owner: jenkinslave
+    group: jenkinslave
+    mode: 0700
+
+- name: install jenkinslave ssh private key
+  copy:
+    dest: /srv/jenkinslave/.ssh/id_rsa
+    content: "{{ jenkinslave_ssh_private_key_data }}"
+    owner: jenkinslave
+    group: jenkinslave
+    mode: 0400
+
+- name: install jenkinslave ssh public key
+  copy:
+    dest: /srv/jenkinslave/.ssh/{{ item }}
+    content: "{{ jenkinslave_ssh_public_key_data }}"
+    owner: jenkinslave
+    group: jenkinslave
+    mode: 0440
+  with_items:
+    - id_rsa.pub
+    - authorized_keys
+
+- name: install vault password file
+  copy:
+    dest: /srv/jenkinslave/.vault_pass.txt
+    content: "{{ vault_password }}"
+    owner: jenkinslave
+    group: jenkinslave
+    mode: 0400
+
+- name: install ansible deps
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - libffi-dev
+    - libssl-dev
+
+- name: install ansible via pip (for jenkins to do deployment with)
+  pip:
+    name: ansible

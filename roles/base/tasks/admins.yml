@@ -40,3 +40,6 @@
       key: ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAv37o2q59hjRsxrce12XVI1E9oWD0ocLBtCeVUOTv+0S1nmaa+kNT4NKaIzymLNNs7+oBondeZrAGB9brplare26sgFwZtnkarAOS1xPa7SGhD0XSQRYvb1lQfdx0du5OeyU1+sKjhMk+bJqQdhjsYlFzhUXwtbr2fx+R7vfJefIy4pMJ59TVG79vILM9u/3NItbTJyTDvn5s8OIcolhVNatJAHe2gs/pwQY5eUHCyYfYXU7+DIH/ZbH5q+Iyy3ejDISWYYj60E5lgDpwcWLSfId5g5Gmjkx/8vaOu0UA+6FJlX/Et6uBCSDEVlFkQ/FkfiHcLvh1YwB/mHmzENeVpQ== miyakojima
     - username: siikakala
       key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDySCgRhcPEG71WlxmXNz5VZLmK6iajqcY16q+dEK1PRNHcNb14jkxhka4sxQS4+QEeep7DhdlcvVXHuet+1CWY4oGyo6ETIMv18RfQjazzKWfJlpjnTPZLaC0U+gHtUdi/fzwPe7BZ6G6bbJ6ITdcD7E+lHas1n6axsPDCCkuT19FDPZm5JBEU/G8fRzxMOc1gGHN1cELD6NhnFZ6f4AarxChT8ac9t24ZmuQP0JbGDcx/0KPBHNS3FMa4JCKiCX8Ra1UpcX4c0JyjNqlUS4LPYRGX97GPNoULsssLjk/4qNqwnHtazQEHbhVdSJxmFgNBESlyv+IlYDRPMkbhrb1Z siika@higashinari
+
+    - username: root
+      key: "{{ jenkinslave_ssh_public_key_data }}"

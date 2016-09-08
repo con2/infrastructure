@@ -52,3 +52,5 @@
       tags: [nginx]
     - role: jenkins
       tags: [jenkins]
+    - role: jenkinslave
+      tags: [jenkinslave]
