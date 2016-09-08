@@ -13,6 +13,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     virtualbox.memory = 2048
   end
 
+  config.vm.define "nuoli" do |nuoli|
+    nuoli.vm.provision :ansible do |ansible|
+      ansible.playbook = "tracon.yml"
+      ansible.vault_password_file = ".vault_pass.txt"
+      ansible.extra_vars = {
+          "infokala_allowed_hosts" => "infokala.tracon.fi infokala.localdomain",
+          "infokala_email_host" => "",
+      }
+      ansible.groups = {
+          "tracon-servers" => ["nuoli"]
+      }
+      ansible.host_key_checking = false
+    end
+  end
+
   config.vm.define "neula" do |neula|
     neula.vm.provision :ansible do |ansible|
       ansible.playbook = "tracon.yml"
@@ -24,7 +39,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "kompassi_desuprofile_oauth2_client_id" => "",
       }
       ansible.groups = {
-        "kompassi-servers" => ["neula"]
+          "kompassi-servers" => ["neula"]
       }
       ansible.host_key_checking = false
     end
@@ -39,7 +54,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "jenkins_allowed_hosts" => "jenkins.local",
       }
       ansible.groups = {
-        "management-servers" => ["monokkeli"]
+          "management-servers" => ["monokkeli"]
       }
       ansible.host_key_checking = false
     end

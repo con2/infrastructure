@@ -1,0 +1,16 @@
+infokala_image: tracon/infokala
+infokala_hostname: infokala.tracon.fi
+infokala_port: 8002
+infokala_ssl: true
+infokala_letsencrypt: false
+infokala_ssl_certificate: /etc/ssl/certs/_wildcard_.tracon.fi+intermediate.crt
+infokala_ssl_certificate_key: /etc/ssl/private/_wildcard_.tracon.fi.key
+infokala_allowed_hosts: "{{ infokala_hostname }}"
+infokala_default_from_email: suunnistajat@kompassi.eu
+infokala_email_host: sr1.gw0.fi
+infokala_crowd_application_name: infokala
+infokala_admins: "Santtu Pajukanta <japsu@tracon.fi>"
+infokala_postgresql_container: kompassi.eu-postgres
+infokala_postgresql_username: infokala
+infokala_postgresql_database: infokala
+infokala_workers: 2

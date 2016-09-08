@@ -9,6 +9,8 @@
 
 - name: Make device mapper device nodes (see above)
   command: /sbin/dmsetup mknodes
+  args:
+    creates: /dev/mapper/control
 
 - name: Install Docker Engine and other required packages
   apt: name={{ item }} state=present

@@ -1,5 +1,2 @@
-- name: restart slackirc
-  service: name=slackirc state=restarted enabled=yes
-
 - name: restart oidentd
   service: name=oidentd state=restarted enabled=yes

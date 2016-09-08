@@ -1,0 +1,4 @@
+infokala_secret_key: "{{ vault_infokala_secret_key }}"
+infokala_kompassi_oauth2_client_id: "{{ vault_infokala_kompassi_oauth2_client_id }}"
+infokala_kompassi_oauth2_client_secret: "{{ vault_infokala_kompassi_oauth2_client_secret }}"
+infokala_postgresql_password: "{{ vault_infokala_postgresql_password }}"

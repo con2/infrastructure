@@ -21,8 +21,17 @@
       tags: [base]
     - role: postgresql
       tags: [postgresql]
-  vars:
-    ansible_python_interpreter: /usr/bin/python2.7
+
+- hosts: tracon-servers
+  roles:
+    - role: docker
+      tags: [docker]
+    - role: nginx
+      tags: [nginx]
+    # - role: infokala
+      # tags: [infokala]
+    - role: slackirc
+      tags: [slackirc]
 
 - hosts: kompassi-servers
   roles:
@@ -43,10 +52,3 @@
       tags: [nginx]
     - role: jenkins
       tags: [jenkins]
-
-- hosts: nuoli.tracon.fi
-  roles:
-    - role: nodejs
-      tags: [nodejs]
-    - role: slackirc
-      tags: [slackirc]

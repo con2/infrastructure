@@ -26,13 +26,14 @@
     links:
       - "{{ atlasso_postgresql_container }}:postgres"
     env:
-      SECRET_KEY: "{{ atlasso_secret_key }}"
-      ALLOWED_HOSTS: "{{ atlasso_allowed_hosts }}"
       ADMINS: "{{ atlasso_admins }}"
-      EMAIL_HOST: "{{ atlasso_email_host }}"
+      ALLOWED_HOSTS: "{{ atlasso_allowed_hosts }}"
+      DATABASE_URL: "postgres://{{ atlasso_postgresql_username }}:{{ atlasso_postgresql_password }}@postgres/{{ atlasso_postgresql_database }}"
       DEFAULT_FROM_EMAIL: "{{ atlasso_default_from_email }}"
-      KOMPASSI_OAUTH2_CLIENT_ID: "{{ atlasso_kompassi_oauth2_client_id }}"
-      KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ atlasso_kompassi_oauth2_client_secret }}"
+      EMAIL_HOST: "{{ atlasso_email_host }}"
       KOMPASSI_CROWD_APPLICATION_NAME: "{{ atlasso_crowd_application_name }}"
       KOMPASSI_CROWD_APPLICATION_PASSWORD: "{{ atlasso_crowd_application_password }}"
-      DATABASE_URL: "postgres://{{ atlasso_postgresql_username }}:{{ atlasso_postgresql_password }}@postgres/{{ atlasso_postgresql_database }}"
+      KOMPASSI_OAUTH2_CLIENT_ID: "{{ atlasso_kompassi_oauth2_client_id }}"
+      KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ atlasso_kompassi_oauth2_client_secret }}"
+      SECRET_KEY: "{{ atlasso_secret_key }}"
+  tags: [atlasso-deploy]

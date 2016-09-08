@@ -1,2 +1,2 @@
 #!/bin/sh
-systemctl restart slackirc.service
+docker restart slackirc
