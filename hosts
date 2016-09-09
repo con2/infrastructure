@@ -2,7 +2,7 @@
 nuoli.tracon.fi
 
 [management-servers]
-monokkeli.tracon.fi
+monokkeli.tracon.fi ansible_ssh_host=91.105.252.66
 
 [kompassi-servers]
 neula.kompassi.eu
