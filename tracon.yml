@@ -28,12 +28,29 @@
       tags: [docker]
     - role: nginx
       tags: [nginx]
+
+    # default site
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: "{{ inventory_hostname }}"
+      redirect_target: https://tracon.fi
+      redirect_ssl: true
+      redirect_default: true
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: info-tv.tracon.fi
+      redirect_target: https://infotv.tracon.fi
+      redirect_ssl: true
+      redirect_default: false
+
     - role: postgresql-docker
       tags: [postgresql-docker]
       postgresql_hostname: nuoli.tracon.fi
       postgresql_username: infokala
       postgresql_password: "{{ infokala_postgresql_password }}"
       postgresql_database: infokala
+
     - role: infokala
       tags: [infokala]
     - role: infotv
@@ -47,12 +64,22 @@
       tags: [docker]
     - role: nginx
       tags: [nginx]
+
+    # default site
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: "{{ inventory_hostname }}"
+      redirect_target: https://kompassi.eu
+      redirect_ssl: false
+      redirect_default: true
+
     - role: postgresql-docker
       tags: [postgresql-docker]
       postgresql_hostname: kompassi.eu
       postgresql_username: kompassi
       postgresql_password: "{{ kompassi_postgresql_password }}"
       postgresql_database: kompassi
+
     - role: kompassi
       tags: [kompassi]
     - role: atlasso
@@ -66,11 +93,13 @@
       tags: [nginx]
     - role: jenkins
       tags: [jenkins]
+
     - role: postgresql-docker
       tags: [postgresql-docker]
       postgresql_hostname: jenkins.tracon.fi
       postgresql_username: jenkinslave
       postgresql_password: "{{ jenkinslave_postgresql_password }}"
       postgresql_database: test_kompassi
+
     - role: jenkinslave
       tags: [jenkinslave]

@@ -1,0 +1,10 @@
+- name: "Setup redirect vhost for {{ redirect_hostname }}"
+  template: src=redirect.nginx.j2 dest=/etc/nginx/sites-available/{{ redirect_hostname }} mode=0644
+  notify: restart nginx
+
+- name: "Enable redirect vhost for {{ redirect_hostname }}"
+  file: >
+    src=/etc/nginx/sites-available/{{ redirect_hostname }}
+    path=/etc/nginx/sites-enabled/{{ redirect_hostname }}
+    state=link
+  notify: restart nginx

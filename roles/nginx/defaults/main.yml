@@ -1,2 +1,0 @@
-nginx_default_ssl_certificate: /etc/ssl/certs/_wildcard_.tracon.fi+intermediate.crt
-nginx_default_ssl_certificate_key: /etc/ssl/private/_wildcard_.tracon.fi.key
