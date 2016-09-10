@@ -18,3 +18,13 @@
     ports:
       - "{{ jenkins_port }}:8080"
       - "{{ jenkins_api_port }}:50000"
+
+- name: Set up pre-backup script
+  copy: src=pre-backup.sh dest=/usr/local/sbin/pre-backup mode=0755
+
+- name: Make sure backup directories exist
+  file: path={{ item }} state=directory
+  with_items:
+    - /var/backups
+    - /var/backups/postgresql
+    - /var/backups/jenkins
