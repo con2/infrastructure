@@ -36,6 +36,8 @@
       postgresql_database: infokala
     - role: infokala
       tags: [infokala]
+    - role: infotv
+      tags: [infotv]
     - role: slackirc
       tags: [slackirc]
 
