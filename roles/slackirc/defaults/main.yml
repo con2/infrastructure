@@ -1,3 +1,4 @@
+slackirc_enabled: true
 slackirc_config:
   - channelMapping:
       "#putki": "#mansecon.random"

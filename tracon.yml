@@ -28,8 +28,14 @@
       tags: [docker]
     - role: nginx
       tags: [nginx]
-    # - role: infokala
-      # tags: [infokala]
+    - role: postgresql-docker
+      tags: [postgresql-docker]
+      postgresql_hostname: nuoli.tracon.fi
+      postgresql_username: infokala
+      postgresql_password: "{{ infokala_postgresql_password }}"
+      postgresql_database: infokala
+    - role: infokala
+      tags: [infokala]
     - role: slackirc
       tags: [slackirc]
 

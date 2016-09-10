@@ -18,6 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "tracon.yml"
       ansible.vault_password_file = ".vault_pass.txt"
       ansible.extra_vars = {
+          "slackirc_enabled" => "0",
           "infokala_allowed_hosts" => "infokala.tracon.fi infokala.localdomain",
           "infokala_email_host" => "",
       }

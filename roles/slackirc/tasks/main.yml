@@ -23,6 +23,7 @@
     group: slackirc
 
 - name: Create slackirc container
+  when: "{{ slackirc_enabled }}"
   docker_container:
     name: slackirc
     image: tracon/slackirc
@@ -31,4 +32,5 @@
       - /srv/slackirc/slackirc.json:/slackirc.json:ro
 
 - name: Install daily restart script
+  when: "{{ slackirc_enabled }}"
   copy: src=slackirc.crondaily.sh dest=/etc/cron.daily/slackirc mode=0755
