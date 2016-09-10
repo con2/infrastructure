@@ -2,8 +2,6 @@
   docker_container:
     name: "{{ postgresql_hostname }}-postgres"
     image: postgres
-    published_ports:
-      - 5432:5432
     env:
       POSTGRES_USER: "{{ postgresql_username }}"
       POSTGRES_PASSWORD: "{{ postgresql_password }}"
