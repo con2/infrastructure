@@ -13,13 +13,11 @@
       RABBITMQ_DEFAULT_USER: "{{ kompassi_rabbitmq_username }}"
       RABBITMQ_DEFAULT_PASS: "{{ kompassi_rabbitmq_password }}"
       RABBITMQ_DEFAULT_VHOST: "{{ kompassi_rabbitmq_vhost }}"
-  tags: [kompassi-deploy]
 
 - name: "Create {{ kompassi_hostname }}-memcache container"
   docker_container:
     name: "{{ kompassi_hostname }}-memcache"
     image: memcached
-  tags: [kompassi-deploy]
 
 - name: "Create {{ kompassi_hostname }}-gunicorn container"
   docker_container:
