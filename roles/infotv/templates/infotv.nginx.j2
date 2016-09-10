@@ -1,31 +1,31 @@
 server {
     listen 80;
-    server_name {{ infokala_allowed_hosts }};
+    server_name {{ infotv_allowed_hosts }};
 
-{% if infokala_letsencrypt %}
+{% if infotv_letsencrypt %}
     location /.well-known/acme-challenge/ {
         alias /srv/letsencrypt/challenges/;
         try_files $uri =404;
     }
 
 {% endif %}
-{% if infokala_ssl %}
+{% if infotv_ssl %}
     return 302 https://$host$request_uri;
 }
 
 server {
     listen 443 http2;
-    server_name {{ infokala_allowed_hosts }};
+    server_name {{ infotv_allowed_hosts }};
 
     add_header Strict-Transport-Security max-age=15768000;
 
     ssl on;
-    ssl_certificate {{ infokala_ssl_certificate }};
-    ssl_certificate_key {{ infokala_ssl_certificate_key }};
+    ssl_certificate {{ infotv_ssl_certificate }};
+    ssl_certificate_key {{ infotv_ssl_certificate_key }};
 
 {% endif %}
     location ~ ^/static/(.*)$ {
-        alias /srv/{{ infokala_hostname }}/public_html/static/$1;
+        alias /srv/{{ infotv_hostname }}/public_html/static/$1;
         expires 30m;
     }
 
@@ -33,7 +33,7 @@ server {
     gzip_static on;
 
     location / {
-        proxy_pass http://localhost:{{ infokala_port }};
+        proxy_pass http://localhost:{{ infotv_port }};
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto https;
