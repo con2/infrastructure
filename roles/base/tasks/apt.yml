@@ -16,6 +16,7 @@
     - python-apt
     - python-pip
     - python-dev
+    - rsync
     - screen
     - vim
     - wget
