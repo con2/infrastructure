@@ -39,6 +39,12 @@
       tags: [docker]
     - role: nginx
       tags: [nginx]
+    - role: postgresql-docker
+      tags: [postgresql-docker]
+      postgresql_hostname: kompassi.eu
+      postgresql_username: kompassi
+      postgresql_password: "{{ kompassi_postgresql_password }}"
+      postgresql_database: kompassi
     - role: kompassi
       tags: [kompassi]
     - role: atlasso
@@ -52,5 +58,11 @@
       tags: [nginx]
     - role: jenkins
       tags: [jenkins]
+    - role: postgresql-docker
+      tags: [postgresql-docker]
+      postgresql_hostname: jenkins.tracon.fi
+      postgresql_username: jenkinslave
+      postgresql_password: "{{ jenkinslave_postgresql_password }}"
+      postgresql_database: test_kompassi
     - role: jenkinslave
       tags: [jenkinslave]

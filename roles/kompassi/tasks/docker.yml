@@ -4,18 +4,6 @@
     force: yes
   tags: [kompassi-deploy]
 
-- name: "Create {{ kompassi_hostname }}-postgres container"
-  docker_container:
-    name: "{{ kompassi_hostname }}-postgres"
-    image: postgres
-    env:
-      POSTGRES_USER: "{{ kompassi_postgresql_username }}"
-      POSTGRES_PASSWORD: "{{ kompassi_postgresql_password }}"
-      POSTGRES_DB: "{{ kompassi_postgresql_database }}"
-    volumes:
-      - "{{ kompassi_hostname }}-postgres-data:/var/lib/postgresql/data"
-  tags: [kompassi-deploy]
-
 - name: "Create {{ kompassi_hostname }}-rabbitmq container"
   docker_container:
     name: "{{ kompassi_hostname }}-rabbitmq"

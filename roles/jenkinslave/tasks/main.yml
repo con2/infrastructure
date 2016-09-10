@@ -66,3 +66,11 @@
     username: "{{ jenkinslave_docker_hub_username }}"
     password: "{{ jenkinslave_docker_hub_password }}"
     email: "{{ jenkinslave_docker_hub_email }}"
+
+- name: "Create env file"
+  template:
+    src: kompassi.env.j2
+    dest: /srv/jenkinslave/.kompassi.env
+    owner: jenkinslave
+    group: jenkinslave
+    mode: 0400
