@@ -2,7 +2,13 @@ infokala_secret_key: "{{ vault_infokala_secret_key }}"
 infokala_kompassi_oauth2_client_id: "{{ vault_infokala_kompassi_oauth2_client_id }}"
 infokala_kompassi_oauth2_client_secret: "{{ vault_infokala_kompassi_oauth2_client_secret }}"
 infokala_postgresql_password: "{{ vault_infokala_postgresql_password }}"
+
 infotv_secret_key: "{{ vault_infotv_secret_key }}"
 infotv_kompassi_oauth2_client_id: "{{ vault_infotv_kompassi_oauth2_client_id }}"
 infotv_kompassi_oauth2_client_secret: "{{ vault_infotv_kompassi_oauth2_client_secret }}"
 infotv_postgresql_password: "{{ vault_infotv_postgresql_password }}"
+
+tracontent_secret_key: "{{ vault_tracontent_secret_key }}"
+tracontent_kompassi_oauth2_client_id: "{{ vault_tracontent_kompassi_oauth2_client_id }}"
+tracontent_kompassi_oauth2_client_secret: "{{ vault_tracontent_kompassi_oauth2_client_secret }}"
+tracontent_postgresql_password: "{{ vault_tracontent_postgresql_password }}"

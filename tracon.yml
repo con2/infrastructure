@@ -51,6 +51,19 @@
       postgresql_password: "{{ infokala_postgresql_password }}"
       postgresql_database: infokala
 
+    - role: tracontent
+      tags: [tracontent]
+      tracontent_hostname: tracontent.tracon.fi
+      tracontent_allowed_host_list:
+        - 2015.hitpoint.tracon.fi
+        - 2016.hitpoint.tracon.fi
+        - 2017.hitpoint.tracon.fi
+        - 2016.tracon.fi
+        - 2017.tracon.fi
+        - blog.tracon.fi
+        - r.tracon.fi
+        - ry.tracon.fi
+
     - role: infokala
       tags: [infokala]
     - role: infotv
