@@ -1,0 +1,52 @@
+- name: ensure letsencrypt group exists
+  group: name=letsencrypt
+
+- name: ensure letsencrypt user exists
+  user:
+    name: letsencrypt
+    group: letsencrypt
+    shell: /bin/bash
+    home: /srv/letsencrypt
+
+- name: make sure nginx has read access to letsencrypt challenges directory
+  user:
+    name: nginx
+    groups: letsencrypt
+    append: yes
+
+- name: ensure letsencrypt base directories exist
+  file:
+    path: {{ item.path }}
+    mode: {{ item.mode }}
+    state: directory
+    owner: letsencrypt
+    group: letsencrypt
+  with_items:
+    - path: /srv/letsencrypt
+      mode: "02710"
+    - path: /srv/letsencrypt/challenges
+      mode: "02710"
+    - path: /srv/letsencrypt/secrets
+      mode: "02700"
+
+- name: ensure acme_tiny.py script exists
+  get_url:
+    url: https://github.com/diafygi/acme-tiny/raw/master/acme_tiny.py
+    dest: /srv/letsencrypt/acme_tiny.py
+    mode: 0750
+    owner: letsencrypt
+    group: letsencrypt
+
+- name: ensure account key is generated
+  become_user: letsencrypt
+  command: openssl genrsa -out /srv/letsencrypt/secrets/account.key 4096
+  args:
+    creates: /srv/letsencrypt/secrets/account.key
+
+- name: ensure letsencrypt intermediate certificate is downloaded
+  get_url:
+    url: https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem
+    dest: /srv/letsencrypt/intermediate.pem
+    owner: letsencrypt
+    group: letsencrypt
+    mode: 0640

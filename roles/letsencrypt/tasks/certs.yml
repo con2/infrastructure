@@ -1,0 +1,35 @@
+- name: ensure letsencrypt domain directories exist
+  file: path=/srv/letsencrypt/secrets/{{ item.name }} mode=02700 state=directory owner=letsencrypt group=letsencrypt
+  with_items: "{{ letsencrypt_domains }}"
+
+- name: ensure letsencrypt domain keys are generated
+  become_user: letsencrypt
+  command: openssl genrsa -out /srv/letsencrypt/secrets/{{ item.name }}/domain.key 4096
+  args:
+    creates: /srv/letsencrypt/secrets/{{ item.name }}/domain.key
+  with_items: "{{ letsencrypt_domains }}"
+
+- name: ensure letsencrypt CSRs are generated
+  become_user: letsencrypt
+  command: >
+    /bin/bash -c "openssl req -new -sha256 -key /srv/letsencrypt/secrets/{{ item.name }}/domain.key -subj / -reqexts SAN -config <(cat /etc/ssl/openssl.cnf <(printf '[SAN]\nsubjectAltName={{ item.subject_alt_name }}')) > /srv/letsencrypt/secrets/{{ item.name }}/domain.csr"
+  args:
+    creates: /srv/letsencrypt/secrets/{{ item.name }}/domain.csr
+  with_items: "{{ letsencrypt_domains }}"
+
+- name: ensure renew.sh exists for each domain
+  become_user: letsencrypt
+  template: >
+    src=renew.sh.j2
+    dest=/srv/letsencrypt/secrets/{{ item.name }}/renew.sh
+    owner=letsencrypt
+    group=letsencrypt
+    mode=0750
+  with_items: "{{ letsencrypt_domains }}"
+
+- name: ensure certificates have been signed and concatenated for the first time
+  become_user: letsencrypt
+  command: /srv/letsencrypt/secrets/{{ item.name }}/renew.sh
+  args:
+    creates: /srv/letsencrypt/secrets/{{ item.name }}/chained.pem
+  with_items: "{{ letsencrypt_domains }}"

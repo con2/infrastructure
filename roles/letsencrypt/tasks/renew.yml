@@ -1,0 +1,16 @@
+- name: setup letsencrypt renewal script
+  copy:
+    src: renew-all.sh
+    dest: /srv/letsencrypt/renew-all.sh
+    owner: letsencrypt
+    group: letsencrypt
+    mode: 0755
+
+- name: schedule renewal for certificates
+  cron:
+    name: "letsencrypt renewal"
+    user: letsencrypt
+    day: 1
+    hour: 4
+    minute: 45
+    job: "/srv/letsencrypt/renew-all.sh"

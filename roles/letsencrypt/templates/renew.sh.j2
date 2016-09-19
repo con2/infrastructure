@@ -1,0 +1,25 @@
+#!/bin/bash
+DOMAIN={{ item.name }}
+
+BASEDIR=/srv/letsencrypt
+ACME_TINY=$BASEDIR/acme_tiny.py
+SECRETS=$BASEDIR/secrets
+ACCOUNT_KEY=$SECRETS/account.key
+DOMAINDIR=$SECRETS/$DOMAIN
+OLDCRT=$DOMAINDIR/old.crt
+CSR=$DOMAINDIR/domain.csr
+CHALLENGES=$BASEDIR/challenges
+NEWCRT=$DOMAINDIR/new.crt
+SIGNED=$DOMAINDIR/signed.crt
+# INTERMEDIATE_URL=https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem
+INTERMEDIATE=$BASEDIR/intermediate.pem
+CHAINED=$DOMAINDIR/chained.pem
+
+set -e
+
+python $ACME_TINY --account-key $ACCOUNT_KEY --csr $CSR --acme-dir $CHALLENGES > $NEWCRT
+mv $SIGNED $OLDCRT || true
+mv $NEWCRT $SIGNED
+# wget -O $INTERMEDIATE $INTERMEDIATE_URL
+cat $SIGNED $INTERMEDIATE > $CHAINED
+# sudo service nginx reload
