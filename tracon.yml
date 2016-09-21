@@ -71,6 +71,14 @@
     - role: slackirc
       tags: [slackirc]
 
+    - role: letsencrypt
+      tags: [letsencrypt]
+      letsencrypt_enabled: false
+      letsencrypt_domains:
+        # ugly
+        - name: tracon.fi
+          subject_alt_name: "DNS:tracon.fi,DNS:www.tracon.fi,DNS:nuoli.tracon.fi,DNS:2015.hitpoint.tracon.fi,DNS:2016.hitpoint.tracon.fi,DNS:2017.hitpoint.tracon.fi,DNS:2016.tracon.fi,DNS:2017.tracon.fi,DNS:blog.tracon.fi,DNS:r.tracon.fi,DNS:ry.tracon.fi"
+
 - hosts: kompassi-servers
   roles:
     - role: docker
