@@ -11,3 +11,8 @@ neula.kompassi.eu
 monokkeli.tracon.fi
 kurikka.tracon.fi
 neula.kompassi.eu
+
+[docker-servers:children]
+tracon-servers
+management-servers
+kompassi-servers

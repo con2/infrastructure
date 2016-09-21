@@ -3,6 +3,13 @@
     - role: base
       tags: [base]
 
+- hosts: docker-servers
+  roles:
+    - role: docker
+      tags: [docker]
+    - role: nginx
+      tags: [nginx]
+
 - hosts: logstash-centrals
   roles:
     - role: logstash-central
@@ -17,18 +24,11 @@
 
 - hosts: postgresql-servers
   roles:
-    - role: base
-      tags: [base]
     - role: postgresql
       tags: [postgresql]
 
 - hosts: tracon-servers
   roles:
-    - role: docker
-      tags: [docker]
-    - role: nginx
-      tags: [nginx]
-
     # default site
     - role: redirect
       tags: [redirect]
@@ -92,11 +92,6 @@
 
 - hosts: kompassi-servers
   roles:
-    - role: docker
-      tags: [docker]
-    - role: nginx
-      tags: [nginx]
-
     # default site
     - role: redirect
       tags: [redirect]
@@ -127,10 +122,6 @@
 
 - hosts: management-servers
   roles:
-    - role: docker
-      tags: [docker]
-    - role: nginx
-      tags: [nginx]
     - role: jenkins
       tags: [jenkins]
 
