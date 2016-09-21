@@ -2,9 +2,16 @@ atlasso_image: tracon/atlasso
 atlasso_hostname: atlasso.tracon.fi
 atlasso_port: 8001
 atlasso_ssl: true
-atlasso_letsencrypt: false
-atlasso_ssl_certificate: /etc/ssl/certs/_wildcard_.tracon.fi+intermediate.crt
-atlasso_ssl_certificate_key: /etc/ssl/private/_wildcard_.tracon.fi.key
+atlasso_letsencrypt: true
+
+# old GeoTrust certificate
+# atlasso_ssl_certificate: /etc/ssl/certs/_wildcard_.tracon.fi+intermediate.crt
+# atlasso_ssl_certificate_key: /etc/ssl/private/_wildcard_.tracon.fi.key
+
+# new LetsEncrypt certificates
+atlasso_ssl_certificate: /srv/letsencrypt/secrets/atlasso.tracon.fi/chained.pem
+atlasso_ssl_certificate_key: /srv/letsencrypt/secrets/atlasso.tracon.fi/domain.key
+
 atlasso_allowed_hosts: "{{ atlasso_hostname }}"
 atlasso_default_from_email: suunnistajat@kompassi.eu
 atlasso_email_host: sr1.gw0.fi

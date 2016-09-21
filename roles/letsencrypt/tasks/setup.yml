@@ -16,8 +16,8 @@
 
 - name: ensure letsencrypt base directories exist
   file:
-    path: {{ item.path }}
-    mode: {{ item.mode }}
+    path: "{{ item.path }}"
+    mode: "{{ item.mode }}"
     state: directory
     owner: letsencrypt
     group: letsencrypt
@@ -37,11 +37,19 @@
     owner: letsencrypt
     group: letsencrypt
 
-- name: ensure account key is generated
-  become_user: letsencrypt
-  command: openssl genrsa -out /srv/letsencrypt/secrets/account.key 4096
-  args:
-    creates: /srv/letsencrypt/secrets/account.key
+# - name: ensure account key is generated
+#   become_user: letsencrypt
+#   command: openssl genrsa -out /srv/letsencrypt/secrets/account.key 4096
+#   args:
+#     creates: /srv/letsencrypt/secrets/account.key
+
+- name: install account key
+  copy:
+    dest: /srv/letsencrypt/secrets/account.key
+    content: "{{ letsencrypt_account_key_data }}"
+    owner: letsencrypt
+    group: letsencrypt
+    mode: 0600
 
 - name: ensure letsencrypt intermediate certificate is downloaded
   get_url:

@@ -21,6 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "slackirc_enabled" => "0",
           "infokala_allowed_hosts" => "infokala.tracon.fi infokala.localdomain",
           "infokala_email_host" => "",
+          "letsencrypt_enabled" => "0",
       }
       ansible.groups = {
           "tracon-servers" => ["nuoli"]
@@ -38,6 +39,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "kompassi_email_host" => "",
           "kompassi_crowd_application_password" => "",
           "kompassi_desuprofile_oauth2_client_id" => "",
+          "letsencrypt_enabled" => "0",
       }
       ansible.groups = {
           "kompassi-servers" => ["neula"]
@@ -53,6 +55,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.extra_vars = {
           "jenkins_hostname" => "jenkins.local",
           "jenkins_allowed_hosts" => "jenkins.local",
+          "letsencrypt_enabled" => "0",
       }
       ansible.groups = {
           "management-servers" => ["monokkeli"]

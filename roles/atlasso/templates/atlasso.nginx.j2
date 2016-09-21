@@ -10,7 +10,9 @@ server {
 
 {% endif %}
 {% if atlasso_ssl %}
-    return 302 https://$host$request_uri;
+    location / {
+        return 302 https://$host$request_uri;
+    }
 }
 
 server {

@@ -1,6 +1,7 @@
 - name: "Setup nginx vhost for {{ atlasso_hostname }}"
   template: src=atlasso.nginx.j2 dest=/etc/nginx/sites-available/{{ atlasso_hostname }} mode=0644
   notify: restart nginx
+  tags: [atlasso-nginx]
 
 - name: "Enable nginx vhost for {{ atlasso_hostname }}"
   file: >
@@ -8,6 +9,7 @@
     path=/etc/nginx/sites-enabled/{{ atlasso_hostname }}
     state=link
   notify: restart nginx
+  tags: [atlasso-nginx]
 
 - name: "Update Atlasso docker image from the registry"
   docker_image:

@@ -2,9 +2,16 @@ kompassi_image: tracon/kompassi
 kompassi_hostname: kompassi.eu
 kompassi_port: 8000
 kompassi_ssl: true
-kompassi_letsencrypt: false
-kompassi_ssl_certificate: /etc/ssl/certs/kompassi.eu+intermediate.crt
-kompassi_ssl_certificate_key: /etc/ssl/private/kompassi.eu.key
+kompassi_letsencrypt: true
+
+# old Geotrust RapidSSL certificate
+# kompassi_ssl_certificate: /etc/ssl/certs/kompassi.eu+intermediate.crt
+# kompassi_ssl_certificate_key: /etc/ssl/private/kompassi.eu.key
+
+# new LetsEncrypt certificates
+kompassi_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
+kompassi_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
+
 kompassi_allowed_hosts: "{{ kompassi_hostname }} vara.kompassi.eu"
 kompassi_installation_slug: turska
 kompassi_default_from_email: suunnistajat@kompassi.eu

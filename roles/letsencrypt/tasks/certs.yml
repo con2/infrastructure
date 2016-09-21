@@ -30,6 +30,7 @@
 - name: ensure certificates have been signed and concatenated for the first time
   become_user: letsencrypt
   command: /srv/letsencrypt/secrets/{{ item.name }}/renew.sh
+  when: "{{ letsencrypt_enabled }}"
   args:
     creates: /srv/letsencrypt/secrets/{{ item.name }}/chained.pem
   with_items: "{{ letsencrypt_domains }}"

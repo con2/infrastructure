@@ -83,6 +83,7 @@
       tags: [redirect]
       redirect_hostname: "{{ inventory_hostname }}"
       redirect_target: https://kompassi.eu
+      redirect_letsencrypt: true
       redirect_ssl: false
       redirect_default: true
 
@@ -97,6 +98,14 @@
       tags: [kompassi]
     - role: atlasso
       tags: [atlasso]
+
+    - role: letsencrypt
+      tags: [letsencrypt]
+      letsencrypt_domains:
+        - name: kompassi.eu
+          subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:neula.kompassi.eu"
+        - name: atlasso.tracon.fi
+          subject_alt_name: "DNS:atlasso.tracon.fi"
 
 - hosts: management-servers
   roles:

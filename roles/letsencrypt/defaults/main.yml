@@ -1,3 +1,5 @@
-letsencrypt_domains:
-  - name: kompassi.eu
-    subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:nuoli.kompassi.eu"
+letsencrypt_enabled: true
+letsencrypt_domains: []
+  # Example:
+  # - name: kompassi.eu
+  #   subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:nuoli.kompassi.eu"
