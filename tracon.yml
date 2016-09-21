@@ -42,7 +42,12 @@
       redirect_hostname: info-tv.tracon.fi
       redirect_target: https://infotv.tracon.fi
       redirect_ssl: true
-      redirect_default: false
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: infoloki.tracon.fi
+      redirect_target: https://infokala.tracon.fi
+      redirect_ssl: true
 
     - role: postgresql-docker
       tags: [postgresql-docker]
@@ -77,7 +82,13 @@
       letsencrypt_domains:
         # ugly
         - name: tracon.fi
-          subject_alt_name: "DNS:tracon.fi,DNS:www.tracon.fi,DNS:nuoli.tracon.fi,DNS:2015.hitpoint.tracon.fi,DNS:2016.hitpoint.tracon.fi,DNS:2017.hitpoint.tracon.fi,DNS:2016.tracon.fi,DNS:2017.tracon.fi,DNS:blog.tracon.fi,DNS:r.tracon.fi,DNS:ry.tracon.fi"
+          subject_alt_name: "DNS:tracon.fi,DNS:www.tracon.fi,DNS:nuoli.tracon.fi"
+        - name: tracontent.tracon.fi
+          subject_alt_name: "DNS:2015.hitpoint.tracon.fi,DNS:2016.hitpoint.tracon.fi,DNS:2017.hitpoint.tracon.fi,DNS:2016.tracon.fi,DNS:2017.tracon.fi,DNS:blog.tracon.fi,DNS:r.tracon.fi,DNS:ry.tracon.fi"
+        - name: infotv.tracon.fi
+          subject_alt_name: "DNS:infotv.tracon.fi,DNS:info-tv.tracon.fi"
+        - name: infokala.tracon.fi
+          subject_alt_name: "DNS:infokala.tracon.fi,DNS:infoloki.tracon.fi"
 
 - hosts: kompassi-servers
   roles:
@@ -91,7 +102,6 @@
       tags: [redirect]
       redirect_hostname: "{{ inventory_hostname }}"
       redirect_target: https://kompassi.eu
-      redirect_letsencrypt: true
       redirect_ssl: false
       redirect_default: true
 
