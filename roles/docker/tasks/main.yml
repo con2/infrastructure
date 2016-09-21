@@ -18,3 +18,11 @@
     - docker-engine
     - python-docker
     - python-ipaddress
+
+- name: Delete untagged containers, images and volumes every night to save space
+  copy:
+    src: docker-cleanup.sh
+    dest: /etc/cron.daily/docker-cleanup.sh
+    owner: root
+    group: root
+    mode: 0755
