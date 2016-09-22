@@ -33,7 +33,7 @@
     - role: redirect
       tags: [redirect]
       redirect_hostname: "{{ inventory_hostname }}"
-      redirect_target: https://tracon.fi
+      redirect_target: https://2016.tracon.fi
       redirect_ssl: true
       redirect_default: true
 
