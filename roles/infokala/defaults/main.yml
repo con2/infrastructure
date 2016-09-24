@@ -2,7 +2,7 @@ infokala_image: tracon/infokala
 infokala_hostname: infokala.tracon.fi
 infokala_port: 8002
 infokala_ssl: true
-infokala_letsencrypt: false
+infokala_letsencrypt: true
 infokala_ssl_certificate: /etc/ssl/certs/_wildcard_.tracon.fi+intermediate.crt
 infokala_ssl_certificate_key: /etc/ssl/private/_wildcard_.tracon.fi.key
 infokala_allowed_hosts: "{{ infokala_hostname }}"

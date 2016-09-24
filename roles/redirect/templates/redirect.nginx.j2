@@ -1,6 +1,6 @@
 server {
     listen 80{% if redirect_default %} default_server{% endif %};
-    server_name {{ redirect_hostname }};
+    server_name {{ redirect_allowed_hosts }};
 
 {% if redirect_letsencrypt %}
     location /.well-known/acme-challenge/ {
@@ -17,7 +17,7 @@ server {
 {% if redirect_ssl %}
 server {
     listen 443 ssl http2{% if redirect_default %} default_server{% endif %};
-    server_name {{ redirect_hostname }};
+    server_name {{ redirect_allowed_hosts }};
 
     ssl_certificate {{ redirect_ssl_certificate }};
     ssl_certificate_key {{ redirect_ssl_certificate_key }};

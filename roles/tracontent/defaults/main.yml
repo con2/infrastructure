@@ -2,10 +2,12 @@ tracontent_image: tracon/tracontent
 tracontent_hostname: tracontent.tracon.fi
 tracontent_port: 8004
 tracontent_ssl: true
-tracontent_letsencrypt: false
-tracontent_ssl_certificate: /etc/ssl/certs/_wildcard_.tracon.fi+intermediate.crt
-tracontent_ssl_certificate_key: /etc/ssl/private/_wildcard_.tracon.fi.key
+tracontent_letsencrypt: true
+tracontent_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
+tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 tracontent_allowed_host_list:
+  - "{{ tracontent_hostname }}"
+tracontent_nginx_server_name_list:
   - "{{ tracontent_hostname }}"
 tracontent_default_from_email: suunnistajat@kompassi.eu
 tracontent_email_host: sr1.gw0.fi

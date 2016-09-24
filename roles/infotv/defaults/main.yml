@@ -2,7 +2,7 @@ infotv_image: tracon/infotv
 infotv_hostname: infotv.tracon.fi
 infotv_port: 8003
 infotv_ssl: true
-infotv_letsencrypt: false
+infotv_letsencrypt: true
 infotv_ssl_certificate: /etc/ssl/certs/_wildcard_.tracon.fi+intermediate.crt
 infotv_ssl_certificate_key: /etc/ssl/private/_wildcard_.tracon.fi.key
 infotv_allowed_hosts: "{{ infotv_hostname }}"
