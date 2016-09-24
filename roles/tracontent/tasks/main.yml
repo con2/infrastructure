@@ -32,7 +32,7 @@
     name: "{{ tracontent_hostname }}"
     image: tracon/tracontent
     recreate: yes
-    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ tracontent_workers }} tracontent_tracon.wsgi:application"
+    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ tracontent_workers }} tracontent.wsgi:application"
     ports:
       - "{{ tracontent_port }}:8000"
     links:
