@@ -32,20 +32,21 @@
     # default site
     - role: redirect
       tags: [redirect]
+      redirect_default: true
       redirect_hostname: "{{ inventory_hostname }}"
-      redirect_allowed_hosts: "{{ inventory_hostname }} www.{{ inventory_hostname }}"
+      redirect_allowed_hosts: "{{ inventory_hostname }}"
       redirect_target: https://2016.tracon.fi
 
     - role: redirect
       tags: [redirect]
       redirect_hostname: info-tv.tracon.fi
-      redirect_allowed_hosts: info-tv.tracon.fi www.info-tv.tracon.fi
+      redirect_allowed_hosts: info-tv.tracon.fi
       redirect_target: https://infotv.tracon.fi
 
     - role: redirect
       tags: [redirect]
       redirect_hostname: infoloki.tracon.fi
-      redirect_allowed_hosts: infoloki.tracon.fi www.infoloki.tracon.fi
+      redirect_allowed_hosts: infoloki.tracon.fi
       redirect_target: https://infokala.tracon.fi
 
     - role: redirect
@@ -54,6 +55,36 @@
       redirect_allowed_hosts: hitpoint.tracon.fi www.hitpoint.tracon.fi
       redirect_target: https://2015.hitpoint.tracon.fi
 
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: wiki.hitpoint.tracon.fi
+      redirect_allowed_hosts: wiki.hitpoint.tracon.fi
+      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/HITPOINT2017/
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: wiki.tracon.fi
+      redirect_allowed_hosts: wiki.tracon.fi m.wiki.tracon.fi mwiki.tracon.fi
+      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/TRACON2016/
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: tyovoima.hitpoint.tracon.fi
+      redirect_allowed_hosts: tyovoima.hitpoint.tracon.fi
+      redirect_target: https://kompassi.eu/events/hitpoint2017/signup
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: tyovoima.tracon.fi
+      redirect_allowed_hosts: tyovoima.tracon.fi
+      redirect_target: https://kompassi.eu/events/tracon2017/signup
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: ohjelma.tracon.fi
+      redirect_allowed_hosts: ohjelma.tracon.fi
+      redirect_target: https://kompassi.eu/events/tracon2017/signup
+
     - role: postgresql-docker
       tags: [postgresql-docker]
       postgresql_hostname: nuoli.tracon.fi
@@ -61,10 +92,11 @@
       postgresql_password: "{{ infokala_postgresql_password }}"
       postgresql_database: infokala
 
-    # TODO instead of clumsy tracontent/tracontent-alias, split to tracontent-instance/tracontent-site
     - role: tracontent
       tags: [tracontent]
+      tracontent_setup_site: false
       tracontent_hostname: tracontent.tracon.fi
+      tracontent_static_dir: /srv/tracontent.tracon.fi/public_html/static
       tracontent_allowed_host_list:
         - 2016.tracon.fi
         - 2017.tracon.fi
@@ -74,24 +106,32 @@
         - 2015.hitpoint.tracon.fi
         - 2016.hitpoint.tracon.fi
         - 2017.hitpoint.tracon.fi
-      tracontent_nginx_server_name_list:
+
+    - role: tracontent
+      tags: [tracontent]
+      tracontent_setup_instance: false
+      tracontent_hostname: tracontent.hitpoint.tracon.fi
+      tracontent_allowed_host_list:
+        - 2015.hitpoint.tracon.fi
+        - 2016.hitpoint.tracon.fi
+        - 2017.hitpoint.tracon.fi
+      tracontent_static_dir: /srv/tracontent.tracon.fi/public_html/static
+      tracontent_ssl_certificate: /srv/letsencrypt/secrets/hitpoint.tracon.fi/chained.pem
+      tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/hitpoint.tracon.fi/domain.key
+
+    - role: tracontent
+      tags: [tracontent]
+      tracontent_setup_instance: false
+      tracontent_hostname: tracontent.tracon.fi
+      tracontent_allowed_host_list:
         - 2016.tracon.fi
         - 2017.tracon.fi
         - blog.tracon.fi
         - r.tracon.fi
         - ry.tracon.fi
-
-    - role: tracontent-alias
-      tags: [tracontent-alias]
-      tracontent_alias_hostname: tracontent.hitpoint.tracon.fi
-      tracontent_alias_nginx_server_name_list:
-        - 2015.hitpoint.tracon.fi
-        - 2016.hitpoint.tracon.fi
-        - 2017.hitpoint.tracon.fi
-      tracontent_alias_static_dir: /srv/tracontent.tracon.fi/public_html/static
-      tracontent_alias_port: 8004
-      tracontent_alias_ssl_certificate: /srv/letsencrypt/secrets/hitpoint.tracon.fi/chained.pem
-      tracontent_alias_ssl_certificate_key: /srv/letsencrypt/secrets/hitpoint.tracon.fi/domain.key
+      tracontent_static_dir: /srv/tracontent.tracon.fi/public_html/static
+      tracontent_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
+      tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
     - role: infokala
       tags: [infokala]

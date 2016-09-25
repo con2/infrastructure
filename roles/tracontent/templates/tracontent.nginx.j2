@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ tracontent_nginx_server_name_list|join(" ") }};
+    server_name {{ tracontent_allowed_host_list|join(" ") }};
 
 {% if tracontent_letsencrypt %}
     location /.well-known/acme-challenge/ {
@@ -17,7 +17,7 @@ server {
 
 server {
     listen 443 http2;
-    server_name {{ tracontent_nginx_server_name_list|join(" ") }};
+    server_name {{ tracontent_allowed_host_list|join(" ") }};
 
     add_header Strict-Transport-Security max-age=15768000;
 
@@ -27,7 +27,7 @@ server {
 
 {% endif %}
     location ~ ^/static/(.*)$ {
-        alias /srv/{{ tracontent_hostname }}/public_html/static/$1;
+        alias {{ tracontent_static_dir }}/$1;
         expires 30m;
     }
 

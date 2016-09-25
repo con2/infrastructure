@@ -1,54 +1,5 @@
-- name: "Create tracontent group to facilitate access to static files"
-  group: name=tracontent system=yes
+- include: instance.yml
+  when: "{{ tracontent_setup_instance }}"
 
-- name: "Add the nginx user to the tracontent group"
-  user: name=nginx groups=tracontent append=yes
-
-- name: "Create host data directory"
-  file: path=/srv/{{ tracontent_hostname }} state=directory owner=root group=tracontent mode=02710
-
-- name: "Create static files directory"
-  file: path=/srv/{{ tracontent_hostname }}/public_html state=directory owner=root group=tracontent mode=02750
-
-- name: "Setup nginx vhost for {{ tracontent_hostname }}"
-  template: src=tracontent.nginx.j2 dest=/etc/nginx/sites-available/{{ tracontent_hostname }} mode=0644
-  notify: restart nginx
-
-- name: "Enable nginx vhost for {{ tracontent_hostname }}"
-  file: >
-    src=/etc/nginx/sites-available/{{ tracontent_hostname }}
-    path=/etc/nginx/sites-enabled/{{ tracontent_hostname }}
-    state=link
-  notify: restart nginx
-
-- name: "Update TraContent CMS Enterprise Edition docker image from the registry"
-  docker_image:
-    name: tracon/tracontent
-    force: yes
-  tags: [tracontent-deploy]
-
-- name: "Create TraContent CMS Enterprise Edition container for {{ tracontent_hostname }}"
-  docker_container:
-    name: "{{ tracontent_hostname }}"
-    image: tracon/tracontent
-    recreate: yes
-    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ tracontent_workers }} tracontent.wsgi:application"
-    ports:
-      - "{{ tracontent_port }}:8000"
-    links:
-      - "{{ tracontent_postgresql_container }}:postgres"
-    env:
-      ADMINS: "{{ tracontent_admins }}"
-      ALLOWED_HOSTS: '{{ tracontent_allowed_host_list|join(" ") }}'
-      DATABASE_URL: "postgres://{{ tracontent_postgresql_username }}:{{ tracontent_postgresql_password }}@postgres/{{ tracontent_postgresql_database }}"
-      DEFAULT_FROM_EMAIL: "{{ tracontent_default_from_email }}"
-      EMAIL_HOST: "{{ tracontent_email_host }}"
-      KOMPASSI_OAUTH2_CLIENT_ID: "{{ tracontent_kompassi_oauth2_client_id }}"
-      KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ tracontent_kompassi_oauth2_client_secret }}"
-      SECRET_KEY: "{{ tracontent_secret_key }}"
-  tags: [tracontent-deploy]
-
-- name: "Extract static files from inside container"
-  command: >
-    /usr/bin/docker cp {{ tracontent_hostname }}:/usr/src/app/static /srv/{{ tracontent_hostname }}/public_html/
-  tags: [tracontent-deploy]
+- include: site.yml
+  when: "{{ tracontent_setup_site }}"

@@ -5,6 +5,7 @@ tracontent_ssl: true
 tracontent_letsencrypt: true
 tracontent_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
 tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
+tracontent_static_dir: /srv/{{ tracontent_hostname }}/public_html/static
 tracontent_allowed_host_list:
   - "{{ tracontent_hostname }}"
 tracontent_nginx_server_name_list:
@@ -16,3 +17,8 @@ tracontent_postgresql_container: nuoli.tracon.fi-postgres
 tracontent_postgresql_username: tracontent
 tracontent_postgresql_database: tracontent
 tracontent_workers: 4
+
+# If you need multiple nginx sites to connect to the same tracontent instance
+# (for example, differing SSL certificates), play with these. See tracon.yml for an example.
+tracontent_setup_instance: true
+tracontent_setup_site: true

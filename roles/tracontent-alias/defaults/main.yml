@@ -1,9 +1,0 @@
-tracontent_alias_hostname: hitpoint.tracon.fi
-tracontent_alias_static_dir: /srv/tracontent.tracon.fi/public_html/static
-tracontent_alias_nginx_server_name_list:
-  - "{{ tracontent_alias_hostname }}"
-tracontent_alias_port: 8004
-tracontent_alias_ssl: true
-tracontent_alias_letsencrypt: true
-tracontent_alias_ssl_certificate: /srv/letsencrypt/secrets/hitpoint.tracon.fi/chained.pem
-tracontent_alias_ssl_certificate_key: /srv/letsencrypt/secrets/hitpoint.tracon.fi/domain.key
