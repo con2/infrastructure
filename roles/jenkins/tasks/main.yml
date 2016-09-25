@@ -13,6 +13,7 @@
   docker_container:
     name: "{{ jenkins_hostname }}"
     image: "{{ jenkins_image }}"
+    restart_policy: unless-stopped
     volumes:
       - "{{ jenkins_hostname }}-data:/var/jenkins_home"
     ports:

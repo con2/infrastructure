@@ -31,6 +31,7 @@
   docker_container:
     name: "{{ infokala_hostname }}"
     image: tracon/infokala
+    restart_policy: unless-stopped
     recreate: yes
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ infokala_workers }} infokala_tracon.wsgi:application"
     ports:
