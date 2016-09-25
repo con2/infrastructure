@@ -12,7 +12,7 @@ tracontent_nginx_server_name_list:
   - "{{ tracontent_hostname }}"
 tracontent_default_from_email: suunnistajat@kompassi.eu
 tracontent_email_host: sr1.gw0.fi
-tracontent_admins: "Santtu Pajukanta <japsu@tracon.fi>"
+tracontent_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
 tracontent_postgresql_container: nuoli.tracon.fi-postgres
 tracontent_postgresql_username: tracontent
 tracontent_postgresql_database: tracontent

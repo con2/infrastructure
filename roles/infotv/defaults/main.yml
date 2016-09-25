@@ -8,7 +8,7 @@ infotv_ssl_certificate_key: /etc/ssl/private/_wildcard_.tracon.fi.key
 infotv_allowed_hosts: "{{ infotv_hostname }}"
 infotv_default_from_email: suunnistajat@kompassi.eu
 infotv_email_host: sr1.gw0.fi
-infotv_admins: "Santtu Pajukanta <japsu@tracon.fi>"
+infotv_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
 infotv_postgresql_container: nuoli.tracon.fi-postgres
 infotv_postgresql_username: infotv
 infotv_postgresql_database: infotv
