@@ -1,10 +1,7 @@
-- hosts: all
+- hosts: docker-servers
   roles:
     - role: base
       tags: [base]
-
-- hosts: docker-servers
-  roles:
     - role: docker
       tags: [docker]
     - role: nginx
@@ -24,6 +21,8 @@
 
 - hosts: postgresql-servers
   roles:
+    - role: base
+      tags: [base]
     - role: postgresql
       tags: [postgresql]
 
