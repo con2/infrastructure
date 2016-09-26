@@ -58,13 +58,13 @@
       tags: [redirect]
       redirect_hostname: wiki.hitpoint.tracon.fi
       redirect_allowed_hosts: wiki.hitpoint.tracon.fi
-      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/HITPOINT2017/
+      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/HITPOINT2017
 
     - role: redirect
       tags: [redirect]
       redirect_hostname: wiki.tracon.fi
       redirect_allowed_hosts: wiki.tracon.fi m.wiki.tracon.fi mwiki.tracon.fi
-      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/TRACON2016/
+      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/TRACON2016
 
     - role: redirect
       tags: [redirect]
@@ -83,6 +83,12 @@
       redirect_hostname: ohjelma.tracon.fi
       redirect_allowed_hosts: ohjelma.tracon.fi
       redirect_target: https://kompassi.eu/events/tracon2017/signup
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: animecon.fi
+      redirect_allowed_hosts: animecon.fi www.animecon.fi
+      redirect_target: https://2016.animecon.fi
 
     - role: postgresql-docker
       tags: [postgresql-docker]
@@ -132,6 +138,22 @@
       tracontent_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
+    - role: tracontent
+      tags: [tracontent]
+      tracontent_hostname: tracontent.animecon.fi
+      tracontent_static_dir: /srv/tracontent.animecon.fi/public_html/static
+      tracontent_allowed_host_list:
+        - 2016.animecon.fi
+      tracontent_ssl_certificate: /srv/letsencrypt/secrets/animecon.fi/chained.pem
+      tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/animecon.fi/domain.key
+      tracontent_port: 8005
+      tracontent_secret_key: "{{ vault_animecon_tracontent_secret_key }}"
+      tracontent_postgresql_username: animecon
+      tracontent_postgresql_password: "{{ vault_animecon_tracontent_postgresql_password }}"
+      tracontent_postgresql_database: animecon
+      tracontent_kompassi_oauth2_client_id: "{{ vault_animecon_tracontent_kompassi_oauth2_client_id }}"
+      tracontent_kompassi_oauth2_client_secret: "{{ vault_animecon_tracontent_kompassi_oauth2_client_secret }}"
+
     - role: infokala
       tags: [infokala]
     - role: infotv
@@ -151,6 +173,8 @@
           subject_alt_name: "DNS:infotv.tracon.fi,DNS:info-tv.tracon.fi"
         - name: infokala.tracon.fi
           subject_alt_name: "DNS:infokala.tracon.fi,DNS:infoloki.tracon.fi"
+        - name: animecon.fi
+          subject_alt_name: "DNS:animecon.fi,DNS:www.animecon.fi,DNS:2016.animecon.fi"
 
 - hosts: kompassi-servers
   roles:

@@ -8,8 +8,6 @@ tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 tracontent_static_dir: /srv/{{ tracontent_hostname }}/public_html/static
 tracontent_allowed_host_list:
   - "{{ tracontent_hostname }}"
-tracontent_nginx_server_name_list:
-  - "{{ tracontent_hostname }}"
 tracontent_default_from_email: suunnistajat@kompassi.eu
 tracontent_email_host: sr1.gw0.fi
 tracontent_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
