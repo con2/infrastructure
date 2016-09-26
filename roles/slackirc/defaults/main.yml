@@ -1,4 +1,5 @@
 slackirc_enabled: true
+slackirc_image: tracon/slackirc
 slackirc_config:
   - channelMapping:
       "#putki": "#mansecon.random"

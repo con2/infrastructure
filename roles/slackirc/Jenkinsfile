@@ -1,0 +1,41 @@
+def image = "tracon/slackirc:build-${env.BUILD_NUMBER}"
+
+stage("Build") {
+  node {
+    checkout scm
+    sh "cd roles/slackirc && docker build --no-cache --tag ${image} ."
+  }
+}
+
+// stage("Test") {
+//   node {
+//     sh """
+//       docker run \
+//         --rm \
+//         --link jenkins.tracon.fi-postgres:postgres \
+//         --env-file ~/.slackirc.env \
+//         ${image} \
+//         python manage.py test --keepdb
+//     """
+//   }
+// }
+
+stage("Push") {
+  node {
+    sh "docker tag ${image} tracon/slackirc:latest && docker push tracon/slackirc:latest && docker rmi ${image}"
+  }
+}
+
+stage("Deploy") {
+  node {
+    // git url: "git@github.com:tracon/ansible-tracon"
+    sh """
+      ansible-playbook \
+        --vault-password-file=~/.vault_pass.txt \
+        --user root \
+        --limit tracon-servers \
+        --tags slackirc \
+        tracon.yml
+    """
+  }
+}

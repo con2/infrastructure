@@ -24,12 +24,18 @@
     owner: root
     group: slackirc
 
+- name: "Update slackirc docker image from the registry"
+  docker_image:
+    name: "{{ slackirc_image }}"
+    force: yes
+
 - name: Create slackirc container
   when: "{{ slackirc_enabled }}"
   docker_container:
     name: slackirc
-    image: tracon/slackirc
+    image: "{{ slackirc_image }}"
     restart_policy: unless-stopped
+    recreate: true
     volumes:
       - /srv/slackirc/slackirc.json:/slackirc.json:ro
 
