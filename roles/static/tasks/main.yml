@@ -1,0 +1,18 @@
+- name: "Ensure static directory exists for {{ static_hostname }}"
+  file:
+    path: "/srv/{{ static_hostname }}"
+    state: directory
+    owner: root
+    group: nginx
+    mode: 02750
+
+- name: "Setup static vhost for {{ static_hostname }}"
+  template: src=static.nginx.j2 dest=/etc/nginx/sites-available/{{ static_hostname }} mode=0644
+  notify: restart nginx
+
+- name: "Enable static vhost for {{ static_hostname }}"
+  file:
+    src: "/etc/nginx/sites-available/{{ static_hostname }}"
+    path: "/etc/nginx/sites-enabled/{{ static_hostname }}"
+    state: link
+  notify: restart nginx

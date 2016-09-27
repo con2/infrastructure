@@ -154,6 +154,43 @@
       tracontent_kompassi_oauth2_client_id: "{{ vault_animecon_tracontent_kompassi_oauth2_client_id }}"
       tracontent_kompassi_oauth2_client_secret: "{{ vault_animecon_tracontent_kompassi_oauth2_client_secret }}"
 
+    - role: static
+      tags: [static]
+      static_hostname: 2007.tracon.fi
+
+    - role: static
+      tags: [static]
+      static_hostname: 2009.tracon.fi
+
+    - role: static
+      tags: [static]
+      static_hostname: 2010.tracon.fi
+
+    - role: static
+      tags: [static]
+      static_hostname: 2011.tracon.fi
+
+    - role: static
+      tags: [static]
+      static_hostname: 2012.tracon.fi
+
+    - role: static
+      tags: [static]
+      static_hostname: 2013.tracon.fi
+
+    - role: static
+      tags: [static]
+      static_hostname: 2014.tracon.fi
+
+    - role: static
+      tags: [static]
+      static_hostname: 2015.tracon.fi
+
+    - role: static
+      tags: [static]
+      static_hostname: media.tracon.fi
+
+
     - role: infokala
       tags: [infokala]
     - role: infotv

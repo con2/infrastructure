@@ -1,0 +1,6 @@
+static_ssl: true
+static_letsencrypt: true
+static_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
+static_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
+static_default: false
+static_index_html_on_404: false
