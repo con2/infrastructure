@@ -1,7 +1,7 @@
 FROM node:6
 RUN groupadd -r slackirc && \
     useradd -r -g slackirc slackirc && \
-    git clone https://github.com/jlaunonen/slack-irc.git /usr/src/app && \
+    git clone --branch entities-handling https://github.com/jlaunonen/slack-irc.git /usr/src/app && \
     cd /usr/src/app && \
     npm install && \
     npm run build
