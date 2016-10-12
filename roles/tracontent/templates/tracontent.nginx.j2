@@ -31,7 +31,13 @@ server {
         expires 30m;
     }
 
-    rewrite ^/favicon.ico$ /static/favicon.ico last;
+{% if tracontent_favicon %}
+    rewrite ^/favicon.ico$ {{ tracontent_favicon }} last;
+{% else %}
+    location = /favicon.ico {
+        return 410;
+    }
+{% endif %}
     gzip_static on;
 
     location / {

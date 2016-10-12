@@ -15,6 +15,7 @@ tracontent_postgresql_container: nuoli.tracon.fi-postgres
 tracontent_postgresql_username: tracontent
 tracontent_postgresql_database: tracontent
 tracontent_workers: 4
+tracontent_favicon: /static/favicon.ico
 
 # If you need multiple nginx sites to connect to the same tracontent instance
 # (for example, differing SSL certificates), play with these. See tracon.yml for an example.
