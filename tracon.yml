@@ -89,6 +89,16 @@
       redirect_hostname: animecon.fi
       redirect_allowed_hosts: animecon.fi www.animecon.fi
       redirect_target: https://2016.animecon.fi
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/animecon.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/animecon.fi/domain.key
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: 2016.aicon.fi
+      redirect_allowed_hosts: 2016.aicon.fi www.aicon.fi m.aicon.fi
+      redirect_target: https://aicon.fi
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/aicon.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/aicon.fi/domain.key
 
     - role: postgresql-docker
       tags: [postgresql-docker]
@@ -157,6 +167,23 @@
       tracontent_kompassi_oauth2_client_secret: "{{ vault_animecon_tracontent_kompassi_oauth2_client_secret }}"
       tracontent_favicon: null
 
+    - role: tracontent
+      tags: [tracontent]
+      tracontent_hostname: tracontent.aicon.fi
+      tracontent_static_dir: /srv/tracontent.aicon.fi/public_html/static
+      tracontent_allowed_host_list:
+        - aicon.fi
+      tracontent_ssl_certificate: /srv/letsencrypt/secrets/aicon.fi/chained.pem
+      tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/aicon.fi/domain.key
+      tracontent_port: 8006
+      tracontent_secret_key: "{{ vault_aicon_tracontent_secret_key }}"
+      tracontent_postgresql_username: aicon
+      tracontent_postgresql_password: "{{ vault_aicon_tracontent_postgresql_password }}"
+      tracontent_postgresql_database: aicon
+      tracontent_kompassi_oauth2_client_id: "{{ vault_aicon_tracontent_kompassi_oauth2_client_id }}"
+      tracontent_kompassi_oauth2_client_secret: "{{ vault_aicon_tracontent_kompassi_oauth2_client_secret }}"
+      tracontent_favicon: null
+
     - role: static
       tags: [static]
       static_hostname: 2007.tracon.fi
@@ -215,6 +242,8 @@
           subject_alt_name: "DNS:infokala.tracon.fi,DNS:infoloki.tracon.fi"
         - name: animecon.fi
           subject_alt_name: "DNS:animecon.fi,DNS:www.animecon.fi,DNS:2016.animecon.fi"
+        - name: aicon.fi
+          subject_alt_name: "DNS:aicon.fi,DNS:www.aicon.fi,DNS:2016.aicon.fi,DNS:m.aicon.fi"
 
 - hosts: kompassi-servers
   roles:
