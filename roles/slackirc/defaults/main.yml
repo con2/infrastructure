@@ -5,6 +5,7 @@ slackirc_config:
       "#putki": "#mansecon.random"
       "#traconforce": "#traconforce"
       conitea2016: "#mansecon"
+      conitea2017: "#mansecon.conitea2017"
       hallitus: "#mansecon.hallitus"
       hitpointconitea: "#hitpoint_conitea"
       isosali: "#mansecon.is"
