@@ -64,7 +64,7 @@
       tags: [redirect]
       redirect_hostname: wiki.tracon.fi
       redirect_allowed_hosts: wiki.tracon.fi m.wiki.tracon.fi mwiki.tracon.fi
-      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/TRACON2016
+      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/TRACON2017
 
     - role: redirect
       tags: [redirect]
