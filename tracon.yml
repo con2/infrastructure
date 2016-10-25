@@ -100,6 +100,31 @@
       redirect_ssl_certificate: /srv/letsencrypt/secrets/aicon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/aicon.fi/domain.key
 
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: kulukorvaus.tracon.fi
+      redirect_allowed_hosts: kulukorvaus.tracon.fi
+      redirect_target: https://atlasso.tracon.fi/crowd?next=https%3A%2F%2Fjira.tracon.fi%2Fsecure%2FCreateIssue.jspa%3Fpid%3D10900%26issuetype%3D10100
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: kulukorvaus.hitpoint.tracon.fi
+      redirect_allowed_hosts: kulukorvaus.hitpoint.tracon.fi
+      redirect_target: https://atlasso.tracon.fi/crowd?next=https%3A%2F%2Fjira.tracon.fi%2Fsecure%2FCreateIssue.jspa%3Fpid%3D10800%26issuetype%3D10100
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/hitpoint.tracon.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/hitpoint.tracon.fi/domain.key
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: kulukorvaus.ry.tracon.fi
+      redirect_allowed_hosts: kulukorvaus.ry.tracon.fi
+      redirect_target: https://atlasso.tracon.fi/crowd?next=https%3A%2F%2Fjira.tracon.fi%2Fsecure%2FCreateIssue.jspa%3Fpid%3D10302%26issuetype%3D10100
+      # TODO kulukorvauss-ssl
+      # redirect_ssl_certificate: /srv/letsencrypt/secrets/ry.tracon.fi/chained.pem
+      # redirect_ssl_certificate_key: /srv/letsencrypt/secrets/ry.tracon.fi/domain.key
+
     - role: postgresql-docker
       tags: [postgresql-docker]
       postgresql_hostname: nuoli.tracon.fi
@@ -117,7 +142,10 @@
         - 2017.tracon.fi
         - blog.tracon.fi
         - r.tracon.fi
+
+        # TODO kulukorvaus-ssl poista
         - ry.tracon.fi
+
         - 2015.hitpoint.tracon.fi
         - 2016.hitpoint.tracon.fi
         - 2017.hitpoint.tracon.fi
@@ -134,6 +162,18 @@
       tracontent_ssl_certificate: /srv/letsencrypt/secrets/hitpoint.tracon.fi/chained.pem
       tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/hitpoint.tracon.fi/domain.key
       tracontent_favicon: null
+
+    # TODO kulukorvaus-ssl
+    # - role: tracontent
+    #   tags: [tracontent]
+    #   tracontent_setup_instance: false
+    #   tracontent_hostname: tracontent.ry.tracon.fi
+    #   tracontent_allowed_host_list:
+    #     - ry.tracon.fi
+    #   tracontent_static_dir: /srv/tracontent.tracon.fi/public_html/static
+    #   tracontent_ssl_certificate: /srv/letsencrypt/secrets/ry.tracon.fi/chained.pem
+    #   tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/ry.tracon.fi/domain.key
+    #   tracontent_favicon: null
 
     - role: tracontent
       tags: [tracontent]
@@ -231,15 +271,21 @@
     - role: letsencrypt
       tags: [letsencrypt]
       letsencrypt_domains:
+        # TODO kulukorvaus-ssl – Kunhan Kyuu herää ja laittaa hostnamet, uusi tracon.fi, hitpoint.tracon.fi ja ry.tracon.fi varmenteet (subject_alt_name muuttunut)
         # ugly
         - name: tracon.fi
-          subject_alt_name: "DNS:tracon.fi,DNS:www.tracon.fi,DNS:nuoli.tracon.fi,DNS:2016.tracon.fi,DNS:2017.tracon.fi,DNS:blog.tracon.fi,DNS:r.tracon.fi,DNS:ry.tracon.fi,DNS:2007.tracon.fi,DNS:2009.tracon.fi,DNS:2010.tracon.fi,DNS:2011.tracon.fi,DNS:2012.tracon.fi,DNS:2013.tracon.fi,DNS:2014.tracon.fi,DNS:2015.tracon.fi,DNS:media.tracon.fi"
+          subject_alt_name: "DNS:tracon.fi,DNS:www.tracon.fi,DNS:nuoli.tracon.fi,DNS:2016.tracon.fi,DNS:2017.tracon.fi,DNS:blog.tracon.fi,DNS:r.tracon.fi,DNS:2007.tracon.fi,DNS:2009.tracon.fi,DNS:2010.tracon.fi,DNS:2011.tracon.fi,DNS:2012.tracon.fi,DNS:2013.tracon.fi,DNS:2014.tracon.fi,DNS:2015.tracon.fi,DNS:media.tracon.fi,DNS:kulukorvaus.tracon.fi"
         - name: hitpoint.tracon.fi
-          subject_alt_name: "DNS:hitpoint.tracon.fi,DNS:www.hitpoint.tracon.fi,DNS:2015.hitpoint.tracon.fi,DNS:2016.hitpoint.tracon.fi,DNS:2017.hitpoint.tracon.fi"
+          subject_alt_name: "DNS:hitpoint.tracon.fi,DNS:www.hitpoint.tracon.fi,DNS:2015.hitpoint.tracon.fi,DNS:2016.hitpoint.tracon.fi,DNS:2017.hitpoint.tracon.fi,DNS:kulukorvaus.hitpoint.tracon.fi"
+        - name: ry.tracon.fi
+          subject_alt_name: "DNS:ry.tracon.fi,DNS:kulukorvaus.ry.tracon.fi"
+
+        # TODO näillä mitään syytä olla omina varmenteinaan? ehkä siirretään osaks tracon.fi varmennetta
         - name: infotv.tracon.fi
           subject_alt_name: "DNS:infotv.tracon.fi,DNS:info-tv.tracon.fi"
         - name: infokala.tracon.fi
           subject_alt_name: "DNS:infokala.tracon.fi,DNS:infoloki.tracon.fi"
+
         - name: animecon.fi
           subject_alt_name: "DNS:animecon.fi,DNS:www.animecon.fi,DNS:2016.animecon.fi"
         - name: aicon.fi
