@@ -9,6 +9,10 @@ server {
     }
 
 {% endif %}
+    location = / {
+        return 302 "{{ redirect_target }}";
+    }
+
     location / {
         return 302 "{{ redirect_target }}$request_uri";
     }
