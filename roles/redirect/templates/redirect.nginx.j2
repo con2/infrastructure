@@ -1,7 +1,13 @@
 server {
-    listen 80{% if redirect_default %} default_server{% endif %};
     server_name {{ redirect_allowed_hosts }};
+    listen 80{% if redirect_default %} default_server{% endif %};
+{% if redirect_ssl %}
+    listen 443 ssl http2{% if redirect_default %} default_server{% endif %};
 
+    ssl_certificate {{ redirect_ssl_certificate }};
+    ssl_certificate_key {{ redirect_ssl_certificate_key }};
+
+{% endif %}
 {% if redirect_letsencrypt %}
     location /.well-known/acme-challenge/ {
         alias /srv/letsencrypt/challenges/;
@@ -17,15 +23,3 @@ server {
         return 302 "{{ redirect_target }}$request_uri";
     }
 }
-
-{% if redirect_ssl %}
-server {
-    listen 443 ssl http2{% if redirect_default %} default_server{% endif %};
-    server_name {{ redirect_allowed_hosts }};
-
-    ssl_certificate {{ redirect_ssl_certificate }};
-    ssl_certificate_key {{ redirect_ssl_certificate_key }};
-
-    return 302 "{{ redirect_target }}$request_uri";
-}
-{% endif %}
