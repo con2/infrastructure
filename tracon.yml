@@ -141,6 +141,7 @@
         - 2017.tracon.fi
         - blog.tracon.fi
         - r.tracon.fi
+        - ry.tracon.fi
         - 2015.hitpoint.tracon.fi
         - 2016.hitpoint.tracon.fi
         - 2017.hitpoint.tracon.fi
@@ -178,7 +179,6 @@
         - 2017.tracon.fi
         - blog.tracon.fi
         - r.tracon.fi
-        - ry.tracon.fi
       tracontent_static_dir: /srv/tracontent.tracon.fi/public_html/static
       tracontent_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
