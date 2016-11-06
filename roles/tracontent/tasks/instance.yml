@@ -41,6 +41,7 @@
       EMAIL_HOST: "{{ tracontent_email_host }}"
       KOMPASSI_OAUTH2_CLIENT_ID: "{{ tracontent_kompassi_oauth2_client_id }}"
       KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ tracontent_kompassi_oauth2_client_secret }}"
+      KOMPASSI_EDITOR_GROUPS: '{{ tracontent_editor_group_list|join(" ") }}'
       SECRET_KEY: "{{ tracontent_secret_key }}"
   tags: [tracontent-instance,tracontent-deploy]
 

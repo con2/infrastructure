@@ -145,6 +145,10 @@
         - 2015.hitpoint.tracon.fi
         - 2016.hitpoint.tracon.fi
         - 2017.hitpoint.tracon.fi
+      tracontent_editor_group_list:
+        - turska-hitpoint2017-labour-conitea
+        - turska-tracon2017-labour-conitea
+        - traconry-hallitus-nykyinen
 
     - role: tracontent
       tags: [tracontent]
@@ -200,6 +204,8 @@
       tracontent_kompassi_oauth2_client_id: "{{ vault_animecon_tracontent_kompassi_oauth2_client_id }}"
       tracontent_kompassi_oauth2_client_secret: "{{ vault_animecon_tracontent_kompassi_oauth2_client_secret }}"
       tracontent_favicon: null
+      tracontent_editor_group_list:
+        - animecon-staff
 
     - role: tracontent
       tags: [tracontent]
@@ -217,6 +223,8 @@
       tracontent_kompassi_oauth2_client_id: "{{ vault_aicon_tracontent_kompassi_oauth2_client_id }}"
       tracontent_kompassi_oauth2_client_secret: "{{ vault_aicon_tracontent_kompassi_oauth2_client_secret }}"
       tracontent_favicon: null
+      tracontent_editor_group_list:
+        - aicon-staff
 
     - role: static
       tags: [static]
