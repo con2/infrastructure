@@ -11,6 +11,8 @@
     image: rabbitmq
     ports:
       - 5672:5672
+    volumes:
+      - "{{ kompassi_hostname }}-rabbitmq-data:/var/lib/rabbitmq"
     env:
       RABBITMQ_ERLANG_COOKIE: "{{ kompassi_rabbitmq_cookie }}"
       RABBITMQ_DEFAULT_USER: "{{ kompassi_rabbitmq_username }}"
