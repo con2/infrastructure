@@ -9,6 +9,8 @@
     name: "{{ kompassi_hostname }}-rabbitmq"
     restart_policy: unless-stopped
     image: rabbitmq
+    ports:
+      - 5672:5672
     env:
       RABBITMQ_ERLANG_COOKIE: "{{ kompassi_rabbitmq_cookie }}"
       RABBITMQ_DEFAULT_USER: "{{ kompassi_rabbitmq_username }}"
