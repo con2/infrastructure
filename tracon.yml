@@ -34,7 +34,7 @@
       redirect_default: true
       redirect_hostname: "{{ inventory_hostname }}"
       redirect_allowed_hosts: "{{ inventory_hostname }}"
-      redirect_target: https://2016.tracon.fi
+      redirect_target: https://2017.tracon.fi
 
     - role: redirect
       tags: [redirect]
