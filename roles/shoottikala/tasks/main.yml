@@ -33,7 +33,7 @@
     image: "{{ shoottikala_image }}"
     restart_policy: unless-stopped
     recreate: yes
-    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ shoottikala_workers }} shoottikala_tracon.wsgi:application"
+    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ shoottikala_workers }} shoottikala.wsgi:application"
     ports:
       - "{{ shoottikala_port }}:8000"
     links:
