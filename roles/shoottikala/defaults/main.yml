@@ -1,10 +1,10 @@
 shoottikala_image: conikuvat/shoottikala
-shoottikala_hostname: shoottikala.conikuvat.fi
+shoottikala_hostname: photoshoot.conikuvat.fi
 shoottikala_port: 8007
-shoottikala_ssl: false
+shoottikala_ssl: true
 shoottikala_letsencrypt: true
-shoottikala_ssl_certificate: /srv/letsencrypt/secrets/shoottikala.conikuvat.fi/chained.pem
-shoottikala_ssl_certificate_key: /srv/letsencrypt/secrets/shoottikala.conikuvat.fi/domain.key
+shoottikala_ssl_certificate: /srv/letsencrypt/secrets/photoshoot.conikuvat.fi/chained.pem
+shoottikala_ssl_certificate_key: /srv/letsencrypt/secrets/photoshoot.conikuvat.fi/domain.key
 shoottikala_allowed_hosts: "{{ shoottikala_hostname }}"
 shoottikala_default_from_email: yhteys@conikuvat.fi
 shoottikala_email_host: sr1.gw0.fi
