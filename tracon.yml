@@ -300,7 +300,7 @@
       redirect_hostname: "{{ inventory_hostname }}"
       redirect_allowed_hosts: "{{ inventory_hostname }} www.{{ inventory_hostname }}"
       redirect_target: https://kompassi.eu
-      redirect_ssl: false
+      redirect_ssl: true
       redirect_default: true
 
     - role: postgresql-docker
