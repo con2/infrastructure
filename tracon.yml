@@ -314,6 +314,8 @@
       tags: [kompassi]
     - role: atlasso
       tags: [atlasso]
+    - role: shoottikala
+      tags: [shoottikala]
 
     - role: letsencrypt
       tags: [letsencrypt]

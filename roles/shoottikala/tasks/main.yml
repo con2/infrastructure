@@ -1,0 +1,55 @@
+- name: "Create shoottikala group to facilitate access to static files"
+  group: name=shoottikala system=yes
+
+- name: "Add the nginx user to the shoottikala group"
+  user: name=nginx groups=shoottikala append=yes
+
+- name: "Create host data directory"
+  file: path=/srv/{{ shoottikala_hostname }} state=directory owner=root group=shoottikala mode=02710
+
+- name: "Create static files directory"
+  file: path=/srv/{{ shoottikala_hostname }}/public_html state=directory owner=root group=shoottikala mode=02750
+
+- name: "Setup nginx vhost for {{ shoottikala_hostname }}"
+  template: src=shoottikala.nginx.j2 dest=/etc/nginx/sites-available/{{ shoottikala_hostname }} mode=0644
+  notify: restart nginx
+
+- name: "Enable nginx vhost for {{ shoottikala_hostname }}"
+  file: >
+    src=/etc/nginx/sites-available/{{ shoottikala_hostname }}
+    path=/etc/nginx/sites-enabled/{{ shoottikala_hostname }}
+    state=link
+  notify: restart nginx
+
+- name: "Update shoottikala docker image from the registry"
+  docker_image:
+    name: "{{ shoottikala_image }}"
+    force: yes
+  tags: [shoottikala-deploy]
+
+- name: "Create shoottikala container for {{ shoottikala_hostname }}"
+  docker_container:
+    name: "{{ shoottikala_hostname }}"
+    image: "{{ shoottikala_image }}"
+    restart_policy: unless-stopped
+    recreate: yes
+    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ shoottikala_workers }} shoottikala_tracon.wsgi:application"
+    ports:
+      - "{{ shoottikala_port }}:8000"
+    links:
+      - "{{ shoottikala_postgresql_container }}:postgres"
+    env:
+      ADMINS: "{{ shoottikala_admins }}"
+      ALLOWED_HOSTS: "{{ shoottikala_allowed_hosts }}"
+      DATABASE_URL: "postgres://{{ shoottikala_postgresql_username }}:{{ shoottikala_postgresql_password }}@postgres/{{ shoottikala_postgresql_database }}"
+      DEFAULT_FROM_EMAIL: "{{ shoottikala_default_from_email }}"
+      EMAIL_HOST: "{{ shoottikala_email_host }}"
+      KOMPASSI_OAUTH2_CLIENT_ID: "{{ shoottikala_kompassi_oauth2_client_id }}"
+      KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ shoottikala_kompassi_oauth2_client_secret }}"
+      SECRET_KEY: "{{ shoottikala_secret_key }}"
+  tags: [shoottikala-deploy]
+
+- name: "Extract static files from inside container"
+  command: >
+    /usr/bin/docker cp {{ shoottikala_hostname }}:/usr/src/app/static /srv/{{ shoottikala_hostname }}/public_html/
+  tags: [shoottikala-deploy]

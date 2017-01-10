@@ -1,0 +1,43 @@
+server {
+    listen 80;
+    server_name {{ shoottikala_allowed_hosts }};
+
+{% if shoottikala_letsencrypt %}
+    location /.well-known/acme-challenge/ {
+        alias /srv/letsencrypt/challenges/;
+        try_files $uri =404;
+    }
+
+{% endif %}
+{% if shoottikala_ssl %}
+    location / {
+        return 302 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 http2;
+    server_name {{ shoottikala_allowed_hosts }};
+
+    add_header Strict-Transport-Security max-age=15768000;
+
+    ssl on;
+    ssl_certificate {{ shoottikala_ssl_certificate }};
+    ssl_certificate_key {{ shoottikala_ssl_certificate_key }};
+
+{% endif %}
+    location ~ ^/static/(.*)$ {
+        alias /srv/{{ shoottikala_hostname }}/public_html/static/$1;
+        expires 30m;
+    }
+
+    rewrite ^/favicon.ico$ /static/favicon.ico last;
+    gzip_static on;
+
+    location / {
+        proxy_pass http://localhost:{{ shoottikala_port }};
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+    }
+}

@@ -1,0 +1,19 @@
+shoottikala_image: conikuvat/shoottikala
+shoottikala_hostname: shoottikala.conikuvat.fi
+shoottikala_port: 8007
+shoottikala_ssl: false
+shoottikala_letsencrypt: true
+shoottikala_ssl_certificate: /srv/letsencrypt/secrets/shoottikala.conikuvat.fi/chained.pem
+shoottikala_ssl_certificate_key: /srv/letsencrypt/secrets/shoottikala.conikuvat.fi/domain.key
+shoottikala_allowed_hosts: "{{ shoottikala_hostname }}"
+shoottikala_default_from_email: yhteys@conikuvat.fi
+shoottikala_email_host: sr1.gw0.fi
+shoottikala_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
+shoottikala_postgresql_container: kompassi.eu-postgres
+shoottikala_postgresql_username: shoottikala
+shoottikala_postgresql_database: shoottikala
+shoottikala_workers: 2
+shoottikala_secret_key: "{{ vault_shoottikala_secret_key }}"
+shoottikala_kompassi_oauth2_client_id: "{{ vault_shoottikala_kompassi_oauth2_client_id }}"
+shoottikala_kompassi_oauth2_client_secret: "{{ vault_shoottikala_kompassi_oauth2_client_secret }}"
+shoottikala_postgresql_password: "{{ vault_shoottikala_postgresql_password }}"
