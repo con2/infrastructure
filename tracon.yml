@@ -1,4 +1,5 @@
 - hosts: docker-servers
+  gather_facts: no
   roles:
     - role: base
       tags: [base]
@@ -8,6 +9,7 @@
       tags: [nginx]
 
 - hosts: logstash-centrals
+  gather_facts: no
   roles:
     - role: logstash-central
       tags: [logstash-central]
@@ -20,6 +22,7 @@
       tags: [rsyslog-to-logstash]
 
 - hosts: postgresql-servers
+  gather_facts: no
   roles:
     - role: base
       tags: [base]
@@ -27,6 +30,7 @@
       tags: [postgresql]
 
 - hosts: tracon-servers
+  gather_facts: no
   roles:
     # default site
     - role: redirect
@@ -293,6 +297,7 @@
           subject_alt_name: "DNS:aicon.fi,DNS:www.aicon.fi,DNS:2016.aicon.fi,DNS:m.aicon.fi"
 
 - hosts: kompassi-servers
+  gather_facts: no
   roles:
     # default site
     - role: redirect
