@@ -6,10 +6,17 @@
     password={{ item.password }}
     shell=/bin/bash
   with_items: "{{ base_admin_users }}"
+  tags:
+    - base
+    - base-admins
+
 - name: set local admin private keys
   authorized_key: >
     user={{ item.username }}
     key="{{ item.key }}"
+  tags:
+    - base
+    - base-admins
   with_items:
     - username: japsu
       key: ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAvCmc0uCpmMb/zHVCF7LFoxZpTnTbR26rGZTNpSrjtq2R75Lal0GoSNyDLwRwcUig2kBzYgrchKZxGi6K90AjRR4cpoeImxftEylieRFP6VMyV64lK7fnYWEH5PUf7izWbV5OEBgQOl63R6UnAf0sQ6KuqdnbixDoJrltl5xvvCuJurikh7kGWrv4+gop0OUdV8Ja+xjpASQSBRXqM7kwn83wKJ/ic8xHiwTp1P/UQTxbNgaOCkD+VHstKxmE8KtMKuLKOmVU1KOYi3TgSfqs8jO/eRDegThlsiejuV/FQGZa/SXWuqZlM8vcsyGHnG0JmOOaoCdo1pplKWoSyN2UDQ== japsu@navitas-20150803
