@@ -17,6 +17,7 @@
       tags: [kibana]
 
 - hosts: rsyslog-to-logstash
+  gather_facts: yes
   roles:
     - role: rsyslog-to-logstash
       tags: [rsyslog-to-logstash]
@@ -333,6 +334,7 @@
           subject_alt_name: "DNS:photoshoot.conikuvat.fi"
 
 - hosts: management-servers
+  gather_facts: no
   roles:
     - role: jenkins
       tags: [jenkins]
