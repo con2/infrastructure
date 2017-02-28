@@ -348,3 +348,44 @@
 
     - role: jenkinslave
       tags: [jenkinslave]
+
+- hosts: hop-servers
+  gather_facts: no
+  roles:
+    - role: base
+      tags: [base]
+      nameservers:
+        - 8.8.8.8
+        - 8.8.4.4
+
+    - role: nginx
+      tags: [nginx]
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: "{{ inventory_hostname }}"
+      redirect_allowed_hosts: "{{ inventory_hostname }} www.{{ inventory_hostname }}"
+      redirect_target: https://kompassi.eu
+      redirect_default: true
+      redirect_ssl: true
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/putki.tracon.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/putki.tracon.fi/domain.key
+
+    - role: proxy
+      tags: [proxy]
+      proxy_hostname: vara.kompassi.eu
+
+      # nuoli.kompassi.eu
+      proxy_target: https://91.105.251.77
+
+      proxy_ssl: true
+      proxy_ssl_certificate: /srv/letsencrypt/secrets/vara.kompassi.eu/chained.pem
+      proxy_ssl_certificate_key: /srv/letsencrypt/secrets/vara.kompassi.eu/domain.key
+
+    - role: letsencrypt
+      tags: [letsencrypt]
+      letsencrypt_domains:
+        - name: putki.tracon.fi
+          subject_alt_name: "DNS:putki.tracon.fi"
+        - name: vara.kompassi.eu
+          subject_alt_name: "DNS:vara.kompassi.eu"

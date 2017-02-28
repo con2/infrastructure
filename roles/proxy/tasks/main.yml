@@ -1,0 +1,10 @@
+- name: "Setup proxy vhost for {{ proxy_hostname }}"
+  template: src=proxy.nginx.j2 dest=/etc/nginx/sites-available/{{ proxy_hostname }} mode=0644
+  notify: restart nginx
+
+- name: "Enable proxy vhost for {{ proxy_hostname }}"
+  file:
+    src: "/etc/nginx/sites-available/{{ proxy_hostname }}"
+    path: "/etc/nginx/sites-enabled/{{ proxy_hostname }}"
+    state: link
+  notify: restart nginx

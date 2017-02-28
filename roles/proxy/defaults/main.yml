@@ -1,0 +1,6 @@
+proxy_ssl: true
+proxy_letsencrypt: true
+proxy_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
+proxy_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
+proxy_default: false
+proxy_index_html_on_404: false

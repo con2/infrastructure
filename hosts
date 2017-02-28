@@ -7,6 +7,9 @@ monokkeli.tracon.fi ansible_ssh_host=91.105.252.66
 [kompassi-servers]
 neula.kompassi.eu
 
+[hop-servers]
+putki.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
+
 [rsyslog-to-logstash]
 monokkeli.tracon.fi
 kurikka.tracon.fi
