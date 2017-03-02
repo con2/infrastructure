@@ -47,6 +47,7 @@
       KOMPASSI_OAUTH2_CLIENT_ID: "{{ infotv_kompassi_oauth2_client_id }}"
       KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ infotv_kompassi_oauth2_client_secret }}"
       SECRET_KEY: "{{ infotv_secret_key }}"
+      INFOTV_DEFAULT_EVENT: "{{ infotv_default_event }}"
   tags: [infotv-deploy]
 
 - name: "Extract static files from inside container"
