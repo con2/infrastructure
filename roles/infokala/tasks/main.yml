@@ -47,6 +47,7 @@
       KOMPASSI_OAUTH2_CLIENT_ID: "{{ infokala_kompassi_oauth2_client_id }}"
       KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ infokala_kompassi_oauth2_client_secret }}"
       SECRET_KEY: "{{ infokala_secret_key }}"
+      INFOKALA_DEFAULT_EVENT: "{{ infokala_default_event }}"
   tags: [infokala-deploy]
 
 - name: "Extract static files from inside container"
