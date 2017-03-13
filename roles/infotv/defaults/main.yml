@@ -13,4 +13,4 @@ infotv_postgresql_container: nuoli.tracon.fi-postgres
 infotv_postgresql_username: infotv
 infotv_postgresql_database: infotv
 infotv_workers: 2
-infotv_default_event: hitpoint2017
+infotv_default_event: kuplii2017
