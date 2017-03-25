@@ -32,7 +32,7 @@
     env_file: /srv/{{ kompassi_hostname }}/env
     recreate: yes
     restart_policy: unless-stopped
-    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ kompassi_workers }} kompassi.wsgi:application"
+    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ kompassi_workers }} --timeout={{ kompassi_timeout }} kompassi.wsgi:application"
     ports:
       - "{{ kompassi_port }}:8000"
     links:

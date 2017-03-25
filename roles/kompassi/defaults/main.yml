@@ -27,3 +27,4 @@ kompassi_postgresql_database: kompassi
 kompassi_basicauth_username: kompassi
 kompassi_basicauth: false
 kompassi_workers: 16
+kompassi_timeout: 600
