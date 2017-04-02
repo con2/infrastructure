@@ -53,5 +53,10 @@
     - username: lmmz
       key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5bdGtauorr8uOtFG/KNmdgpeAN/lwezoPpMRf9BE2fL0fcoYrjo5HdilyVGw4UL/I6GjRssFdye16HHb2MJLVIR95CCNImPx9VpzPQocrXA4q0eB1m+n/lmkQ1kSQv2tXskRjDOUU27UCjfX+DwHXOhIjOPhEz2JrtINrIP6Sxy9mHEh6LdI6oy5GPKRY+Sg13WNfz2udo693awV+LlCXNQAYw59fGvSl9Bcu/iqjA8d9NPgY82hdHARpmxzvMowfEeqPmh0m2wdQ+ZsS3iJIIBUGjOomBcyO+ydbOVIj71ocxpfwtMLb8NMiKh1TUlCgve7NAGB1haSMJMn34qdVUB4q9C2j3291Idj+o7d4OOWsTp00H3miSlM8Timub3rHguPkAXP/Me1F1RyOd778jf9LYfj7Z3ydB0j4Cg5GjLWIkTtJ8Ahu2vdLe3tz+3cmImJIdOo2JqwmyRvowBPZxFh74AiZigKLq4IJqkEwBguYVAAWxB6ALpgFdIhOWWrHKFNJetOz4vNV9eDe5Rc0VkGmzCCtaaWzxEOkYXFvnD4U2rle9dnvKSX/+1ogZ3cC7zXsapJSnfefYELtkiv8nmuI+W0snn0q+3Tjr/gAaup/AzlYq0d/Io5DqFN566IloFXtcFopP8iQLjigsLzDtSM/4Zk98rs2DhVKFsYRyw== lmmz@cutter.lmmz.net
 
+    - username: codez
+      key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII5EpTml0k7/6WDsikL3CIIGyDriYGpwAKTd6wjS6nZh osaka
+    - username: codez
+      key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA5ViSwxcxnqHFpkQlyCUvjTyig0w9uhEmxDH6fTjz4c himeji
+
     - username: root
       key: "{{ jenkinslave_ssh_public_key_data }}"
