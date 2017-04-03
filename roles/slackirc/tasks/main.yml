@@ -1,16 +1,3 @@
-# oidentd does not play nicely with containers, disabled
-
-# - name: Install oidentd
-#   apt: name=oidentd state=present
-#   notify: restart oidentd
-#
-# - name: Configure oidentd
-#   copy: src=oidentd.conf dest=/etc/oidentd.conf
-#   notify: restart oidentd
-#
-# - name: Allow oidentd through the firewall
-#   ufw: rule=allow port=113 proto=tcp
-
 - name: "Create slackirc group to facilitate access to static files"
   group: name=slackirc system=yes
 

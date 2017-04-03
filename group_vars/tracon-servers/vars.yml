@@ -12,3 +12,8 @@ tracontent_secret_key: "{{ vault_tracontent_secret_key }}"
 tracontent_kompassi_oauth2_client_id: "{{ vault_tracontent_kompassi_oauth2_client_id }}"
 tracontent_kompassi_oauth2_client_secret: "{{ vault_tracontent_kompassi_oauth2_client_secret }}"
 tracontent_postgresql_password: "{{ vault_tracontent_postgresql_password }}"
+
+kirppu_secret_key: "{{ vault_kirppu_secret_key }}"
+kirppu_kompassi_oauth2_client_id: "{{ vault_kirppu_kompassi_oauth2_client_id }}"
+kirppu_kompassi_oauth2_client_secret: "{{ vault_kirppu_kompassi_oauth2_client_secret }}"
+kirppu_postgresql_password: "{{ vault_kirppu_postgresql_password }}"

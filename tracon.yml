@@ -231,6 +231,11 @@
       tracontent_editor_group_list:
         - aicon-staff
 
+    - role: kirppu
+      tags: [kirppu]
+      kirppu_ssl: false
+      kirppu_letsencrypt: true
+
     - role: static
       tags: [static]
       static_hostname: 2007.tracon.fi

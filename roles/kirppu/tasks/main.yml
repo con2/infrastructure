@@ -1,3 +1,15 @@
+- name: "Create kirppu group to facilitate access to static files"
+  group: name=kirppu system=yes
+
+- name: "Add the nginx user to the kirppu group"
+  user: name=nginx groups=kirppu append=yes
+
+- name: "Create host data directory"
+  file: path=/srv/{{ kirppu_hostname }} state=directory owner=root group=kirppu mode=02710
+
+- name: "Create static files directory"
+  file: path=/srv/{{ kirppu_hostname }}/public_html state=directory owner=root group=kirppu mode=02750
+
 - name: "Setup nginx vhost for {{ kirppu_hostname }}"
   template: src=kirppu.nginx.j2 dest=/etc/nginx/sites-available/{{ kirppu_hostname }} mode=0644
   notify: restart nginx
@@ -23,7 +35,7 @@
     image: tracon/kirppu
     recreate: yes
     restart_policy: unless-stopped
-    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ kirppu_workers }} kirppu.wsgi:application"
+    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ kirppu_workers }} kirppu_project.wsgi:application"
     ports:
       - "{{ kirppu_port }}:8000"
     links:
@@ -34,8 +46,6 @@
       DATABASE_URL: "postgres://{{ kirppu_postgresql_username }}:{{ kirppu_postgresql_password }}@postgres/{{ kirppu_postgresql_database }}"
       DEFAULT_FROM_EMAIL: "{{ kirppu_default_from_email }}"
       EMAIL_HOST: "{{ kirppu_email_host }}"
-      KOMPASSI_CROWD_APPLICATION_NAME: "{{ kirppu_crowd_application_name }}"
-      KOMPASSI_CROWD_APPLICATION_PASSWORD: "{{ kirppu_crowd_application_password }}"
       KOMPASSI_OAUTH2_CLIENT_ID: "{{ kirppu_kompassi_oauth2_client_id }}"
       KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ kirppu_kompassi_oauth2_client_secret }}"
       SECRET_KEY: "{{ kirppu_secret_key }}"
@@ -43,5 +53,5 @@
 
 - name: "Extract static files from inside container (command version)"
   command: >
-    /usr/bin/docker cp {{ kirppu_hostname }}-gunicorn:/usr/src/app/static /srv/{{ kirppu_hostname }}/public_html/
+    /usr/bin/docker cp {{ kirppu_hostname }}:/usr/src/app/static /srv/{{ kirppu_hostname }}/public_html/
   tags: [kirppu-deploy]
