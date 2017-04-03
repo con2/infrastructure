@@ -272,6 +272,9 @@
       tags: [infokala]
     - role: infotv
       tags: [infotv]
+
+    - role: oidentd
+      tags: [oidentd]
     - role: slackirc
       tags: [slackirc]
 

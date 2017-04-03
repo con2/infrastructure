@@ -38,6 +38,8 @@
     recreate: true
     volumes:
       - /srv/slackirc/slackirc.json:/slackirc.json:ro
+    env:
+      NODE_ENV: development
 
 - name: Install daily restart script
   when: "{{ slackirc_enabled }}"

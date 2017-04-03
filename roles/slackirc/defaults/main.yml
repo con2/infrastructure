@@ -16,3 +16,10 @@ slackirc_config:
     token: "{{ slackirc_api_token }}"
     ircOptions:
       messageSplit: 200
+  - channelMapping:
+      "#concon": "#concon"
+    nickname: c2
+    server: open.ircnet.net
+    token: "{{ slackirc_con2_api_token }}"
+    ircOptions:
+      messageSplit: 200

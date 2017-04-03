@@ -1,0 +1,3 @@
+- name: restart oidentd
+  service: name=oidentd state=restarted enabled=yes
+  become: true

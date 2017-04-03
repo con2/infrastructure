@@ -1,4 +1,5 @@
 slackirc_api_token: "{{ vault_slackirc_api_token }}"
+slackirc_con2_api_token: "{{ vault_slackirc_con2_api_token }}"
 base_admin_users: "{{ vault_base_admin_users }}"
 nginx_default_ssl_certificate_key_data: "{{ vault_nginx_default_ssl_certificate_key_data }}"
 nginx_default_ssl_certificate: /etc/ssl/certs/_wildcard_.tracon.fi+intermediate.crt
