@@ -3,8 +3,8 @@ kirppu_hostname: kirppu.tracon.fi
 kirppu_port: 8008
 kirppu_ssl: true
 kirppu_letsencrypt: true
-kirppu_ssl_certificate: /srv/letsencrypt/secrets/kirppu.tracon.fi/chained.pem
-kirppu_ssl_certificate_key: /srv/letsencrypt/secrets/kirppu.tracon.fi/domain.key
+kirppu_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
+kirppu_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
 kirppu_allowed_hosts: "{{ kirppu_hostname }}"
 kirppu_default_from_email: suunnistajat@kompassi.eu
