@@ -277,6 +277,8 @@
       tags: [infokala]
     - role: infotv
       tags: [infotv]
+    - role: edegal
+      tags: [edegal]
 
     - role: oidentd
       tags: [oidentd]
@@ -304,6 +306,8 @@
           subject_alt_name: "DNS:animecon.fi,DNS:www.animecon.fi,DNS:2016.animecon.fi"
         - name: aicon.fi
           subject_alt_name: "DNS:aicon.fi,DNS:www.aicon.fi,DNS:2016.aicon.fi,DNS:m.aicon.fi"
+        - name: conikuvat.fi
+          subject_alt_name: "DNS:beta.conikuvat.fi"
 
 - hosts: kompassi-servers
   gather_facts: no

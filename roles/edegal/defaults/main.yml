@@ -1,0 +1,36 @@
+edegal_image: conikuvat/edegal
+edegal_hostname: beta.conikuvat.fi
+edegal_port: 8009
+edegal_ssl: true
+edegal_letsencrypt: true
+edegal_user: conikuvat
+
+# hardcoded due to youzen.b2.fi NFS
+edegal_uid: 1082
+edegal_extra_groups: users
+
+# old Geotrust RapidSSL certificate
+# edegal_ssl_certificate: /etc/ssl/certs/edegal.eu+intermediate.crt
+# edegal_ssl_certificate_key: /etc/ssl/private/edegal.eu.key
+
+# new LetsEncrypt certificates
+edegal_ssl_certificate: /srv/letsencrypt/secrets/conikuvat.fi/chained.pem
+edegal_ssl_certificate_key: /srv/letsencrypt/secrets/conikuvat.fi/domain.key
+
+edegal_allowed_hosts: "{{ edegal_hostname }}"
+edegal_default_from_email: yhteys@conikuvat.fi
+edegal_email_host: sr1.gw0.fi
+edegal_cache_url: memcache://memcache
+edegal_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
+edegal_rabbitmq_username: conikuvat
+edegal_rabbitmq_vhost: conikuvat
+edegal_postgresql_container: nuoli.tracon.fi-postgres
+edegal_postgresql_username: conikuvat
+edegal_postgresql_database: conikuvat
+edegal_workers: 4
+edegal_timeout: 30
+
+# coppermine import
+edegal_coppermine_mysql_host: kirito.b2.fi
+edegal_coppermine_mysql_username: b2_coppermine
+edegal_coppermine_mysql_database: b2_coppermine

@@ -17,3 +17,7 @@ kirppu_secret_key: "{{ vault_kirppu_secret_key }}"
 kirppu_kompassi_oauth2_client_id: "{{ vault_kirppu_kompassi_oauth2_client_id }}"
 kirppu_kompassi_oauth2_client_secret: "{{ vault_kirppu_kompassi_oauth2_client_secret }}"
 kirppu_postgresql_password: "{{ vault_kirppu_postgresql_password }}"
+
+edegal_secret_key: "{{ vault_edegal_secret_key }}"
+edegal_postgresql_password: "{{ vault_edegal_postgresql_password }}"
+edegal_coppermine_mysql_password: "{{ vault_edegal_coppermine_mysql_password }}"
