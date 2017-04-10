@@ -1,0 +1,4 @@
+#!/bin/bash
+umask 077
+
+docker exec "{{ tracontent_hostname }}" tar -c /usr/src/app/media > "/var/backups/tracontent/{{ tracontent_hostname }}.tar"

@@ -1,0 +1,4 @@
+#!/bin/bash
+umask 077
+
+docker exec "{{ postgresql_hostname }}-postgres" pg_dumpall -U postgres > "/var/backups/postgresql/{{ postgresql_hostname }}-postgres"

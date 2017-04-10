@@ -5,6 +5,8 @@
       tags: [base]
     - role: docker
       tags: [docker]
+    - role: prebackup
+      tags: [prebackup]
     - role: nginx
       tags: [nginx]
 

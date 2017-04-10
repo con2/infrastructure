@@ -1,0 +1,13 @@
+- name: Create pre-backup script directory
+  file:
+    path: /etc/pre-backup.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Set up pre-backup script
+  copy:
+    src: pre-backup.sh
+    dest: /usr/local/sbin/pre-backup
+    mode: 0755

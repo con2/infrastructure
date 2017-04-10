@@ -1,0 +1,4 @@
+#!/bin/bash
+umask 077
+
+docker exec "{{ jenkins_hostname }}" tar -c /var/jenkins_home > "/var/backups/jenkins/{{ jenkins_hostname }}.tar"
