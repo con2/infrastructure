@@ -33,6 +33,11 @@ server {
         expires 30m;
     }
 
+    location /media/coppermine_albums/ {
+        alias /mnt/coppermine_albums/;
+        expires 30m;
+    }
+
     location /media/ {
         alias /srv/{{ edegal_hostname }}/public_html/static/;
         expires 30m;

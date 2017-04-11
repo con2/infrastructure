@@ -35,6 +35,10 @@
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ edegal_workers }} --timeout={{ edegal_timeout }} edegal_site.wsgi:application"
     ports:
       - "{{ edegal_port }}:8000"
+    volumes:
+      - /mnt/coppermine_albums:/usr/src/app/media/coppermine_albums
+      - edegal-pictures:/usr/src/app/media/pictures
+      - edegal-previews:/usr/src/app/media/previews
     links:
       # - "{{ edegal_hostname }}-rabbitmq:rabbitmq"
       - "{{ edegal_postgresql_container }}:postgres"
