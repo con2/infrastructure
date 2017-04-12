@@ -35,7 +35,7 @@
     recreate: yes
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ shoottikala_workers }} shoottikala.wsgi:application"
     ports:
-      - "{{ shoottikala_port }}:8000"
+      - "127.0.0.1:{{ shoottikala_port }}:8000"
     links:
       - "{{ shoottikala_postgresql_container }}:postgres"
     env:

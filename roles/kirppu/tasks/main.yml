@@ -37,7 +37,7 @@
     restart_policy: unless-stopped
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ kirppu_workers }} kirppu_project.wsgi:application"
     ports:
-      - "{{ kirppu_port }}:8000"
+      - "127.0.0.1:{{ kirppu_port }}:8000"
     links:
       - "{{ kirppu_postgresql_container }}:postgres"
     env:

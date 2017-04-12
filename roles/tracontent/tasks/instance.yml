@@ -28,7 +28,7 @@
     restart_policy: unless-stopped
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ tracontent_workers }} tracontent.wsgi:application"
     ports:
-      - "{{ tracontent_port }}:8000"
+      - "127.0.0.1:{{ tracontent_port }}:8000"
     links:
       - "{{ tracontent_postgresql_container }}:postgres"
     volumes:

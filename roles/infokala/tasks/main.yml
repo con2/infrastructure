@@ -35,7 +35,7 @@
     recreate: yes
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ infokala_workers }} infokala_tracon.wsgi:application"
     ports:
-      - "{{ infokala_port }}:8000"
+      - "127.0.0.1:{{ infokala_port }}:8000"
     links:
       - "{{ infokala_postgresql_container }}:postgres"
     env:

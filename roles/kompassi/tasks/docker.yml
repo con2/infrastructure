@@ -34,7 +34,7 @@
     restart_policy: unless-stopped
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ kompassi_workers }} --timeout={{ kompassi_timeout }} kompassi.wsgi:application"
     ports:
-      - "{{ kompassi_port }}:8000"
+      - "127.0.0.1:{{ kompassi_port }}:8000"
     links:
       - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
       - "{{ kompassi_hostname }}-postgres:postgres"
