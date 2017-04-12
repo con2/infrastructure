@@ -20,4 +20,6 @@ kirppu_postgresql_password: "{{ vault_kirppu_postgresql_password }}"
 
 edegal_secret_key: "{{ vault_edegal_secret_key }}"
 edegal_postgresql_password: "{{ vault_edegal_postgresql_password }}"
+edegal_rabbitmq_cookie: "{{ vault_edegal_rabbitmq_cookie }}"
+edegal_rabbitmq_password: "{{ vault_edegal_rabbitmq_password }}"
 edegal_coppermine_mysql_password: "{{ vault_edegal_coppermine_mysql_password }}"

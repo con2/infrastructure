@@ -4,20 +4,18 @@
     force: yes
   tags: [edegal-deploy]
 
-# - name: "Create {{ edegal_hostname }}-rabbitmq container"
-#   docker_container:
-#     name: "{{ edegal_hostname }}-rabbitmq"
-#     restart_policy: unless-stopped
-#     image: rabbitmq
-#     ports:
-#       - 5672:5672
-#     volumes:
-#       - "{{ edegal_hostname }}-rabbitmq-data:/var/lib/rabbitmq"
-#     env:
-#       RABBITMQ_ERLANG_COOKIE: "{{ edegal_rabbitmq_cookie }}"
-#       RABBITMQ_DEFAULT_USER: "{{ edegal_rabbitmq_username }}"
-#       RABBITMQ_DEFAULT_PASS: "{{ edegal_rabbitmq_password }}"
-#       RABBITMQ_DEFAULT_VHOST: "{{ edegal_rabbitmq_vhost }}"
+- name: "Create {{ edegal_hostname }}-rabbitmq container"
+  docker_container:
+    name: "{{ edegal_hostname }}-rabbitmq"
+    restart_policy: unless-stopped
+    image: rabbitmq
+    volumes:
+      - "{{ edegal_hostname }}-rabbitmq-data:/var/lib/rabbitmq"
+    env:
+      RABBITMQ_ERLANG_COOKIE: "{{ edegal_rabbitmq_cookie }}"
+      RABBITMQ_DEFAULT_USER: "{{ edegal_rabbitmq_username }}"
+      RABBITMQ_DEFAULT_PASS: "{{ edegal_rabbitmq_password }}"
+      RABBITMQ_DEFAULT_VHOST: "{{ edegal_rabbitmq_vhost }}"
 
 - name: "Create {{ edegal_hostname }}-memcache container"
   docker_container:
@@ -34,30 +32,30 @@
     restart_policy: unless-stopped
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ edegal_workers }} --timeout={{ edegal_timeout }} edegal_site.wsgi:application"
     ports:
-      - "{{ edegal_port }}:8000"
+      - "127.0.0.1:{{ edegal_port }}:8000"
     volumes:
       - /mnt/coppermine_albums:/usr/src/app/media/coppermine_albums
-      - edegal-pictures:/usr/src/app/media/pictures
-      - edegal-previews:/usr/src/app/media/previews
+      - /mnt/coppermine_albums/beta_pictures:/usr/src/app/media/pictures
+      - /mnt/coppermine_albums/beta_previews:/usr/src/app/media/previews
     links:
-      # - "{{ edegal_hostname }}-rabbitmq:rabbitmq"
+      - "{{ edegal_hostname }}-rabbitmq:rabbitmq"
       - "{{ edegal_postgresql_container }}:postgres"
       - "{{ edegal_hostname }}-memcache:memcache"
   tags: [edegal-deploy]
 
-# - name: "Create {{ edegal_hostname }}-celery container"
-#   docker_container:
-#     name: "{{ edegal_hostname }}-celery"
-#     image: "{{ edegal_image }}"
-#     restart_policy: unless-stopped
-#     command: "celery -A edegal.celery_app:app worker"
-#     env_file: /srv/{{ edegal_hostname }}/env
-#     recreate: yes
-#     links:
-#       - "{{ edegal_hostname }}-rabbitmq:rabbitmq"
-#       - "{{ edegal_postgresql_container }}:postgres"
-#       - "{{ edegal_hostname }}-memcache:memcache"
-#   tags: [edegal-deploy]
+- name: "Create {{ edegal_hostname }}-celery container"
+  docker_container:
+    name: "{{ edegal_hostname }}-celery"
+    image: "{{ edegal_image }}"
+    restart_policy: unless-stopped
+    command: "celery -A edegal_site.celery:app worker"
+    env_file: /srv/{{ edegal_hostname }}/env
+    recreate: yes
+    links:
+      - "{{ edegal_hostname }}-rabbitmq:rabbitmq"
+      - "{{ edegal_postgresql_container }}:postgres"
+      - "{{ edegal_hostname }}-memcache:memcache"
+  tags: [edegal-deploy]
 
 # PROBLEMS:
 # - rsync not installed inside container, apt-get install rsync fails

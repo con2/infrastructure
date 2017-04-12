@@ -38,9 +38,18 @@ server {
         expires 30m;
     }
 
-    location /media/ {
-        alias /srv/{{ edegal_hostname }}/public_html/static/;
+    location /media/pictures/ {
+        alias /mnt/coppermine_albums/beta_pictures/;
         expires 30m;
+    }
+
+    location /media/previews/ {
+        alias /mnt/coppermine_albums/beta_previews/;
+        expires 30m;
+    }
+
+    location /media/ {
+        return 404;
     }
 
     location /admin {
