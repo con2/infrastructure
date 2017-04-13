@@ -51,6 +51,10 @@
     command: "celery -A edegal_site.celery:app worker"
     env_file: /srv/{{ edegal_hostname }}/env
     recreate: yes
+    volumes:
+      - /mnt/coppermine_albums:/usr/src/app/media/coppermine_albums
+      - /mnt/coppermine_albums/beta_pictures:/usr/src/app/media/pictures
+      - /mnt/coppermine_albums/beta_previews:/usr/src/app/media/previews
     links:
       - "{{ edegal_hostname }}-rabbitmq:rabbitmq"
       - "{{ edegal_postgresql_container }}:postgres"
