@@ -15,3 +15,7 @@ kirppu_postgresql_username: kirppu
 kirppu_postgresql_database: kirppu
 kirppu_workers: 2
 kirppu_languages: fi
+
+# TZ=Helsinki / in kirppu settings.py.
+kirppu_registration_end: "2017-05-01 23:59:59"
+kirppu_checkout_active: 0

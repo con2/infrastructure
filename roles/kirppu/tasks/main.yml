@@ -54,6 +54,8 @@
       KIRPPU_USE_SSO: "1"
       LANGUAGES: "{{ kirppu_languages }}"
       SECRET_KEY: "{{ kirppu_secret_key }}"
+      KIRPPU_REGISTER_ACTIVE_UNTIL: "{{ kirppu_registration_end }}"
+      KIRPPU_CHECKOUT_ACTIVE: "{{ kirppu_checkout_active }}"
   tags: [kirppu-deploy]
 
 - name: "Extract static files from inside container (command version)"
