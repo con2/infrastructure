@@ -1,3 +1,2 @@
 - include: setup.yml
-- include: nginx.yml
 - include: docker.yml
