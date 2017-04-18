@@ -1,0 +1,38 @@
+- name: create "{{ prometheus_group }}" group
+  group:
+    name: "{{ prometheus_group }}"
+    system: true
+
+
+- name: create host data directory for {{ alertmanager_hostname }}
+  file:
+    path: /srv/{{ alertmanager_hostname }}
+    state: directory
+    owner: root
+    group: prometheus
+    mode: 0750
+
+- name: create config file for {{ alertmanager_hostname }}
+  template:
+    src: alertmanager.yml.j2
+    dest: /srv/{{ alertmanager_hostname }}/config.yml
+    owner: root
+    group: prometheus
+    mode: 0640
+
+
+- name: create host data directory for {{ prometheus_hostname }}
+  file:
+    path: /srv/{{ prometheus_hostname }}
+    state: directory
+    owner: root
+    group: prometheus
+    mode: 0750
+
+- name: create config file for {{ prometheus_hostname }}
+  template:
+    src: prometheus.yml.j2
+    dest: /srv/{{ prometheus_hostname }}/prometheus.yml
+    owner: root
+    group: prometheus
+    mode: 0640

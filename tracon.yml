@@ -361,6 +361,25 @@
     - role: jenkinslave
       tags: [jenkinslave]
 
+    - role: prometheus
+      tags: [prometheus]
+
+    # get SSL for future service
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: kibana.tracon.fi
+      redirect_allowed_hosts: kibana.tracon.fi
+      redirect_target: https://tracon.fi
+      redirect_ssl: false
+      redirect_letsencrypt: true
+
+    - role: letsencrypt
+      tags: [letsencrypt]
+      letsencrypt_domains:
+        - name: monokkeli.tracon.fi
+          subject_alt_name: "DNS:jenkins.tracon.fi,DNS:kibana.tracon.fi,DNS:grafana.tracon.fi,DNS:prometheus.tracon.fi,DNS:alertmanager.tracon.fi"
+
+
 - hosts: hop-servers
   gather_facts: no
   roles:

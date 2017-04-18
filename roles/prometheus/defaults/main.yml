@@ -1,0 +1,31 @@
+prometheus_hostname: prometheus.tracon.fi
+prometheus_letsencrypt: true
+prometheus_ssl: true
+prometheus_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
+prometheus_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key
+prometheus_port: 8010
+prometheus_group: prometheus
+# prometheus_basic_auth: vault
+
+alertmanager_hostname: alertmanager.tracon.fi
+alertmanager_letsencrypt: true
+alertmanager_ssl: true
+alertmanager_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
+alertmanager_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key
+alertmanager_port: 8011
+alertmanager_smtp_server: sr1.gw0.fi
+alertmanager_smtp_from: root@tracon.fi
+# alertmanager_basic_auth: vault
+
+# non-tracon.fi emails preferred so that mail gets delivered even if sakataki has a bad day
+alertmanager_admin_emails:
+  - santtu@pajukanta.fi
+
+grafana_hostname: grafana.tracon.fi
+grafana_letsencrypt: true
+grafana_ssl: true
+grafana_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
+grafana_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key
+grafana_port: 8012
+# grafana_admin_username: vault
+# grafana_admin_password: vault

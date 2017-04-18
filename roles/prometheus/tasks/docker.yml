@@ -1,0 +1,42 @@
+- name: "set up {{ alertmanager_hostname }} container"
+  docker_container:
+    name: "{{ alertmanager_hostname }}"
+    image: prom/alertmanager
+    restart_policy: unless-stopped
+    ports:
+      - "127.0.0.1:{{ alertmanager_port }}:9093"
+    volumes:
+      - /srv/{{ alertmanager_hostname }}/config.yml:/etc/alertmanager/config.yml
+      - "{{ alertmanager_hostname }}-data:/alertmanager"
+
+- name: "set up {{ prometheus_hostname }} container"
+  docker_container:
+    name: "{{ prometheus_hostname }}"
+    image: prom/prometheus
+    restart_policy: unless-stopped
+    ports:
+      - "127.0.0.1:{{ prometheus_port }}:9090"
+    volumes:
+      - /srv/{{ prometheus_hostname }}/prometheus.yml:/etc/prometheus/prometheus.yml
+      - "{{ prometheus_hostname }}-data:/prometheus"
+    links:
+      - "{{ alertmanager_hostname }}:alertmanager"
+
+- name: "set up {{ grafana_hostname }} container"
+  docker_container:
+    name: "{{ grafana_hostname }}"
+    image: grafana/grafana
+    restart_policy: unless-stopped
+    ports:
+      - "127.0.0.1:{{ grafana_port }}:3000"
+    volumes:
+      - "{{ grafana_hostname }}-data:/var/lib/grafana"
+      - "{{ grafana_hostname }}-logs:/var/log/grafana"
+      - "{{ grafana_hostname }}-config:/etc/grafana"
+    links:
+      - "{{ prometheus_hostname }}:prometheus"
+    env:
+      GF_SERVER_ROOT_URL: "https://{{ grafana_hostname }}"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_SECURITY_ADMIN_USER: "{{ grafana_admin_username }}"
+      GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_admin_password }}"
