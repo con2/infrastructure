@@ -21,13 +21,16 @@
     mode: 0640
 
 
-- name: create host data directory for {{ prometheus_hostname }}
+- name: create host data directories for {{ prometheus_hostname }}
   file:
-    path: /srv/{{ prometheus_hostname }}
+    path: "{{ item }}"
     state: directory
     owner: root
     group: prometheus
     mode: 0750
+  with_items:
+    - /srv/{{ prometheus_hostname }}
+    - /srv/{{ prometheus_hostname }}/rules
 
 - name: create config file for {{ prometheus_hostname }}
   template:
@@ -36,3 +39,19 @@
     owner: root
     group: prometheus
     mode: 0640
+
+- name: copy rules files for {{ prometheus_hostname }}
+  copy:
+    src: "{{ item }}"
+    dest: "/srv/{{ prometheus_hostname }}/rules/{{ item }}"
+    owner: root
+    group: prometheus
+    mode: 0640
+  with_items: []
+
+- name: remove stale rule files from {{ prometheus_hostname }}
+  file:
+    path: "/srv/{{ prometheus_hostname }}/rules/{{ item }}"
+    state: absent
+  with_items:
+    - django.rules

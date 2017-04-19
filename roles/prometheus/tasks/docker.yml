@@ -3,6 +3,7 @@
     name: "{{ alertmanager_hostname }}"
     image: prom/alertmanager
     restart_policy: unless-stopped
+    recreate: true
     ports:
       - "127.0.0.1:{{ alertmanager_port }}:9093"
     volumes:
@@ -14,10 +15,12 @@
     name: "{{ prometheus_hostname }}"
     image: prom/prometheus
     restart_policy: unless-stopped
+    recreate: true
     ports:
       - "127.0.0.1:{{ prometheus_port }}:9090"
     volumes:
       - /srv/{{ prometheus_hostname }}/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /srv/{{ prometheus_hostname }}/rules:/etc/prometheus/rules
       - "{{ prometheus_hostname }}-data:/prometheus"
     links:
       - "{{ alertmanager_hostname }}:alertmanager"
@@ -27,6 +30,7 @@
     name: "{{ grafana_hostname }}"
     image: grafana/grafana
     restart_policy: unless-stopped
+    recreate: true
     ports:
       - "127.0.0.1:{{ grafana_port }}:3000"
     volumes:
