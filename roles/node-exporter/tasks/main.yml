@@ -1,0 +1,38 @@
+- name: create "{{ node_exporter_user }}" group
+  group:
+    name: "{{ node_exporter_user }}"
+    system: true
+
+- name: create "{{ node_exporter_user }}" user
+  user:
+    name: "{{ node_exporter_user }}"
+    group: "{{ node_exporter_user }}"
+    system: true
+
+- name: install node-exporter binary
+  shell: "curl -L {{ node_exporter_tarball_url }} | tar -xzC /usr/local/bin --strip-components 1 --wildcards '*/node_exporter'"
+  args:
+    creates: /usr/local/bin/node_exporter
+
+- name: install node-exporter systemd config file
+  copy:
+    src: node-exporter.service
+    dest: /etc/systemd/system/node-exporter.service
+    mode: 0644
+  when: "node_exporter_init == 'systemd'"
+  notify: restart node-exporter
+
+- name: install node-exporter upstart config file
+  copy:
+    src: node-exporter.upstart.conf
+    dest: /etc/init/node-exporter.conf
+    mode: 0644
+  when: "node_exporter_init == 'upstart'"
+  notify: restart node-exporter
+
+- name: allow node-exporter through firewall
+  ufw:
+    rule: allow
+    from_ip: '{{ prometheus_ip_address }}'
+    to_port: 9100
+  when: "node_exporter_firewall == 'ufw'"

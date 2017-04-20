@@ -47,7 +47,8 @@
     owner: root
     group: prometheus
     mode: 0640
-  with_items: []
+  with_items:
+    - node.rules
 
 - name: remove stale rule files from {{ prometheus_hostname }}
   file:

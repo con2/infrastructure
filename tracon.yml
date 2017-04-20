@@ -3,6 +3,8 @@
   roles:
     - role: base
       tags: [base]
+    - role: node-exporter
+      tags: [node-exporter]
     - role: docker
       tags: [docker]
     - role: prebackup
@@ -18,11 +20,13 @@
     - role: kibana
       tags: [kibana]
 
-- hosts: rsyslog-to-logstash
+- hosts: legacy-servers
   gather_facts: yes
   roles:
-    - role: rsyslog-to-logstash
-      tags: [rsyslog-to-logstash]
+    # - role: rsyslog-to-logstash
+    #   tags: [rsyslog-to-logstash]
+    - role: node-exporter
+      tags: [node-exporter]
 
 - hosts: postgresql-servers
   gather_facts: no
@@ -388,6 +392,9 @@
       nameservers:
         - 8.8.8.8
         - 8.8.4.4
+
+    - role: node-exporter
+      tags: [node-exporter]
 
     - role: prebackup
       tags: [prebackup]

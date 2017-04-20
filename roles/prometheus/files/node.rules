@@ -1,0 +1,6 @@
+ALERT NodeFilesystemUsageHigh
+      IF node_filesystem_free{mountpoint="/",device!="rootfs"} < 5368709120
+      ANNOTATIONS {
+        summary = "Disk space low",
+        description = "Node {{ $labels.instance }} has less than 5 gigabytes left on the / file system."
+      }
