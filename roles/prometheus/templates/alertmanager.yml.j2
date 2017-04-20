@@ -5,6 +5,8 @@
 global:
   smtp_smarthost: '{{ alertmanager_smtp_server }}'
   smtp_from: '{{ alertmanager_smtp_from }}'
+  slack_api_url: '{{ alertmanager_slack_webhook_url }}'
+
 
 
 route:
@@ -26,6 +28,9 @@ inhibit_rules:
 
 receivers:
   - name: admins
+    slack_configs:
+      - channel: 'tekniikka'
+        send_resolved: true
     email_configs:
 {% for admin_email in alertmanager_admin_emails %}
       - to: "{{ admin_email }}"

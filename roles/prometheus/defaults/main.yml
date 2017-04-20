@@ -16,6 +16,7 @@ alertmanager_port: 8011
 alertmanager_smtp_server: sr1.gw0.fi
 alertmanager_smtp_from: root@tracon.fi
 # alertmanager_basic_auth: vault
+# alertmanager_webhook_url: vault
 
 # non-tracon.fi emails preferred so that mail gets delivered even if sakataki has a bad day
 alertmanager_admin_emails:

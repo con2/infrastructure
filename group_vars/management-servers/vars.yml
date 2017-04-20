@@ -5,5 +5,6 @@ jenkinslave_postgresql_password: "{{ vault_jenkinslave_postgresql_password }}"
 
 prometheus_basic_auth: "{{ vault_prometheus_basic_auth }}"
 alertmanager_basic_auth: "{{ vault_alertmanager_basic_auth }}"
+alertmanager_slack_webhook_url: "{{ vault_alertmanager_slack_webhook_url }}"
 grafana_admin_username: "{{ vault_grafana_admin_username }}"
 grafana_admin_password: "{{ vault_grafana_admin_password }}"
