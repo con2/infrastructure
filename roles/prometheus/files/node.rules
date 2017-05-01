@@ -1,8 +1,8 @@
 ALERT NodeAvailableMemoryLow
-  IF node_memory_MemAvailable < 300 * 1024 * 1024
+  IF node_memory_MemAvailable < 250 * 1024 * 1024
   ANNOTATIONS {
     summary = "Memory low",
-    description = "Node {{ $labels.instance }} has less than 300 megabytes of memory available."
+    description = "Node {{ $labels.instance }} has less than 250 megabytes of memory available."
   }
 
 ALERT NodeDiskSpaceLow
