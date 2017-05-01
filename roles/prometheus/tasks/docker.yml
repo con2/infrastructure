@@ -22,6 +22,8 @@
       - /srv/{{ prometheus_hostname }}/prometheus.yml:/etc/prometheus/prometheus.yml
       - /srv/{{ prometheus_hostname }}/rules:/etc/prometheus/rules
       - "{{ prometheus_hostname }}-data:/prometheus"
+    etc_hosts:
+      "putki.localdomain": "91.105.252.68"
     links:
       - "{{ alertmanager_hostname }}:alertmanager"
 

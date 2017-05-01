@@ -36,3 +36,9 @@
     from_ip: '{{ prometheus_ip_address }}'
     to_port: 9100
   when: "node_exporter_firewall == 'ufw'"
+
+- name: make sure node-exporter is running
+  service:
+    name: node-exporter
+    state: started
+    enabled: true

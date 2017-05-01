@@ -408,7 +408,6 @@
       redirect_allowed_hosts: "{{ inventory_hostname }} www.{{ inventory_hostname }}"
       redirect_target: https://kompassi.eu
       redirect_default: true
-      redirect_ssl: true
       redirect_ssl_certificate: /srv/letsencrypt/secrets/putki.tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/putki.tracon.fi/domain.key
 
@@ -419,7 +418,6 @@
       # nuoli.kompassi.eu
       proxy_target: https://91.105.251.77
 
-      proxy_ssl: true
       proxy_ssl_certificate: /srv/letsencrypt/secrets/vara.kompassi.eu/chained.pem
       proxy_ssl_certificate_key: /srv/letsencrypt/secrets/vara.kompassi.eu/domain.key
 
