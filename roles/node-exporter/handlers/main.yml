@@ -2,3 +2,4 @@
   service:
     name: node-exporter
     state: restarted
+    enabled: true
