@@ -39,6 +39,7 @@ server {
     }
 {% endif %}
     gzip_static on;
+    client_max_body_size 30m;
 
     location / {
         proxy_pass http://localhost:{{ tracontent_port }};
