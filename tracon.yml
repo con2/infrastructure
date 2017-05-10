@@ -341,6 +341,14 @@
       redirect_ssl: true
       redirect_default: true
 
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: kompassi.tracon.fi
+      redirect_allowed_hosts: kompassi.tracon.fi
+      redirect_target: https://kompassi.eu
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/atlasso.tracon.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/atlasso.tracon.fi/domain.key
+
     - role: postgresql-docker
       tags: [postgresql-docker]
       postgresql_hostname: kompassi.eu
@@ -360,10 +368,12 @@
       letsencrypt_domains:
         - name: kompassi.eu
           subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:neula.kompassi.eu"
-        - name: atlasso.tracon.fi
-          subject_alt_name: "DNS:atlasso.tracon.fi"
         - name: photoshoot.conikuvat.fi
           subject_alt_name: "DNS:photoshoot.conikuvat.fi"
+
+        # bad name, but use this for all *.tracon.fi that run on neula
+        - name: atlasso.tracon.fi
+          subject_alt_name: "DNS:atlasso.tracon.fi,DNS:kompassi.tracon.fi"
 
 - hosts: management-servers
   gather_facts: no
