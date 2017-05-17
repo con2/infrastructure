@@ -9,10 +9,16 @@
     state=link
   notify: restart nginx
 
+- name: "Update Jenkins docker image from the registry"
+  docker_image:
+    name: "{{ jenkins_image }}"
+    force: yes
+
 - name: "Create Jenkins container for {{ jenkins_hostname }}"
   docker_container:
     name: "{{ jenkins_hostname }}"
     image: "{{ jenkins_image }}"
+    recreate: yes
     restart_policy: unless-stopped
     volumes:
       - "{{ jenkins_hostname }}-data:/var/jenkins_home"
