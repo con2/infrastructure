@@ -49,6 +49,7 @@
     mode: 0640
   with_items:
     - node.rules
+    - generic.rules
 
 - name: remove stale rule files from {{ prometheus_hostname }}
   file:
