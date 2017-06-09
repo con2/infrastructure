@@ -1,0 +1,49 @@
+- name: "Setup nginx vhost for {{ redmine_hostname }}"
+  template: src=redmine.nginx.j2 dest=/etc/nginx/sites-available/{{ redmine_hostname }} mode=0644
+  notify: restart nginx
+  tags: [redmine-nginx]
+
+- name: "Enable nginx vhost for {{ redmine_hostname }}"
+  file: >
+    src=/etc/nginx/sites-available/{{ redmine_hostname }}
+    path=/etc/nginx/sites-enabled/{{ redmine_hostname }}
+    state=link
+  notify: restart nginx
+  tags: [redmine-nginx]
+
+- name: "Update redmine docker image from the registry"
+  docker_image:
+    name: "{{ redmine_image }}"
+    force: yes
+  tags: [redmine-deploy]
+
+- name: "Create redmine container for {{ redmine_hostname }}"
+  docker_container:
+    name: "{{ redmine_hostname }}"
+    image: "{{ redmine_image }}"
+    restart_policy: unless-stopped
+    recreate: yes
+    ports:
+      - "127.0.0.1:{{ redmine_port }}:3000"
+    links:
+      - "{{ redmine_postgresql_container }}:postgres"
+    volumes:
+      - "{{ redmine_hostname }}-files:/usr/src/redmine/files"
+    env:
+      REDMINE_DB_POSTGRES: postgres
+      REDMINE_DB_PASSWORD: "{{ redmine_postgresql_password }}"
+      REDMINE_DB_USERNAME: redmine
+      REDMINE_DB_DATABASE: redmine
+  tags: [redmine-deploy]
+
+- name: Set up pre-backup script
+  template:
+    src: pre-backup.sh.j2
+    dest: /etc/pre-backup.d/{{ redmine_hostname }}.sh
+    mode: 0755
+
+- name: Make sure backup directories exist
+  file: path={{ item }} state=directory
+  with_items:
+    - /var/backups
+    - /var/backups/redmine

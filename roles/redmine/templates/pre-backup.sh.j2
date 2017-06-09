@@ -1,0 +1,4 @@
+#!/bin/bash
+umask 077
+
+docker exec "{{ redmine_hostname }}" tar -c /usr/src/redmine/files > "/var/backups/redmine/{{ redmine_hostname }}.tar"

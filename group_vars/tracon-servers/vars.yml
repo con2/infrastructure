@@ -23,3 +23,5 @@ edegal_postgresql_password: "{{ vault_edegal_postgresql_password }}"
 edegal_rabbitmq_cookie: "{{ vault_edegal_rabbitmq_cookie }}"
 edegal_rabbitmq_password: "{{ vault_edegal_rabbitmq_password }}"
 edegal_coppermine_mysql_password: "{{ vault_edegal_coppermine_mysql_password }}"
+
+redmine_postgresql_password: "{{ vault_redmine_postgresql_password }}"

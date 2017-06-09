@@ -1,0 +1,9 @@
+redmine_hostname: pora.tracon.fi
+redmine_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
+redmine_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
+redmine_port: 8013
+redmine_default: false
+redmine_letsencrypt: true
+redmine_ssl: true
+redmine_image: redmine
+redmine_postgresql_container: nuoli.tracon.fi-postgres
