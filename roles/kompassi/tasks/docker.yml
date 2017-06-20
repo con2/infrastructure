@@ -39,6 +39,8 @@
       - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
       - "{{ kompassi_hostname }}-postgres:postgres"
       - "{{ kompassi_hostname }}-memcache:memcache"
+    etc_hosts:
+      "desucon.fi": "185.20.137.21"
   tags: [kompassi-deploy]
 
 - name: "Create {{ kompassi_hostname }}-celery container"
