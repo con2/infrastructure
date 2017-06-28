@@ -56,6 +56,8 @@
       SECRET_KEY: "{{ kirppu_secret_key }}"
       KIRPPU_REGISTER_ACTIVE_UNTIL: "{{ kirppu_registration_end }}"
       KIRPPU_CHECKOUT_ACTIVE: "{{ kirppu_checkout_active }}"
+      KOMPASSI_API_APPLICATION_NAME: "{{ kirppu_kompassi_api_v1_name }}"
+      KOMPASSI_API_APPLICATION_PASSWORD: "{{ kirppu_kompassi_api_v1_password }}"
       ASSUME_SSL_HEADER: "HTTP_X_FORWARDED_PROTO=https"
   tags: [kirppu-deploy]
 
