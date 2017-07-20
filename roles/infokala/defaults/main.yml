@@ -6,7 +6,7 @@ infokala_letsencrypt: true
 infokala_ssl_certificate: /srv/letsencrypt/secrets/infokala.tracon.fi/chained.pem
 infokala_ssl_certificate_key: /srv/letsencrypt/secrets/infokala.tracon.fi/domain.key
 infokala_allowed_hosts: "{{ infokala_hostname }}"
-infokala_default_event: hitpoint2017
+infokala_default_event: ropecon2017
 infokala_default_from_email: suunnistajat@kompassi.eu
 infokala_email_host: sr1.gw0.fi
 infokala_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
