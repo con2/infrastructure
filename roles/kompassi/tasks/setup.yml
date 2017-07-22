@@ -1,14 +1,20 @@
-- name: "Create kompassi group to facilitate access to static files"
-  group: name=kompassi system=yes
+- name: "Create {{ kompassi_user }} group to facilitate access to static files"
+  group: name={{ kompassi_user }} system=yes gid={{ kompassi_gid }}
+
+- name: "Create {{ kompassi_user }} user to facilitate access to static files"
+  user: name={{ kompassi_user }} system=yes uid={{ kompassi_uid }} group={{ kompassi_user }}
 
 - name: "Add the nginx user to the kompassi group"
-  user: name=nginx groups=kompassi append=yes
+  user: name=nginx groups={{ kompassi_user }} append=yes
 
 - name: "Create host data directory"
-  file: path=/srv/{{ kompassi_hostname }} state=directory owner=root group=kompassi mode=02710
+  file: path=/srv/{{ kompassi_hostname }} state=directory owner=root group={{ kompassi_user }} mode=02710
 
 - name: "Create static files directory"
-  file: path=/srv/{{ kompassi_hostname }}/public_html state=directory owner=root group=kompassi mode=02750
+  file: path=/srv/{{ kompassi_hostname }}/public_html state=directory owner=root group={{ kompassi_user }} mode=02750
+
+- name: "Create upload directory"
+  file: path=/srv/{{ kompassi_hostname }}/public_html/media state=directory owner=root group={{ kompassi_user }} mode=02770
 
 - name: "Create env file"
   template: src=kompassi.env.j2 dest=/srv/{{ kompassi_hostname }}/env mode=0600

@@ -19,3 +19,6 @@ kompassi_postgresql_username: kompassi
 kompassi_postgresql_database: kompassi
 kompassi_workers: 16
 kompassi_timeout: 600
+kompassi_user: kompassi
+kompassi_gid: 998
+kompassi_uid: 998
