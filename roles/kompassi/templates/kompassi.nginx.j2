@@ -32,6 +32,7 @@ server {
 
     rewrite ^/favicon.ico$ /static/favicon.ico last;
     gzip_static on;
+    client_max_body_size 30m;
 
     location / {
         proxy_pass http://localhost:{{ kompassi_port }};
