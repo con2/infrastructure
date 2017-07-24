@@ -42,7 +42,7 @@
     volumes:
       - "/srv/{{ kompassi_hostname }}/public_html/media:/usr/src/app/media"
     etc_hosts:
-      "desucon.fi": "185.20.137.21"
+      "desucon.fi": "94.237.37.206"
   tags: [kompassi-deploy]
 
 - name: "Create {{ kompassi_hostname }}-celery container"
