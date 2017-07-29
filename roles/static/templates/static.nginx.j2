@@ -27,9 +27,10 @@ server {
     charset utf-8;
 
     location / {
-        index index.html;
 {% if static_index_html_on_404 %}
         try_files $uri /index.html;
+{% else %}
+        try_files $uri $uri/index.html $uri.html =404;
 {% endif %}
     }
 }
