@@ -11,6 +11,7 @@ slackirc_config:
       isosali: "#mansecon.is"
       ohjelma: "#mansecon.ohjelma"
       tekniikka: "#mansecon.tekniikka"
+      artemis: "#mansecon.artemis"
     nickname: sir
     server: tampere.fi.b2irc.net
     token: "{{ slackirc_api_token }}"
