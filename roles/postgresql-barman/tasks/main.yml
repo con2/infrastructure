@@ -1,0 +1,55 @@
+- name: create the {{ postgresql_barman_user }} group
+  group:
+    name: "{{ postgresql_barman_user }}"
+    system: true
+
+- name: create the {{ postgresql_barman_user }} user
+  user:
+    name: "{{ postgresql_barman_user }}"
+    group: "{{ postgresql_barman_user }}"
+    home: /var/lib/barman
+    system: true
+
+- name: create directories for barman
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ postgresql_barman_user }}"
+    group: "{{ postgresql_barman_user }}"
+    mode: 02770
+  with_items:
+    - /var/lib/barman
+    - /var/log/barman
+
+- name: install barman
+  apt: name=barman state=installed
+
+- name: install barman configuration file
+  copy:
+    src: barman.conf
+    dest: /etc/barman.conf
+    owner: root
+    group: "{{ postgresql_barman_user }}"
+    mode: 0640
+
+- name: install barman server configuration file
+  template:
+    src: server.conf.j2
+    dest: /etc/barman.d/{{ postgresql_title }}.conf
+    owner: root
+    group: "{{ postgresql_barman_user }}"
+    mode: 0640
+
+- name: allow the postgres user to ssh in as {{ postgresql_barman_user }}
+  authorized_key:
+    user: "{{ postgresql_barman_user }}"
+    state: present
+    key: "{{ postgresql_ssh_public_key_data }}"
+
+- name: install barman ssh private key
+  copy:
+    content: "{{ postgresql_barman_ssh_private_key_data }}"
+    dest: /var/lib/barman/.ssh/id_rsa
+    owner: "{{ postgresql_barman_user }}"
+    group: "{{ postgresql_barman_user }}"
+    mode: 0600

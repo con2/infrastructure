@@ -4,3 +4,4 @@ locale:
 nameservers:
   - 91.105.249.11
   - 91.105.249.12
+base_resolv_conf_enabled: true

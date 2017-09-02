@@ -1,0 +1,7 @@
+[{{ postgresql_title }}]
+description = "Set up using roles/postgresql-barman in ansible-tracon"
+conninfo = host={{ postgresql_hostname }} user={{ postgresql_barman_db_user }} password={{ postgresql_barman_db_password }} dbname=postgres
+streaming_conninfo = host={{ postgresql_hostname }} user={{ postgresql_barman_db_streaming_user }} password={{ postgresql_barman_db_streaming_password }}
+backup_method = postgres
+streaming_archiver = on
+slot_name = barman

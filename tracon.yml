@@ -36,6 +36,14 @@
     - role: postgresql
       tags: [postgresql]
 
+- hosts: barman-servers
+  gather_facts: no
+  roles:
+    - role: base
+      tags: [base]
+    - role: postgresql-barman
+      tags: [postgresql-barman]
+
 - hosts: tracon-servers
   gather_facts: no
   roles:
@@ -247,7 +255,9 @@
       tracontent_hostname: tracontent.aicon.fi
       tracontent_static_dir: /srv/tracontent.aicon.fi/public_html/static
       tracontent_allowed_host_list:
-        - aicon.fi
+        - 2016.aicon.fi
+        - 2017.aicon.fi
+        - 2018.aicon.fi
       tracontent_ssl_certificate: /srv/letsencrypt/secrets/aicon.fi/chained.pem
       tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/aicon.fi/domain.key
       tracontent_port: 8006
@@ -335,7 +345,7 @@
         - name: animecon.fi
           subject_alt_name: "DNS:animecon.fi,DNS:www.animecon.fi,DNS:2016.animecon.fi"
         - name: aicon.fi
-          subject_alt_name: "DNS:aicon.fi,DNS:www.aicon.fi,DNS:2016.aicon.fi,DNS:m.aicon.fi"
+          subject_alt_name: "DNS:aicon.fi,DNS:www.aicon.fi,DNS:2016.aicon.fi,DNS:2017.aicon.fi,DNS:2018.aicon.fi,DNS:m.aicon.fi"
         - name: conikuvat.fi
           subject_alt_name: "DNS:beta.conikuvat.fi"
 

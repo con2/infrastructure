@@ -1,0 +1,5 @@
+- name: Add postgresql signing key to APT
+  apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id=ACCC4CF8 state=present
+
+- name: Add postgresql APT repository
+  apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main' state=present update_cache=yes

@@ -1,9 +1,55 @@
-- name: install postgresql
-  apt: name=postgresql state=installed
+- name: install packages for postgresql
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - postgresql-{{ postgresql_version }}
+    - python-psycopg2
+    - rsync
 
 - name: setup pg_hba.conf
-  template: src=pg_hba.conf.j2 dest=/etc/postgresql/{{ postgresql.version }}/main/pg_hba.conf
+  template:
+    src: pg_hba.conf.j2
+    dest: "{{ postgresql_config_directory }}/pg_hba.conf"
+  notify: restart postgresql
+
+- name: setup postgresql.conf
+  template:
+    src: postgresql.conf.j2
+    dest: "{{ postgresql_config_directory }}/postgresql.conf"
   notify: restart postgresql
 
 - name: allow postgresql in firewall
-  ufw: "rule=allow port=5432 from={{ postgresql.access_network }}"
+  ufw: "rule=allow port=5432 from={{ postgresql_access_network }}"
+
+- name: make sure postgresql is running
+  service:
+    name: postgresql
+    state: started
+
+- name: create superuser account for backup
+  become_user: postgres
+  postgresql_user:
+    name: "{{ postgresql_barman_db_user }}"
+    password: "{{ postgresql_barman_db_password }}"
+    role_attr_flags: SUPERUSER
+
+- name: create replication account for backup
+  become_user: postgres
+  postgresql_user:
+    name: "{{ postgresql_barman_db_streaming_user }}"
+    password: "{{ postgresql_barman_db_streaming_password }}"
+    role_attr_flags: REPLICATION
+
+- name: allow the backup user to ssh in as {{ postgresql_user }}
+  authorized_key:
+    user: "{{ postgresql_user }}"
+    state: present
+    key: "{{ postgresql_barman_ssh_public_key_data }}"
+
+- name: install postgres ssh private key
+  copy:
+    content: "{{ postgresql_ssh_private_key_data }}"
+    dest: "{{ postgresql_directory }}/.ssh/id_rsa"
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_user }}"
+    mode: 0600

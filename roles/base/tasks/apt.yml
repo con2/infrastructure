@@ -22,11 +22,11 @@
     - wget
     - whois
 
-- name: Update pip, setuptools and wheel
-  pip:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - pip
-    - setuptools
-    - wheel
+# - name: Update pip, setuptools and wheel
+#   pip:
+#     name: "{{ item }}"
+#     state: latest
+#   with_items:
+#     - pip
+#     - setuptools
+#     - wheel
