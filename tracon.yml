@@ -131,9 +131,9 @@
 
     - role: redirect
       tags: [redirect]
-      redirect_hostname: 2016.aicon.fi
-      redirect_allowed_hosts: 2016.aicon.fi www.aicon.fi m.aicon.fi
-      redirect_target: https://aicon.fi
+      redirect_hostname: aicon.fi
+      redirect_allowed_hosts: aicon.fi www.aicon.fi m.aicon.fi
+      redirect_target: https://2018.aicon.fi
       redirect_ssl_certificate: /srv/letsencrypt/secrets/aicon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/aicon.fi/domain.key
 
