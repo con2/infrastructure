@@ -41,27 +41,6 @@
   notify: restart nginx
   tags: [nginx, config]
 
-- name: "Deploy default SSL certificate"
-  copy:
-    src: _wildcard_.tracon.fi+intermediate.crt
-    dest: "{{ nginx_default_ssl_certificate }}"
-  notify: restart nginx
-  tags: [nginx, ssl]
-
-- name: Deploy SSL OCSP stapling CA bundle for Geotrust RapidSSL
-  copy:
-    src: geotrust-stapling.pem
-    dest: /etc/ssl/private/geotrust-stapling.pem
-
-- name: Deploy SSL private keys (NOTE you must have obtained them from elsewhere - ask Santtu)
-  copy:
-    content: "{{ nginx_default_ssl_certificate_key_data }}"
-    dest: "{{ nginx_default_ssl_certificate_key }}"
-  with_items:
-    - _wildcard_.tracon.fi.key
-  notify: restart nginx
-  tags: [nginx, ssl]
-
 - name: Allow http and https in firewall
   ufw: rule=allow proto=tcp port={{ item }}
   with_items:

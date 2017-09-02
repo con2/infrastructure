@@ -94,6 +94,8 @@
       redirect_hostname: wiki.tracon.fi
       redirect_allowed_hosts: wiki.tracon.fi m.wiki.tracon.fi mwiki.tracon.fi
       redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/TRACON2017
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
     - role: redirect
       tags: [redirect]
@@ -360,6 +362,8 @@
       redirect_target: https://kompassi.eu
       redirect_ssl: true
       redirect_default: true
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
 
     - role: redirect
       tags: [redirect]
@@ -400,8 +404,6 @@
   roles:
     - role: jenkins
       tags: [jenkins]
-      jenkins_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
-      jenkins_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key
 
     - role: postgresql-docker
       tags: [postgresql-docker]
@@ -424,6 +426,8 @@
       redirect_target: https://tracon.fi
       redirect_ssl: false
       redirect_letsencrypt: true
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key
 
     - role: letsencrypt
       tags: [letsencrypt]

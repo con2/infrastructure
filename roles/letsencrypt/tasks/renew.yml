@@ -7,7 +7,7 @@
     mode: 0755
 
 - name: schedule renewal for certificates
-  when: "{{ letsencrypt_enabled }}"
+  when: letsencrypt_enabled
   cron:
     name: "letsencrypt renewal"
     user: letsencrypt

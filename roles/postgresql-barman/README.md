@@ -10,3 +10,4 @@ Some configuration at the PostgreSQL side is also required: see the `postgresql`
 * [ ] SSL. Barman should always connect to PostgreSQL using TLS encryption.
 * [ ] Backup status monitoring via Prometheus.
 * [ ] Barman server logs to a central location, preferably EFK.
+* [ ] Retention policy.

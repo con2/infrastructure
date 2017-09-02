@@ -17,7 +17,7 @@
     force: yes
 
 - name: Create slackirc container
-  when: "{{ slackirc_enabled }}"
+  when: slackirc_enabled
   docker_container:
     name: slackirc
     image: "{{ slackirc_image }}"
@@ -29,5 +29,5 @@
     #   NODE_ENV: development
 
 - name: Install daily restart script
-  when: "{{ slackirc_enabled }}"
+  when: slackirc_enabled
   copy: src=slackirc.crondaily.sh dest=/etc/cron.daily/slackirc mode=0755

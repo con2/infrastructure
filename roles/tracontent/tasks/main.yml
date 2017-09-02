@@ -1,5 +1,5 @@
 - include: instance.yml
-  when: "{{ tracontent_setup_instance }}"
+  when: tracontent_setup_instance
 
 - include: site.yml
-  when: "{{ tracontent_setup_site }}"
+  when: tracontent_setup_site

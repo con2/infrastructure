@@ -1,5 +1,3 @@
 redirect_ssl: true
 redirect_letsencrypt: true
-redirect_ssl_certificate: "{{ nginx_default_ssl_certificate }}"
-redirect_ssl_certificate_key: "{{ nginx_default_ssl_certificate_key }}"
 redirect_default: false
