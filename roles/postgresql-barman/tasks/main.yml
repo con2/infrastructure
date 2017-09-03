@@ -21,8 +21,12 @@
     - /var/lib/barman
     - /var/log/barman
 
-- name: install barman
-  apt: name=barman state=installed
+- name: install barman packages
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - barman
+    - postgresql-client-9.6
 
 - name: install barman configuration file
   copy:
