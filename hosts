@@ -14,7 +14,7 @@ putki.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
 siilo.tracon.fi
 
 [barman-servers]
-piilo.tracon.fi
+piilo.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
 
 [legacy-servers]
 kurikka.tracon.fi node_exporter_init=upstart node_exporter_firewall=none
