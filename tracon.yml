@@ -48,6 +48,8 @@
   roles:
     - role: base
       tags: [base]
+    - role: node-exporter
+      tags: [node-exporter]
     - role: postgresql-barman
       tags: [postgresql-barman]
 
