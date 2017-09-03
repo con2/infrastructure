@@ -1,0 +1,37 @@
+- name: "Setup nginx vhost for {{ pgadmin4_hostname }}"
+  template:
+    src: pgadmin4.nginx.j2
+    dest: /etc/nginx/sites-available/{{ pgadmin4_hostname }}
+    mode: 0644
+  notify: restart nginx
+  tags: [pgadmin4-nginx]
+
+- name: "Enable nginx vhost for {{ pgadmin4_hostname }}"
+  file:
+    src: /etc/nginx/sites-available/{{ pgadmin4_hostname }}
+    path: /etc/nginx/sites-enabled/{{ pgadmin4_hostname }}
+    state: link
+  notify: restart nginx
+  tags: [pgadmin4-nginx]
+
+- name: "Update pgadmin4 docker image from the registry"
+  docker_image:
+    name: "{{ pgadmin4_image }}"
+    force: yes
+  tags: [pgadmin4-deploy]
+
+- name: "Create pgadmin4 container for {{ pgadmin4_hostname }}"
+  docker_container:
+    name: "{{ pgadmin4_hostname }}"
+    image: "{{ pgadmin4_image }}"
+    restart_policy: unless-stopped
+    recreate: yes
+    ports:
+      - "127.0.0.1:{{ pgadmin4_port }}:5050"
+    links: "{{ pgadmin4_container_links }}"
+    volumes:
+      - "{{ pgadmin4_hostname }}-data:/var/lib/pgadmin4"
+    env:
+      DEFAULT_USER: "{{ pgadmin4_username }}"
+      DEFAULT_PASSWORD: "{{ pgadmin4_password }}"
+  tags: [pgadmin4-deploy]

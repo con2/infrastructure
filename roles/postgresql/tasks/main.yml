@@ -19,7 +19,14 @@
   notify: restart postgresql
 
 - name: allow postgresql in firewall
-  ufw: "rule=allow port=5432 from={{ postgresql_access_network }}"
+  ufw:
+    rule: allow
+    port: 5432
+    from: "{{ item }}"
+  with_items:
+    - "{{ postgresql_access_network }}"
+    # docker bridge
+    - 172.17.0.0/16
 
 - name: make sure postgresql is running
   service:

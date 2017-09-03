@@ -25,9 +25,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "postgresql_barman_ip" => "192.168.50.5",
           "postgresql_access_network" => "192.168.50.0/24",
           "postgresql_listen" => "192.168.50.4",
+          "pgadmin4_ssl" => false,
       }
       ansible.groups = {
-          "postgresql-servers" => ["siilo"]
+          "docker-servers" => ["siilo"],
+          "postgresql-servers" => ["siilo"],
       }
       ansible.host_key_checking = false
     end

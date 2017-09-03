@@ -1,0 +1,9 @@
+pgadmin4_container_links: []
+pgadmin4_default: false
+pgadmin4_hostname: siilo.tracon.fi
+pgadmin4_image: fenglc/pgadmin4
+pgadmin4_letsencrypt: true
+pgadmin4_port: 8014
+pgadmin4_ssl_certificate_key: /srv/letsencrypt/secrets/siilo.tracon.fi/domain.key
+pgadmin4_ssl_certificate: /srv/letsencrypt/secrets/siilo.tracon.fi/chained.pem
+pgadmin4_ssl: true

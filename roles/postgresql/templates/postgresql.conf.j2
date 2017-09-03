@@ -64,7 +64,8 @@ external_pid_file = '/var/run/postgresql/9.6-main.pid'			# write an extra PID fi
 
 # - Connection Settings -
 
-listen_addresses = 'localhost,{{ postgresql_listen }}'		# what IP address(es) to listen on;
+# the middle one is the docker bridge
+listen_addresses = 'localhost,172.17.0.1,{{ postgresql_listen }}'		# what IP address(es) to listen on;
 					# comma-separated list of addresses;
 					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)

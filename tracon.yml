@@ -31,10 +31,17 @@
 - hosts: postgresql-servers
   gather_facts: no
   roles:
-    - role: base
-      tags: [base]
     - role: postgresql
       tags: [postgresql]
+    - role: pgadmin4
+      tags: [pgadmin4]
+      pgadmin4_default: true
+    - role: letsencrypt
+      tags: [letsencrypt]
+      letsencrypt_domains:
+        # ugly
+        - name: siilo.tracon.fi
+          subject_alt_name: "DNS:siilo.tracon.fi"
 
 - hosts: barman-servers
   gather_facts: no
@@ -321,6 +328,13 @@
       tags: [edegal]
     - role: redmine
       tags: [redmine]
+    - role: pgadmin4
+      tags: [pgadmin4]
+      pgadmin4_hostname: pgadmin.nuoli.tracon.fi
+      pgadmin4_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
+      pgadmin4_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
+      pgadmin4_container_links:
+        - nuoli.tracon.fi-postgres:postgres
 
     - role: oidentd
       tags: [oidentd]
@@ -332,7 +346,7 @@
       letsencrypt_domains:
         # ugly
         - name: tracon.fi
-          subject_alt_name: "DNS:tracon.fi,DNS:www.tracon.fi,DNS:nuoli.tracon.fi,DNS:2016.tracon.fi,DNS:2017.tracon.fi,DNS:blog.tracon.fi,DNS:r.tracon.fi,DNS:2007.tracon.fi,DNS:2009.tracon.fi,DNS:2010.tracon.fi,DNS:2011.tracon.fi,DNS:2012.tracon.fi,DNS:2013.tracon.fi,DNS:2014.tracon.fi,DNS:2015.tracon.fi,DNS:media.tracon.fi,DNS:kulukorvaus.tracon.fi,DNS:kirppu.tracon.fi,DNS:tera.tracon.fi,DNS:pora.tracon.fi"
+          subject_alt_name: "DNS:tracon.fi,DNS:www.tracon.fi,DNS:nuoli.tracon.fi,DNS:2016.tracon.fi,DNS:2017.tracon.fi,DNS:blog.tracon.fi,DNS:r.tracon.fi,DNS:2007.tracon.fi,DNS:2009.tracon.fi,DNS:2010.tracon.fi,DNS:2011.tracon.fi,DNS:2012.tracon.fi,DNS:2013.tracon.fi,DNS:2014.tracon.fi,DNS:2015.tracon.fi,DNS:media.tracon.fi,DNS:kulukorvaus.tracon.fi,DNS:kirppu.tracon.fi,DNS:tera.tracon.fi,DNS:pora.tracon.fi,DNS:pgadmin.nuoli.tracon.fi"
         - name: hitpoint.tracon.fi
           subject_alt_name: "DNS:hitpoint.tracon.fi,DNS:www.hitpoint.tracon.fi,DNS:2015.hitpoint.tracon.fi,DNS:2016.hitpoint.tracon.fi,DNS:2017.hitpoint.tracon.fi,DNS:kulukorvaus.hitpoint.tracon.fi"
         - name: ry.tracon.fi
@@ -380,6 +394,14 @@
       postgresql_password: "{{ kompassi_postgresql_password }}"
       postgresql_database: kompassi
 
+    - role: pgadmin4
+      tags: [pgadmin4]
+      pgadmin4_hostname: pgadmin.neula.kompassi.eu
+      pgadmin4_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
+      pgadmin4_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
+      pgadmin4_container_links:
+        - kompassi.eu-postgres:postgres
+
     - role: kompassi
       tags: [kompassi]
     - role: atlasso
@@ -391,7 +413,7 @@
       tags: [letsencrypt]
       letsencrypt_domains:
         - name: kompassi.eu
-          subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:neula.kompassi.eu"
+          subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:neula.kompassi.eu,DNS:pgadmin.neula.kompassi.eu"
         - name: photoshoot.conikuvat.fi
           subject_alt_name: "DNS:photoshoot.conikuvat.fi"
 
@@ -418,6 +440,14 @@
     - role: prometheus
       tags: [prometheus]
 
+    - role: pgadmin4
+      tags: [pgadmin4]
+      pgadmin4_hostname: pgadmin.monokkeli.tracon.fi
+      pgadmin4_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
+      pgadmin4_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key
+      pgadmin4_container_links:
+        - jenkins.tracon.fi-postgres:postgres
+
     # get SSL for future service
     - role: redirect
       tags: [redirect]
@@ -433,7 +463,7 @@
       tags: [letsencrypt]
       letsencrypt_domains:
         - name: monokkeli.tracon.fi
-          subject_alt_name: "DNS:jenkins.tracon.fi,DNS:kibana.tracon.fi,DNS:grafana.tracon.fi,DNS:prometheus.tracon.fi,DNS:alertmanager.tracon.fi"
+          subject_alt_name: "DNS:jenkins.tracon.fi,DNS:kibana.tracon.fi,DNS:grafana.tracon.fi,DNS:prometheus.tracon.fi,DNS:alertmanager.tracon.fi,DNS:pgadmin.monokkeli.tracon.fi"
 
 
 - hosts: hop-servers
