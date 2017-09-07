@@ -1,0 +1,14 @@
+version: '2.2'
+services:
+  postgres:
+    image: tracon/postgres
+    build: .
+    environment:
+      POSTGRES_BARMAN_DB_PASSWORD: barman_password
+      POSTGRES_BARMAN_DB_STREAMING_PASSWORD: streaming_barman_password
+      POSTGRES_BARMAN_DB_STREAMING_USER: streaming_barman
+      POSTGRES_BARMAN_DB_USER: barman
+      POSTGRES_BARMAN_IP: 127.0.0.1
+      POSTGRES_DB: suchdb
+      POSTGRES_PASSWORD: verypassword
+      POSTGRES_USER: wow
