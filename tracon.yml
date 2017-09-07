@@ -184,6 +184,8 @@
       postgresql_username: infokala
       postgresql_password: "{{ infokala_postgresql_password }}"
       postgresql_database: infokala
+      postgresql_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
+      postgresql_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
     - role: tracontent
       tags: [tracontent]
@@ -435,6 +437,8 @@
       postgresql_username: jenkinslave
       postgresql_password: "{{ jenkinslave_postgresql_password }}"
       postgresql_database: test_kompassi
+      postgresql_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
+      postgresql_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key
 
     - role: jenkinslave
       tags: [jenkinslave]

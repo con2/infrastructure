@@ -1,8 +1,24 @@
+- name: "Update PostgreSQL docker image from the registry"
+  docker_image:
+    name: "{{ postgresql_image }}"
+    force: yes
+
+- name: "Create a root-owned copy of SSL key"
+  copy:
+    src: "{{ postgresql_ssl_certificate_key }}"
+    remote_src: yes
+    dest: "{{ postgresql_ssl_certificate_key }}.root-owned-because-postgresql-is-a-fucking-turd"
+    owner: 999
+    group: 999
+    mode: 0600
+    force: yes
+
 - name: "Create {{ postgresql_hostname }}-postgres container"
   docker_container:
     name: "{{ postgresql_hostname }}-postgres"
-    image: postgres
+    image: "{{ postgresql_image }}"
     restart_policy: unless-stopped
+    recreate: yes
     env:
       POSTGRES_BARMAN_DB_PASSWORD: "{{ postgresql_barman_db_password }}"
       POSTGRES_BARMAN_DB_STREAMING_PASSWORD: "{{ postgresql_barman_db_streaming_password }}"
@@ -12,8 +28,12 @@
       POSTGRES_DB: "{{ postgresql_database }}"
       POSTGRES_PASSWORD: "{{ postgresql_password }}"
       POSTGRES_USER: "{{ postgresql_username }}"
+    ports:
+      - 5432:5432
     volumes:
       - "{{ postgresql_hostname }}-postgres-data:/var/lib/postgresql/data"
+      - "{{ postgresql_ssl_certificate }}:/server.crt:ro"
+      - "{{ postgresql_ssl_certificate_key }}.root-owned-because-postgresql-is-a-fucking-turd:/server.key:ro"
 
 - name: Make sure backup directories exist
   file:
@@ -28,3 +48,12 @@
     src: pre-backup.sh.j2
     dest: /etc/pre-backup.d/{{ postgresql_hostname }}-postgres.sh
     mode: 0755
+
+- name: allow postgresql in firewall
+  ufw:
+    rule: allow
+    port: 5432
+    from: "{{ item }}"
+  with_items:
+    - "{{ postgresql_access_network }}"
+    - "{{ postgresql_barman_ip }}"

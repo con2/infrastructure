@@ -18,6 +18,7 @@
     - python-dev
     - rsync
     - screen
+    - ssl-cert
     - vim
     - wget
     - whois

@@ -1,6 +1,4 @@
 postgresql_version: "9.6"
-postgresql_access_network: 91.105.251.64/27
-postgresql_listen: 91.105.251.83
 postgresql_user: postgres
 postgresql_directory: /var/lib/postgresql
 postgresql_config_directory: /etc/postgresql/{{ postgresql_version }}/main

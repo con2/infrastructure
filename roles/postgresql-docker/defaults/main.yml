@@ -1,1 +1,4 @@
 postgresql_username: postgres
+postgresql_image: tracon/postgres
+postgresql_ssl_certificate: /etc/ssl/certs/ssl-cert-snakeoil.pem
+postgresql_ssl_certificate_key: /etc/ssl/private/ssl-cert-snakeoil.key
