@@ -24,3 +24,7 @@ Assuming `nuoli` is the new server.
 11. On the Barman server, `sudo -u barman barman cron` to make `WAL archive: FAILED ` go away in…
 12. …on the Barman server, `sudo -u barman barman check nuoli`. It should now be `OK` across the board.
 13. Finally, on the Barman server, `sudo -u barman barman backup nuoli` to perform a base backup.
+
+## TODO
+
+- [ ] Disallow external (non-`172.17.0.1/16`) connections without TLS (perhaps use `hostssl` in `pg_hba.conf`)

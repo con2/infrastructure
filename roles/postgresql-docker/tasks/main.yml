@@ -3,7 +3,7 @@
     name: "{{ postgresql_image }}"
     force: yes
 
-- name: "Create a root-owned copy of SSL key"
+- name: "Create a postgres-owned copy of SSL key (NOTE: file name says root-owned due to historical reasons, ignore)"
   copy:
     src: "{{ postgresql_ssl_certificate_key }}"
     remote_src: yes
