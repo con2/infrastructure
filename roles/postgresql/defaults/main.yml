@@ -2,3 +2,15 @@ postgresql_version: "9.6"
 postgresql_user: postgres
 postgresql_directory: /var/lib/postgresql
 postgresql_config_directory: /etc/postgresql/{{ postgresql_version }}/main
+postgresql_ssl_certificate: /etc/ssl/certs/ssl-cert-snakeoil.pem
+postgresql_ssl_certificate_key: /etc/ssl/private/ssl-cert-snakeoil.key
+
+# https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server
+# a reasonable starting value for shared_buffers is 1/4 of the memory in your system
+postgresql_shared_buffers: 512MB
+
+# Setting effective_cache_size to 1/2 of total memory would be a normal conservative setting, and 3/4 of memory is a more aggressive but still reasonable amount.
+postgresql_effective_cache_size: 1536MB
+
+# This is very important to some of the below parameters (particularly work_mem) because there are some memory resources that are or can be allocated on a per-client basis, so the maximum number of clients suggests the maximum possible memory use. Generally, PostgreSQL on good hardware can support a few hundred connections.
+postgresql_max_connections: 300
