@@ -428,7 +428,7 @@
       kompassi_desuprofile_oauth2_client_secret: ''
       kompassi_google_analytics_token: ''
       kompassi_hostname: dev.kompassi.eu
-      kompassi_image: tracon/kompassi
+      kompassi_image: tracon/kompassi:staging
       kompassi_installation_name: 'Kompassi (DEV)'
       kompassi_installation_slug: turskadev
       kompassi_letsencrypt: true

@@ -1,4 +1,4 @@
-kompassi_image: tracon/kompassi
+kompassi_image: tracon/kompassi:latest
 kompassi_hostname: kompassi.eu
 kompassi_port: 8000
 kompassi_ssl: true
