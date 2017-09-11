@@ -405,6 +405,8 @@
       postgresql_username: kompassi
       postgresql_password: "{{ kompassi_postgresql_password }}"
       postgresql_database: kompassi
+      postgresql_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
+      postgresql_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
 
     - role: pgadmin4
       tags: [pgadmin4]
