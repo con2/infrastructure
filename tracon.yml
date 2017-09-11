@@ -416,6 +416,42 @@
 
     - role: kompassi
       tags: [kompassi]
+
+    - role: kompassi
+      tags: [kompassi-staging]
+      kompassi_allowed_hosts: dev.kompassi.eu
+      kompassi_cache_url: memcache://memcache
+      kompassi_crowd_application_name: ''
+      kompassi_crowd_application_password: ''
+      kompassi_database_url: psql://postgres/kompassidev
+      kompassi_desuprofile_oauth2_client_id: ''
+      kompassi_desuprofile_oauth2_client_secret: ''
+      kompassi_google_analytics_token: ''
+      kompassi_hostname: dev.kompassi.eu
+      kompassi_image: tracon/kompassi
+      kompassi_installation_name: 'Kompassi (DEV)'
+      kompassi_installation_slug: turskadev
+      kompassi_letsencrypt: true
+      kompassi_port: 8015
+      kompassi_postgresql_database: kompassidev
+      kompassi_postgresql_password: "{{ kompassi_staging_postgresql_password }}"
+      kompassi_postgresql_username: kompassidev
+      kompassi_rabbitmq_cookie: "{{ kompassi_staging_rabbitmq_cookie }}"
+      kompassi_rabbitmq_password: "{{ kompassi_staging_rabbitmq_password }}"
+      kompassi_rabbitmq_username: kompassi
+      kompassi_rabbitmq_vhost: kompassi
+      kompassi_secret_key: "{{ kompassi_staging_secret_key }}"
+      kompassi_ssl_certificate_key: /srv/letsencrypt/secrets/dev.kompassi.eu/domain.key
+      kompassi_ssl_certificate: /srv/letsencrypt/secrets/dev.kompassi.eu/chained.pem
+      kompassi_ssl: true
+      kompassi_timeout: 600
+      kompassi_workers: 4
+
+      # unfortunately needs to be the same as prod due to container UID matching
+      kompassi_user: kompassi
+      kompassi_gid: 998
+      kompassi_uid: 998
+
     - role: atlasso
       tags: [atlasso]
     - role: shoottikala
@@ -426,6 +462,8 @@
       letsencrypt_domains:
         - name: kompassi.eu
           subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:neula.kompassi.eu,DNS:pgadmin.neula.kompassi.eu"
+        - name: dev.kompassi.eu
+          subject_alt_name: "DNS:dev.kompassi.eu"
         - name: photoshoot.conikuvat.fi
           subject_alt_name: "DNS:photoshoot.conikuvat.fi"
 

@@ -9,7 +9,11 @@ kompassi_desuprofile_oauth2_client_secret: "{{ vault_kompassi_desuprofile_oauth
 kompassi_postgresql_password: "{{ vault_kompassi_postgresql_password }}"
 kompassi_rabbitmq_password: "{{ vault_kompassi_rabbitmq_password }}"
 kompassi_rabbitmq_cookie: "{{ vault_kompassi_rabbitmq_cookie }}"
-kompassi_ssl_certificate_key_data: "{{ vault_kompassi_ssl_certificate_key_data }}"
+
+kompassi_staging_secret_key: "{{ vault_kompassi_staging_secret_key }}"
+kompassi_staging_postgresql_password: "{{ vault_kompassi_staging_postgresql_password }}"
+kompassi_staging_rabbitmq_password: "{{ vault_kompassi_staging_rabbitmq_password }}"
+kompassi_staging_rabbitmq_cookie: "{{ vault_kompassi_staging_rabbitmq_cookie }}"
 
 atlasso_secret_key: "{{ vault_atlasso_secret_key }}"
 atlasso_kompassi_oauth2_client_id: "{{ vault_atlasso_kompassi_oauth2_client_id }}"

@@ -9,8 +9,6 @@
     name: "{{ kompassi_hostname }}-rabbitmq"
     restart_policy: unless-stopped
     image: rabbitmq
-    ports:
-      - 5672:5672
     volumes:
       - "{{ kompassi_hostname }}-rabbitmq-data:/var/lib/rabbitmq"
     env:
@@ -37,7 +35,7 @@
       - "127.0.0.1:{{ kompassi_port }}:8000"
     links:
       - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
-      - "{{ kompassi_hostname }}-postgres:postgres"
+      - "{{ kompassi_postgresql_container }}:postgres"
       - "{{ kompassi_hostname }}-memcache:memcache"
     volumes:
       - "/srv/{{ kompassi_hostname }}/public_html/media:/usr/src/app/media"
@@ -55,7 +53,7 @@
     recreate: yes
     links:
       - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
-      - "{{ kompassi_hostname }}-postgres:postgres"
+      - "{{ kompassi_postgresql_container }}:postgres"
       - "{{ kompassi_hostname }}-memcache:memcache"
   tags: [kompassi-deploy]
 
