@@ -19,3 +19,6 @@
           - dev.kompassi.eu-memcache:memcache
         volumes:
           - /srv/dev.kompassi.eu/public_html/media:/usr/src/app/media
+
+    - name: Fix PostgreSQL table permissions for dev.kompassi.eu
+      shell: docker run --rm tracon/kompassi:staging cat kompassi/sql/02-setup-privileges.sql | sed -e 's/kompassi/kompassidev/' | sudo docker exec -i kompassi.eu-postgres psql -U kompassidev_ddl kompassidev
