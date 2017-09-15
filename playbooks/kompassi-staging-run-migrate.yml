@@ -2,7 +2,7 @@
   gather_facts: no
   become: yes
   tasks:
-    - name: Run "python manage.py setup" for dev.kompassi.eu
+    - name: Run "python manage.py migrate" for dev.kompassi.eu
       docker_container:
         name: dev.kompassi.eu-setup
         image: tracon/kompassi:staging
