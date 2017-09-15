@@ -425,7 +425,6 @@
       kompassi_cache_url: memcache://memcache
       kompassi_crowd_application_name: ''
       kompassi_crowd_application_password: ''
-      kompassi_database_url: psql://postgres/kompassidev
       kompassi_desuprofile_oauth2_client_id: ''
       kompassi_desuprofile_oauth2_client_secret: ''
       kompassi_google_analytics_token: ''
@@ -435,9 +434,9 @@
       kompassi_installation_slug: turskadev
       kompassi_letsencrypt: true
       kompassi_port: 8015
-      kompassi_postgresql_database: kompassidev
+      kompassi_postgresql_database: "{{ kompassi_staging_postgresql_database }}"
       kompassi_postgresql_password: "{{ kompassi_staging_postgresql_password }}"
-      kompassi_postgresql_username: kompassidev
+      kompassi_postgresql_username: "{{ kompassi_staging_postgresql_username }}"
       kompassi_rabbitmq_cookie: "{{ kompassi_staging_rabbitmq_cookie }}"
       kompassi_rabbitmq_password: "{{ kompassi_staging_rabbitmq_password }}"
       kompassi_rabbitmq_username: kompassi

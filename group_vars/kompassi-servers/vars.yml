@@ -10,10 +10,14 @@ kompassi_postgresql_password: "{{ vault_kompassi_postgresql_password }}"
 kompassi_rabbitmq_password: "{{ vault_kompassi_rabbitmq_password }}"
 kompassi_rabbitmq_cookie: "{{ vault_kompassi_rabbitmq_cookie }}"
 
-kompassi_staging_secret_key: "{{ vault_kompassi_staging_secret_key }}"
+kompassi_staging_postgresql_database: kompassidev
+kompassi_staging_postgresql_ddl_password: "{{ vault_kompassi_staging_postgresql_ddl_password }}"
+kompassi_staging_postgresql_ddl_username: kompassidev_ddl
 kompassi_staging_postgresql_password: "{{ vault_kompassi_staging_postgresql_password }}"
-kompassi_staging_rabbitmq_password: "{{ vault_kompassi_staging_rabbitmq_password }}"
+kompassi_staging_postgresql_username: kompassidev
 kompassi_staging_rabbitmq_cookie: "{{ vault_kompassi_staging_rabbitmq_cookie }}"
+kompassi_staging_rabbitmq_password: "{{ vault_kompassi_staging_rabbitmq_password }}"
+kompassi_staging_secret_key: "{{ vault_kompassi_staging_secret_key }}"
 
 atlasso_secret_key: "{{ vault_atlasso_secret_key }}"
 atlasso_kompassi_oauth2_client_id: "{{ vault_atlasso_kompassi_oauth2_client_id }}"

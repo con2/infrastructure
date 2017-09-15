@@ -1,0 +1,21 @@
+- hosts: kompassi-servers
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Run "python manage.py setup" for dev.kompassi.eu
+      docker_container:
+        name: dev.kompassi.eu-setup
+        image: tracon/kompassi:staging
+        detach: no
+        cleanup: yes
+        env_file: /srv/dev.kompassi.eu/env
+        env:
+          DATABASE_URL: postgres://{{ kompassi_staging_postgresql_ddl_username }}:{{ kompassi_staging_postgresql_ddl_password }}@postgres/{{ kompassi_staging_postgresql_database }}
+        recreate: yes
+        command: python manage.py setup
+        links:
+          - dev.kompassi.eu-rabbitmq:rabbitmq
+          - kompassi.eu-postgres:postgres
+          - dev.kompassi.eu-memcache:memcache
+        volumes:
+          - /srv/dev.kompassi.eu/public_html/media:/usr/src/app/media
