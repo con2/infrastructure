@@ -25,6 +25,6 @@
         set -ueo pipefail &&
         docker run --rm tracon/kompassi:staging cat kompassi/sql/02-setup-privileges.sql |
         sed -e 's/kompassi/kompassidev/' |
-        sudo docker exec -i kompassi.eu-postgres psql -U kompassidev_ddl kompassidev
+        docker exec -i kompassi.eu-postgres psql -U kompassidev_ddl kompassidev
       args:
         executable: /bin/bash
