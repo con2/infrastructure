@@ -1,14 +1,18 @@
-kompassi_secret_key: "{{ vault_kompassi_secret_key }}"
-kompassi_nexmo_username: "{{ vault_kompassi_nexmo_username }}"
-kompassi_nexmo_password: "{{ vault_kompassi_nexmo_password }}"
-kompassi_nexmo_from: "{{ vault_kompassi_nexmo_from }}"
-kompassi_inbound_key: "{{ vault_kompassi_inbound_key }}"
 kompassi_crowd_application_password: "{{ vault_kompassi_crowd_application_password }}"
 kompassi_desuprofile_oauth2_client_id: "{{ vault_kompassi_desuprofile_oauth2_client_id }}"
 kompassi_desuprofile_oauth2_client_secret: "{{ vault_kompassi_desuprofile_oauth2_client_secret }}"
+kompassi_inbound_key: "{{ vault_kompassi_inbound_key }}"
+kompassi_nexmo_from: "{{ vault_kompassi_nexmo_from }}"
+kompassi_nexmo_password: "{{ vault_kompassi_nexmo_password }}"
+kompassi_nexmo_username: "{{ vault_kompassi_nexmo_username }}"
+kompassi_postgresql_database: kompassi
+kompassi_postgresql_ddl_password: "{{ vault_kompassi_postgresql_ddl_password }}"
+kompassi_postgresql_ddl_username: kompassi_ddl
 kompassi_postgresql_password: "{{ vault_kompassi_postgresql_password }}"
-kompassi_rabbitmq_password: "{{ vault_kompassi_rabbitmq_password }}"
+kompassi_postgresql_username: kompassi
 kompassi_rabbitmq_cookie: "{{ vault_kompassi_rabbitmq_cookie }}"
+kompassi_rabbitmq_password: "{{ vault_kompassi_rabbitmq_password }}"
+kompassi_secret_key: "{{ vault_kompassi_secret_key }}"
 
 kompassi_staging_postgresql_database: kompassidev
 kompassi_staging_postgresql_ddl_password: "{{ vault_kompassi_staging_postgresql_ddl_password }}"

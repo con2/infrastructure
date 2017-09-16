@@ -1,0 +1,29 @@
+- hosts: kompassi-servers
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Run "python manage.py setup" for kompassi.eu
+      docker_container:
+        name: kompassi.eu-setup
+        image: tracon/kompassi
+        detach: no
+        cleanup: yes
+        env_file: /srv/kompassi.eu/env
+        env:
+          DATABASE_URL: postgres://{{ kompassi_postgresql_ddl_username }}:{{ kompassi_postgresql_ddl_password }}@postgres/{{ kompassi_postgresql_database }}
+        recreate: yes
+        command: python manage.py setup
+        links:
+          - kompassi.eu-rabbitmq:rabbitmq
+          - kompassi.eu-postgres:postgres
+          - kompassi.eu-memcache:memcache
+        volumes:
+          - /srv/kompassi.eu/public_html/media:/usr/src/app/media
+
+    - name: Fix PostgreSQL table permissions for kompassi.eu
+      shell: >
+        set -ueo pipefail &&
+        docker run --rm tracon/kompassi cat kompassi/sql/02-setup-privileges.sql |
+        docker exec -i kompassi.eu-postgres psql -U kompassi_ddl kompassi
+      args:
+        executable: /bin/bash
