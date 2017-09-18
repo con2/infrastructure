@@ -56,7 +56,7 @@ server {
         proxy_pass http://localhost:{{ edegal_port }};
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-Proto $scheme;
         proxy_read_timeout 300;
     }
 
@@ -64,7 +64,7 @@ server {
         proxy_pass http://localhost:{{ edegal_port }};
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-Proto $scheme;
         proxy_read_timeout 300;
     }
 
