@@ -417,7 +417,9 @@
         - kompassi.eu-postgres:postgres
 
     - role: kompassi
-      tags: [kompassi]
+      tags:
+        - kompassi
+        - kompassi-production
 
     - role: kompassi
       tags: [kompassi-staging]
