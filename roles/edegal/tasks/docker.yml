@@ -35,8 +35,8 @@
       - "127.0.0.1:{{ edegal_port }}:8000"
     volumes:
       - /mnt/coppermine_albums:/usr/src/app/media/coppermine_albums
-      - /mnt/coppermine_albums/beta_pictures:/usr/src/app/media/pictures
-      - /mnt/coppermine_albums/beta_previews:/usr/src/app/media/previews
+      - /mnt/coppermine_albums/pictures:/usr/src/app/media/pictures
+      - /mnt/coppermine_albums/previews:/usr/src/app/media/previews
     links:
       - "{{ edegal_hostname }}-rabbitmq:rabbitmq"
       - "{{ edegal_postgresql_container }}:postgres"
@@ -53,8 +53,8 @@
     recreate: yes
     volumes:
       - /mnt/coppermine_albums:/usr/src/app/media/coppermine_albums
-      - /mnt/coppermine_albums/beta_pictures:/usr/src/app/media/pictures
-      - /mnt/coppermine_albums/beta_previews:/usr/src/app/media/previews
+      - /mnt/coppermine_albums/pictures:/usr/src/app/media/pictures
+      - /mnt/coppermine_albums/previews:/usr/src/app/media/previews
     links:
       - "{{ edegal_hostname }}-rabbitmq:rabbitmq"
       - "{{ edegal_postgresql_container }}:postgres"

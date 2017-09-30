@@ -186,6 +186,15 @@
       redirect_ssl_certificate: /srv/letsencrypt/secrets/ry.tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/ry.tracon.fi/domain.key
 
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: beta.conikuvat.fi
+      # redirect_allowed_hosts: beta.conikuvat.fi uusi.kuvat.aniki.fi www.conikuvat.fi
+      redirect_allowed_hosts: uusi.kuvat.aniki.fi www.conikuvat.fi
+      redirect_target: https://conikuvat.fi
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/conikuvat.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/conikuvat.fi/domain.key
+
     - role: postgresql-docker
       tags: [postgresql-docker]
       postgresql_hostname: nuoli.tracon.fi
@@ -336,8 +345,12 @@
       tags: [infokala]
     - role: infotv
       tags: [infotv]
+
     - role: edegal
       tags: [edegal]
+      # TODO remove me
+      edegal_allowed_hosts: conikuvat.fi beta.conikuvat.fi
+
     - role: redmine
       tags: [redmine]
     - role: pgadmin4

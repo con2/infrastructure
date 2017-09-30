@@ -1,5 +1,5 @@
 edegal_image: conikuvat/edegal
-edegal_hostname: beta.conikuvat.fi
+edegal_hostname: conikuvat.fi
 edegal_port: 8009
 edegal_ssl: true
 edegal_letsencrypt: true
