@@ -1,4 +1,4 @@
-postgresql_version: "9.6"
+postgresql_version: "10"
 postgresql_user: postgres
 postgresql_directory: /var/lib/postgresql
 postgresql_config_directory: /etc/postgresql/{{ postgresql_version }}/main

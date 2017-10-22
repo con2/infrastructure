@@ -1,17 +1,17 @@
 # ansible
 
 # dist defaults
-data_directory = '/var/lib/postgresql/9.6/main'
-hba_file = '/etc/postgresql/9.6/main/pg_hba.conf'
-ident_file = '/etc/postgresql/9.6/main/pg_ident.conf'
-external_pid_file = '/var/run/postgresql/9.6-main.pid'
+data_directory = '/var/lib/postgresql/{{ postgresql_version }}/main'
+hba_file = '/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf'
+ident_file = '/etc/postgresql/{{ postgresql_version }}/main/pg_ident.conf'
+external_pid_file = '/var/run/postgresql/{{ postgresql_version }}-main.pid'
 port = 5432
 unix_socket_directories = '/var/run/postgresql'
 dynamic_shared_memory_type = posix
 log_line_prefix = '%m [%p] %q%u@%d '
 log_timezone = 'UTC'
-cluster_name = '9.6/main'
-stats_temp_directory = '/var/run/postgresql/9.6-main.pg_stat_tmp'
+cluster_name = '{{ postgresql_version }}/main'
+stats_temp_directory = '/var/run/postgresql/{{ postgresql_version }}-main.pg_stat_tmp'
 datestyle = 'iso, mdy'
 timezone = 'UTC'
 lc_messages = 'en_US.UTF-8'

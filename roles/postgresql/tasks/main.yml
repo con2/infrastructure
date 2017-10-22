@@ -39,6 +39,7 @@
     name: "{{ postgresql_barman_db_user }}"
     password: "{{ postgresql_barman_db_password }}"
     role_attr_flags: SUPERUSER
+    encrypted: yes
 
 - name: create replication account for backup
   become_user: postgres
@@ -46,6 +47,7 @@
     name: "{{ postgresql_barman_db_streaming_user }}"
     password: "{{ postgresql_barman_db_streaming_password }}"
     role_attr_flags: REPLICATION
+    encrypted: yes
 
 - name: allow the backup user to ssh in as {{ postgresql_user }}
   authorized_key:
