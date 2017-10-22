@@ -24,8 +24,8 @@ include_dir = 'conf.d'
 # changed by us
 listen_addresses = 'localhost,172.17.0.1,{{ postgresql_listen }}'
 wal_level = replica
-max_wal_senders = 2
-max_replication_slots = 2
+max_wal_senders = 3
+max_replication_slots = 3
 ssl = on
 ssl_cert_file = '{{ postgresql_ssl_certificate }}'
 ssl_key_file = '{{ postgresql_ssl_certificate_key }}'
