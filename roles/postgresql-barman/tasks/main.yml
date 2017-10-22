@@ -21,6 +21,23 @@
     - /var/lib/barman
     - /var/log/barman
 
+- name: ensure password entries in ~barman/.pgpass
+  no_log: true
+  lineinfile:
+    path: /var/lib/barman/.pgpass
+    create: true
+    # XXX HACK: dots in postgresql_hostname will match a literal dot as well
+    regexp: "^{{ postgresql_hostname }}:5432:\\*:{{ item.username }}:"
+    line: "{{ postgresql_hostname }}:5432:*:{{ item.username }}:{{ item.password }}"
+    owner: "{{ postgresql_barman_user }}"
+    group: "{{ postgresql_barman_user }}"
+    mode: 0600
+  with_items:
+    - username: "{{ postgresql_barman_db_user }}"
+      password: "{{ postgresql_barman_db_password }}"
+    - username: "{{ postgresql_barman_db_streaming_user }}"
+      password: "{{ postgresql_barman_db_streaming_password }}"
+
 - name: install barman packages
   apt:
     name: "{{ item }}"
