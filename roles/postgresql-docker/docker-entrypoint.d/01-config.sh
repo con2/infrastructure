@@ -2,8 +2,8 @@
 set -xue
 cat >> $PGDATA/postgresql.conf << ENDHATE
 wal_level = hot_standby
-max_wal_senders = 2
-max_replication_slots = 2
+max_wal_senders = 3
+max_replication_slots = 3
 ssl = on
 ssl_cert_file = '/server.crt'
 ssl_key_file = '/server.key'
