@@ -212,6 +212,7 @@
       tracontent_allowed_host_list:
         - 2016.tracon.fi
         - 2017.tracon.fi
+        - 2018.tracon.fi
         - blog.tracon.fi
         - r.tracon.fi
         - ry.tracon.fi
@@ -253,6 +254,7 @@
       tracontent_allowed_host_list:
         - 2016.tracon.fi
         - 2017.tracon.fi
+        - 2018.tracon.fi
         - blog.tracon.fi
         - r.tracon.fi
       tracontent_static_dir: /srv/tracontent.tracon.fi/public_html/static
@@ -382,7 +384,7 @@
       letsencrypt_domains:
         # ugly
         - name: tracon.fi
-          subject_alt_name: "DNS:tracon.fi,DNS:www.tracon.fi,DNS:nuoli.tracon.fi,DNS:2016.tracon.fi,DNS:2017.tracon.fi,DNS:blog.tracon.fi,DNS:r.tracon.fi,DNS:2005.tracon.fi,DNS:2006.tracon.fi,DNS:2007.tracon.fi,DNS:2008.tracon.fi,DNS:2009.tracon.fi,DNS:2010.tracon.fi,DNS:2011.tracon.fi,DNS:2012.tracon.fi,DNS:2013.tracon.fi,DNS:2014.tracon.fi,DNS:2015.tracon.fi,DNS:media.tracon.fi,DNS:kulukorvaus.tracon.fi,DNS:kirppu.tracon.fi,DNS:tera.tracon.fi,DNS:pora.tracon.fi,DNS:pgadmin.nuoli.tracon.fi,DNS:m.tracon.fi"
+          subject_alt_name: "DNS:tracon.fi,DNS:www.tracon.fi,DNS:nuoli.tracon.fi,DNS:2016.tracon.fi,DNS:2017.tracon.fi,DNS:2018.tracon.fi,DNS:blog.tracon.fi,DNS:r.tracon.fi,DNS:2005.tracon.fi,DNS:2006.tracon.fi,DNS:2007.tracon.fi,DNS:2008.tracon.fi,DNS:2009.tracon.fi,DNS:2010.tracon.fi,DNS:2011.tracon.fi,DNS:2012.tracon.fi,DNS:2013.tracon.fi,DNS:2014.tracon.fi,DNS:2015.tracon.fi,DNS:media.tracon.fi,DNS:kulukorvaus.tracon.fi,DNS:kirppu.tracon.fi,DNS:tera.tracon.fi,DNS:pora.tracon.fi,DNS:pgadmin.nuoli.tracon.fi,DNS:m.tracon.fi"
         - name: hitpoint.tracon.fi
           subject_alt_name: "DNS:hitpoint.tracon.fi,DNS:www.hitpoint.tracon.fi,DNS:2015.hitpoint.tracon.fi,DNS:2016.hitpoint.tracon.fi,DNS:2017.hitpoint.tracon.fi,DNS:kulukorvaus.hitpoint.tracon.fi"
         - name: ry.tracon.fi
