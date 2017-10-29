@@ -102,7 +102,7 @@
       tags: [redirect]
       redirect_hostname: wiki.tracon.fi
       redirect_allowed_hosts: wiki.tracon.fi m.wiki.tracon.fi mwiki.tracon.fi
-      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/TRACON2017
+      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/TRACON2018
       redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
@@ -118,7 +118,7 @@
       tags: [redirect]
       redirect_hostname: tyovoima.tracon.fi
       redirect_allowed_hosts: tyovoima.tracon.fi
-      redirect_target: https://kompassi.eu/events/tracon2017/signup
+      redirect_target: https://kompassi.eu/events/tracon2018/signup
       redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
@@ -219,8 +219,7 @@
         - 2016.hitpoint.tracon.fi
         - 2017.hitpoint.tracon.fi
       tracontent_editor_group_list:
-        - turska-hitpoint2017-labour-conitea
-        - turska-tracon2017-labour-conitea
+        - turska-tracon2018-labour-conitea
         - traconry-hallitus-nykyinen
 
     - role: tracontent
