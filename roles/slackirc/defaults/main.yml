@@ -4,7 +4,6 @@ slackirc_config:
   - channelMapping:
       "#putki": "#mansecon.random"
       "#traconforce": "#traconforce"
-      conitea2016: "#mansecon"
       conitea2017: "#mansecon.conitea2017"
       conitea2018: "#mansecon.conitea2018"
       hallitus: "#mansecon.hallitus"
