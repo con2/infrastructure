@@ -11,7 +11,7 @@ neula.kompassi.eu
 putki.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
 
 [postgresql-servers]
-siilo.tracon.fi
+siilo.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
 
 [barman-servers]
 piilo.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
