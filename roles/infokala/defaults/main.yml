@@ -10,7 +10,7 @@ infokala_default_event: tracon2017
 infokala_default_from_email: suunnistajat@kompassi.eu
 infokala_email_host: sr1.gw0.fi
 infokala_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
-infokala_postgresql_container: nuoli.tracon.fi-postgres
+infokala_postgresql_hostname: siilo.tracon.fi
 infokala_postgresql_username: infokala
 infokala_postgresql_database: infokala
 infokala_workers: 2
