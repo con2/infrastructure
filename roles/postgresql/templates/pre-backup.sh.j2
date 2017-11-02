@@ -1,0 +1,4 @@
+#!/bin/bash
+umask 077
+
+sudo -u postgres pg_dumpall > "/var/backups/postgresql/{{ postgresql_hostname }}-postgres"

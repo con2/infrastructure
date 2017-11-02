@@ -64,3 +64,17 @@
     owner: "{{ postgresql_user }}"
     group: "{{ postgresql_user }}"
     mode: 0600
+
+- name: Make sure backup directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /var/backups
+    - /var/backups/postgresql
+
+- name: Set up pre-backup script
+  template:
+    src: pre-backup.sh.j2
+    dest: /etc/pre-backup.d/{{ postgresql_hostname }}-postgres.sh
+    mode: 0755
