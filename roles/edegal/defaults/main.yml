@@ -24,7 +24,7 @@ edegal_cache_url: memcache://memcache
 edegal_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
 edegal_rabbitmq_username: conikuvat
 edegal_rabbitmq_vhost: conikuvat
-edegal_postgresql_container: nuoli.tracon.fi-postgres
+edegal_postgresql_hostname: siilo.tracon.fi
 edegal_postgresql_username: conikuvat
 edegal_postgresql_database: conikuvat
 edegal_workers: 4
