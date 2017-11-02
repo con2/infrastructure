@@ -6,4 +6,4 @@ redmine_default: false
 redmine_letsencrypt: true
 redmine_ssl: true
 redmine_image: redmine
-redmine_postgresql_container: nuoli.tracon.fi-postgres
+redmine_postgresql_hostname: siilo.tracon.fi

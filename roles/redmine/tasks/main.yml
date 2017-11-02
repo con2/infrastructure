@@ -25,12 +25,10 @@
     recreate: yes
     ports:
       - "127.0.0.1:{{ redmine_port }}:3000"
-    links:
-      - "{{ redmine_postgresql_container }}:postgres"
     volumes:
       - "{{ redmine_hostname }}-files:/usr/src/redmine/files"
     env:
-      REDMINE_DB_POSTGRES: postgres
+      REDMINE_DB_POSTGRES: "{{ redmine_postgresql_hostname }}"
       REDMINE_DB_PASSWORD: "{{ redmine_postgresql_password }}"
       REDMINE_DB_USERNAME: redmine
       REDMINE_DB_DATABASE: redmine
