@@ -36,12 +36,10 @@
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ infotv_workers }} infotv_tracon.wsgi:application"
     ports:
       - "127.0.0.1:{{ infotv_port }}:8000"
-    links:
-      - "{{ infotv_postgresql_container }}:postgres"
     env:
       ADMINS: "{{ infotv_admins }}"
       ALLOWED_HOSTS: "{{ infotv_allowed_hosts }}"
-      DATABASE_URL: "postgres://{{ infotv_postgresql_username }}:{{ infotv_postgresql_password }}@postgres/{{ infotv_postgresql_database }}"
+      DATABASE_URL: "postgres://{{ infotv_postgresql_username }}:{{ infotv_postgresql_password }}@{{ infotv_postgresql_hostname }}/{{ infotv_postgresql_database }}"
       DEFAULT_FROM_EMAIL: "{{ infotv_default_from_email }}"
       EMAIL_HOST: "{{ infotv_email_host }}"
       KOMPASSI_OAUTH2_CLIENT_ID: "{{ infotv_kompassi_oauth2_client_id }}"
