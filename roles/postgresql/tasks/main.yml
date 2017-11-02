@@ -25,6 +25,8 @@
     from: "{{ item }}"
   with_items:
     - "{{ postgresql_access_network }}"
+    - "{{ postgresql_barman_ip }}"
+
     # docker bridge
     - 172.17.0.0/16
 

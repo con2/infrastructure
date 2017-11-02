@@ -11,5 +11,6 @@ hostssl all             all             {{ postgresql_access_network }} md5
 # docker bridge
 host    all             all             172.17.0.1/16           md5
 
-# replication to barman server for backing up
+# barman backup
+host    all             {{ postgresql_barman_db_user }} {{ postgresql_barman_ip }}/32 md5
 host    replication     {{ postgresql_barman_db_streaming_user }} {{ postgresql_barman_ip }}/32 md5
