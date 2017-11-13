@@ -12,7 +12,7 @@
         env:
           DATABASE_URL: postgres://{{ kompassi_staging_postgresql_ddl_username }}:{{ kompassi_staging_postgresql_ddl_password }}@postgres/{{ kompassi_staging_postgresql_database }}
         recreate: yes
-        command: python manage.py migrate
+        command: python manage.py migrate --noinput
         links:
           - dev.kompassi.eu-rabbitmq:rabbitmq
           - kompassi.eu-postgres:postgres
