@@ -150,7 +150,7 @@
       tags: [redirect]
       redirect_hostname: kulukorvaus.tracon.fi
       redirect_allowed_hosts: kulukorvaus.tracon.fi
-      redirect_target: https://atlasso.tracon.fi/crowd?next=https%3A%2F%2Fjira.tracon.fi%2Fsecure%2FCreateIssue.jspa%3Fpid%3D10900%26issuetype%3D10100
+      redirect_target: https://atlasso.tracon.fi/crowd?next=https%3A%2F%2Fjira.tracon.fi%2Fsecure%2FCreateIssue.jspa%3Fpid%3D11001%26issuetype%3D10100
       redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
