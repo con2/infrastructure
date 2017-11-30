@@ -1,0 +1,60 @@
+- name: "Create tracontent group to facilitate access to static files"
+  group: name=tracontent system=yes
+  tags: [tracontent-instance]
+
+- name: "Add the nginx user to the tracontent group"
+  user: name=nginx groups=tracontent append=yes
+  tags: [tracontent-instance]
+
+- name: "Create host data directory"
+  file: path=/srv/{{ tracontent_hostname }} state=directory owner=root group=tracontent mode=02710
+  tags: [tracontent-instance]
+
+- name: "Create static files directory"
+  file: path=/srv/{{ tracontent_hostname }}/public_html state=directory owner=root group=tracontent mode=02750
+  tags: [tracontent-instance]
+
+- name: "Update TraContent CMS Enterprise Edition docker image from the registry"
+  docker_image:
+    name: tracon/tracontent
+    force: yes
+  tags: [tracontent-instance,tracontent-deploy]
+
+- name: "Create TraContent CMS Enterprise Edition container for {{ tracontent_hostname }}"
+  docker_container:
+    name: "{{ tracontent_hostname }}"
+    image: tracon/tracontent
+    recreate: yes
+    restart_policy: unless-stopped
+    command: "gunicorn --bind=0.0.0.0:8000 --workers={{ tracontent_workers }} tracontent.wsgi:application"
+    ports:
+      - "127.0.0.1:{{ tracontent_port }}:8000"
+    volumes:
+      - "{{ tracontent_hostname }}-media:/usr/src/app/media"
+    env:
+      ADMINS: "{{ tracontent_admins }}"
+      ALLOWED_HOSTS: '{{ tracontent_allowed_host_list|join(" ") }}'
+      DATABASE_URL: "postgres://{{ tracontent_postgresql_username }}:{{ tracontent_postgresql_password }}@{{ tracontent_postgresql_hostname }}/{{ tracontent_postgresql_database }}"
+      DEFAULT_FROM_EMAIL: "{{ tracontent_default_from_email }}"
+      EMAIL_HOST: "{{ tracontent_email_host }}"
+      KOMPASSI_OAUTH2_CLIENT_ID: "{{ tracontent_kompassi_oauth2_client_id }}"
+      KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ tracontent_kompassi_oauth2_client_secret }}"
+      KOMPASSI_EDITOR_GROUPS: '{{ tracontent_editor_group_list|join(" ") }}'
+      SECRET_KEY: "{{ tracontent_secret_key }}"
+  tags: [tracontent-instance,tracontent-deploy]
+
+- name: "Extract static files from inside container"
+  command: >
+    /usr/bin/docker cp {{ tracontent_hostname }}:/usr/src/app/static /srv/{{ tracontent_hostname }}/public_html/
+  tags: [tracontent-instance,tracontent-deploy]
+
+- name: "Make sure backup directory exists for TraContent"
+  file:
+    path: /var/backups/tracontent
+    state: directory
+
+- name: "Setup pre-backup script for {{ tracontent_hostname }}"
+  template:
+    src: pre-backup.sh.j2
+    dest: /etc/pre-backup.d/{{ tracontent_hostname }}.sh
+    mode: 0755

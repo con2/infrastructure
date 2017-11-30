@@ -195,6 +195,14 @@
       redirect_ssl_certificate: /srv/letsencrypt/secrets/conikuvat.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/conikuvat.fi/domain.key
 
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: www.con2.fi
+      redirect_allowed_hosts: www.con2.fi
+      redirect_target: https://con2.fi
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/con2.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/con2.fi/domain.key
+
     - role: postgresql-docker
       tags: [postgresql-docker]
       postgresql_hostname: nuoli.tracon.fi
@@ -302,6 +310,25 @@
       tracontent_editor_group_list:
         - aicon-staff
 
+    - role: tracontent-siilo
+      tags: [tracontent]
+      tracontent_hostname: tracontent.con2.fi
+      tracontent_static_dir: /srv/tracontent.con2.fi/public_html/static
+      tracontent_allowed_host_list:
+        - con2.fi
+      tracontent_ssl_certificate: /srv/letsencrypt/secrets/con2.fi/chained.pem
+      tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/con2.fi/domain.key
+      tracontent_port: 8016
+      tracontent_secret_key: "{{ vault_con2_tracontent_secret_key }}"
+      tracontent_postgresql_username: con2
+      tracontent_postgresql_password: "{{ vault_con2_tracontent_postgresql_password }}"
+      tracontent_postgresql_database: con2
+      tracontent_kompassi_oauth2_client_id: "{{ vault_con2_tracontent_kompassi_oauth2_client_id }}"
+      tracontent_kompassi_oauth2_client_secret: "{{ vault_con2_tracontent_kompassi_oauth2_client_secret }}"
+      tracontent_favicon: null
+      tracontent_editor_group_list:
+        - con2-staff
+
     - role: kirppu
       tags: [kirppu]
 
@@ -402,6 +429,8 @@
           subject_alt_name: "DNS:aicon.fi,DNS:www.aicon.fi,DNS:2016.aicon.fi,DNS:2017.aicon.fi,DNS:2018.aicon.fi,DNS:m.aicon.fi"
         - name: conikuvat.fi
           subject_alt_name: "DNS:beta.conikuvat.fi"
+        - name: con2.fi
+          subject_alt_name: "DNS:con2.fi,DNS:www.con2.fi"
 
 - hosts: kompassi-servers
   gather_facts: no
