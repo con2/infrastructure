@@ -1,3 +1,5 @@
+base_backup_public_keys: "{{ vault_base_backup_public_keys }}"
+
 slackirc_api_token: "{{ vault_slackirc_api_token }}"
 slackirc_con2_api_token: "{{ vault_slackirc_con2_api_token }}"
 base_admin_users: "{{ vault_base_admin_users }}"
