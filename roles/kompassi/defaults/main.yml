@@ -9,7 +9,7 @@ kompassi_allowed_hosts: "{{ kompassi_hostname }} vara.kompassi.eu"
 kompassi_installation_name: Kompassi
 kompassi_installation_slug: turska
 kompassi_default_from_email: suunnistajat@kompassi.eu
-kompassi_email_host: sr1.gw0.fi
+kompassi_email_host: sr1.pahaip.fi
 kompassi_crowd_application_name: kompassi
 kompassi_cache_url: memcache://memcache
 kompassi_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"

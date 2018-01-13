@@ -7,7 +7,7 @@ shoottikala_ssl_certificate: /srv/letsencrypt/secrets/photoshoot.conikuvat.fi/ch
 shoottikala_ssl_certificate_key: /srv/letsencrypt/secrets/photoshoot.conikuvat.fi/domain.key
 shoottikala_allowed_hosts: "{{ shoottikala_hostname }}"
 shoottikala_default_from_email: yhteys@conikuvat.fi
-shoottikala_email_host: sr1.gw0.fi
+shoottikala_email_host: sr1.pahaip.fi
 shoottikala_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
 shoottikala_postgresql_container: kompassi.eu-postgres
 shoottikala_postgresql_username: shoottikala
