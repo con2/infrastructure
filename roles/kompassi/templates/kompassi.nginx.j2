@@ -26,7 +26,7 @@ server {
 
 {% endif %}
     location ~ ^/static/(.*)$ {
-        alias /srv/kompassi.eu/public_html/static/$1;
+        alias /srv/{{ kompassi_hostname }}/public_html/static/$1;
         expires 30m;
     }
 
