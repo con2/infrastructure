@@ -504,7 +504,6 @@
       kompassi_ssl: true
       kompassi_timeout: 600
       kompassi_workers: 4
-      kompassi_email_host: sr0a.pahaip.fi
 
       # unfortunately needs to be the same as prod due to container UID matching
       kompassi_user: kompassi
