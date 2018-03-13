@@ -7,7 +7,7 @@ infotv_ssl_certificate: /srv/letsencrypt/secrets/infotv.tracon.fi/chained.pem
 infotv_ssl_certificate_key: /srv/letsencrypt/secrets/infotv.tracon.fi/domain.key
 infotv_allowed_hosts: "{{ infotv_hostname }}"
 infotv_default_from_email: suunnistajat@kompassi.eu
-infotv_email_host: sr1.pahaip.fi
+infotv_email_host: sr0a.pahaip.fi
 infotv_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
 infotv_postgresql_hostname: siilo.tracon.fi
 infotv_postgresql_username: infotv

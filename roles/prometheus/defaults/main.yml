@@ -13,7 +13,7 @@ alertmanager_ssl: true
 alertmanager_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
 alertmanager_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key
 alertmanager_port: 8011
-alertmanager_smtp_server: sr1.pahaip.fi
+alertmanager_smtp_server: sr0a.pahaip.fi
 alertmanager_smtp_from: root@tracon.fi
 # alertmanager_basic_auth: vault
 # alertmanager_webhook_url: vault

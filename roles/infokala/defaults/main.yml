@@ -8,7 +8,7 @@ infokala_ssl_certificate_key: /srv/letsencrypt/secrets/infokala.tracon.fi/domain
 infokala_allowed_hosts: "{{ infokala_hostname }}"
 infokala_default_event: tracon2017
 infokala_default_from_email: suunnistajat@kompassi.eu
-infokala_email_host: sr1.pahaip.fi
+infokala_email_host: sr0a.pahaip.fi
 infokala_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
 infokala_postgresql_hostname: siilo.tracon.fi
 infokala_postgresql_username: infokala
