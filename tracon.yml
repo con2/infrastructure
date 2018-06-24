@@ -203,6 +203,13 @@
       redirect_ssl_certificate: /srv/letsencrypt/secrets/con2.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/con2.fi/domain.key
 
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: wiki.yukicon.fi
+      redirect_allowed_hosts: wiki.yukicon.fi
+      redirect_target: https://confluence.tracon.fi/display/YUKICON2019
+      redirect_ssl: false
+
     - role: postgresql-docker
       tags: [postgresql-docker]
       postgresql_hostname: nuoli.tracon.fi
@@ -309,6 +316,7 @@
       tracontent_favicon: null
       tracontent_editor_group_list:
         - aicon-staff
+        - turska-aicon2018-labour-vastaava
 
     - role: tracontent-siilo
       tags: [tracontent]
