@@ -22,3 +22,6 @@ kompassi_user: kompassi
 kompassi_gid: 998
 kompassi_uid: 998
 kompassi_google_analytics_token: UA-26907758-9
+
+# whitespace separated
+kompassi_cors_origin_whitelist: infotv.ropecon.fi
