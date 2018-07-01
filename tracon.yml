@@ -33,12 +33,23 @@
   roles:
     - role: postgresql
       tags: [postgresql]
+
     - role: letsencrypt
       tags: [letsencrypt]
       letsencrypt_domains:
         # ugly
         - name: siilo.tracon.fi
           subject_alt_name: "DNS:siilo.tracon.fi"
+
+    # default site
+    - role: redirect
+      tags: [redirect]
+      redirect_default: true
+      redirect_hostname: "{{ inventory_hostname }}"
+      redirect_allowed_hosts: "{{ inventory_hostname }}"
+      redirect_target: https://2018.tracon.fi
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/siilo.tracon.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/siilo.tracon.fi/domain.key
 
 - hosts: barman-servers
   gather_facts: no
