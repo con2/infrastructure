@@ -7,3 +7,7 @@ Apart from the standard vars, there is one called `pgadmin_container_links` that
 ## Manual steps
 
 After setting up a new instance, log into it in the browser and set up the database server in pgAdmin4. You will need to create a PostgreSQL user for that. If you used a Docker link, use the link alias (likely `postgres`) as the DB hostname.
+
+## Uninstallation
+
+Use the `pgadmin4/uninstall` role. Removes the container and nginx config. Won't remove the PostgreSQL user.

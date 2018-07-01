@@ -33,9 +33,8 @@
   roles:
     - role: postgresql
       tags: [postgresql]
-    - role: pgadmin4
+    - role: pgadmin4/uninstall
       tags: [pgadmin4]
-      pgadmin4_default: true
     - role: letsencrypt
       tags: [letsencrypt]
       letsencrypt_domains:
@@ -401,13 +400,9 @@
 
     - role: redmine
       tags: [redmine]
-    - role: pgadmin4
+    - role: pgadmin4/uninstall
       tags: [pgadmin4]
       pgadmin4_hostname: pgadmin.nuoli.tracon.fi
-      pgadmin4_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
-      pgadmin4_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
-      pgadmin4_container_links:
-        - nuoli.tracon.fi-postgres:postgres
 
     - role: oidentd
       tags: [oidentd]
@@ -471,13 +466,9 @@
       postgresql_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
       postgresql_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
 
-    - role: pgadmin4
+    - role: pgadmin4/uninstall
       tags: [pgadmin4]
       pgadmin4_hostname: pgadmin.neula.kompassi.eu
-      pgadmin4_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
-      pgadmin4_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
-      pgadmin4_container_links:
-        - kompassi.eu-postgres:postgres
 
     - role: kompassi
       tags:
@@ -558,13 +549,9 @@
     - role: prometheus
       tags: [prometheus]
 
-    - role: pgadmin4
+    - role: pgadmin4/uninstall
       tags: [pgadmin4]
       pgadmin4_hostname: pgadmin.monokkeli.tracon.fi
-      pgadmin4_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
-      pgadmin4_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key
-      pgadmin4_container_links:
-        - jenkins.tracon.fi-postgres:postgres
 
     # get SSL for future service
     - role: redirect
