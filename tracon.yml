@@ -45,8 +45,8 @@
     - role: redirect
       tags: [redirect]
       redirect_default: true
-      redirect_hostname: "{{ inventory_hostname }}"
-      redirect_allowed_hosts: "{{ inventory_hostname }}"
+      redirect_hostname: "{{ inventory_hostname }}"
+      redirect_allowed_hosts: "{{ inventory_hostname }}"
       redirect_target: https://2018.tracon.fi
       redirect_ssl_certificate: /srv/letsencrypt/secrets/siilo.tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/siilo.tracon.fi/domain.key
@@ -68,8 +68,8 @@
     - role: redirect
       tags: [redirect]
       redirect_default: true
-      redirect_hostname: "{{ inventory_hostname }}"
-      redirect_allowed_hosts: "{{ inventory_hostname }}"
+      redirect_hostname: "{{ inventory_hostname }}"
+      redirect_allowed_hosts: "{{ inventory_hostname }}"
       redirect_target: https://2018.tracon.fi
       redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
@@ -294,7 +294,7 @@
       tracontent_ssl_certificate: /srv/letsencrypt/secrets/animecon.fi/chained.pem
       tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/animecon.fi/domain.key
       tracontent_port: 8005
-      tracontent_secret_key: "{{ vault_animecon_tracontent_secret_key }}"
+      tracontent_secret_key: "{{ vault_animecon_tracontent_secret_key }}"
       tracontent_postgresql_username: animecon
       tracontent_postgresql_password: "{{ vault_animecon_tracontent_postgresql_password }}"
       tracontent_postgresql_database: animecon
@@ -315,7 +315,7 @@
       tracontent_ssl_certificate: /srv/letsencrypt/secrets/aicon.fi/chained.pem
       tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/aicon.fi/domain.key
       tracontent_port: 8006
-      tracontent_secret_key: "{{ vault_aicon_tracontent_secret_key }}"
+      tracontent_secret_key: "{{ vault_aicon_tracontent_secret_key }}"
       tracontent_postgresql_username: aicon
       tracontent_postgresql_password: "{{ vault_aicon_tracontent_postgresql_password }}"
       tracontent_postgresql_database: aicon
@@ -335,7 +335,7 @@
       tracontent_ssl_certificate: /srv/letsencrypt/secrets/con2.fi/chained.pem
       tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/con2.fi/domain.key
       tracontent_port: 8016
-      tracontent_secret_key: "{{ vault_con2_tracontent_secret_key }}"
+      tracontent_secret_key: "{{ vault_con2_tracontent_secret_key }}"
       tracontent_postgresql_username: con2
       tracontent_postgresql_password: "{{ vault_con2_tracontent_postgresql_password }}"
       tracontent_postgresql_database: con2
@@ -447,8 +447,8 @@
     # default site
     - role: redirect
       tags: [redirect]
-      redirect_hostname: "{{ inventory_hostname }}"
-      redirect_allowed_hosts: "{{ inventory_hostname }} www.{{ inventory_hostname }}"
+      redirect_hostname: "{{ inventory_hostname }}"
+      redirect_allowed_hosts: "{{ inventory_hostname }} www.{{ inventory_hostname }}"
       redirect_target: https://kompassi.eu
       redirect_ssl: true
       redirect_default: true
@@ -493,10 +493,10 @@
       kompassi_letsencrypt: true
       kompassi_port: 8015
       kompassi_postgresql_database: "{{ kompassi_staging_postgresql_database }}"
-      kompassi_postgresql_password: "{{ kompassi_staging_postgresql_password }}"
+      kompassi_postgresql_password: "{{ kompassi_staging_postgresql_password }}"
       kompassi_postgresql_username: "{{ kompassi_staging_postgresql_username }}"
       kompassi_rabbitmq_cookie: "{{ kompassi_staging_rabbitmq_cookie }}"
-      kompassi_rabbitmq_password: "{{ kompassi_staging_rabbitmq_password }}"
+      kompassi_rabbitmq_password: "{{ kompassi_staging_rabbitmq_password }}"
       kompassi_rabbitmq_username: kompassi
       kompassi_rabbitmq_vhost: kompassi
       kompassi_secret_key: "{{ kompassi_staging_secret_key }}"
@@ -589,8 +589,8 @@
 
     - role: redirect
       tags: [redirect]
-      redirect_hostname: "{{ inventory_hostname }}"
-      redirect_allowed_hosts: "{{ inventory_hostname }} www.{{ inventory_hostname }}"
+      redirect_hostname: "{{ inventory_hostname }}"
+      redirect_allowed_hosts: "{{ inventory_hostname }} www.{{ inventory_hostname }}"
       redirect_target: https://kompassi.eu
       redirect_default: true
       redirect_ssl_certificate: /srv/letsencrypt/secrets/putki.tracon.fi/chained.pem
