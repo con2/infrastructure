@@ -17,7 +17,7 @@ edegal_extra_groups: users
 edegal_ssl_certificate: /srv/letsencrypt/secrets/conikuvat.fi/chained.pem
 edegal_ssl_certificate_key: /srv/letsencrypt/secrets/conikuvat.fi/domain.key
 
-edegal_allowed_hosts: "{{ edegal_hostname }}"
+edegal_allowed_hosts: "{{ edegal_hostname }}"
 edegal_default_from_email: yhteys@conikuvat.fi
 edegal_email_host: sr0a.pahaip.fi
 edegal_cache_url: memcache://memcache
