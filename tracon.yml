@@ -448,7 +448,6 @@
       redirect_hostname: "{{ inventory_hostname }}"
       redirect_allowed_hosts: "{{ inventory_hostname }} www.{{ inventory_hostname }}"
       redirect_target: https://kompassi.eu
-      redirect_ssl: true
       redirect_default: true
       redirect_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
