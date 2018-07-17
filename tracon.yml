@@ -470,6 +470,8 @@
       postgresql_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
 
     - role: kompassi
+      kompassi_hostname: kompassi.eu
+      kompassi_allowed_hosts: kompassi.eu animecon.fi conit.fi
       tags:
         - kompassi
         - kompassi-production
