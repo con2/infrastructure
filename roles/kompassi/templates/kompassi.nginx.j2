@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ kompassi_allowed_hosts }};
+    server_name {{ kompassi_allowed_hosts }};
 
 {% if kompassi_letsencrypt %}
     location /.well-known/acme-challenge/ {
@@ -22,7 +22,7 @@ server {
     add_header Strict-Transport-Security max-age=15768000;
 
     ssl_certificate {{ kompassi_ssl_certificate }};
-    ssl_certificate_key {{ kompassi_ssl_certificate_key }};
+    ssl_certificate_key {{ kompassi_ssl_certificate_key }};
 
 {% endif %}
     location ~ ^/static/(.*)$ {
