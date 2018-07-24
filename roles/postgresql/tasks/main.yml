@@ -24,7 +24,7 @@
     port: 5432
     from: "{{ item }}"
   with_items:
-    - "{{ postgresql_access_network }}"
+    - "{{ postgresql_access_network }}"
     - "{{ postgresql_barman_ip }}"
 
     # docker bridge
@@ -67,7 +67,7 @@
 
 - name: Make sure backup directories exist
   file:
-    path: "{{ item }}"
+    path: "{{ item }}"
     state: directory
   with_items:
     - /var/backups

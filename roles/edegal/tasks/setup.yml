@@ -8,10 +8,10 @@
 
 - name: "Create {{ edegal_user }} user"
   user:
-    name: "{{ edegal_user }}"
-    group: "{{ edegal_user }}"
+    name: "{{ edegal_user }}"
+    group: "{{ edegal_user }}"
     uid: "{{ edegal_uid }}"
-    groups: "{{ edegal_extra_groups }}"
+    groups: "{{ edegal_extra_groups }}"
 
 - name: "Add the nginx user to the {{ edegal_user }} group"
   user:
@@ -42,7 +42,7 @@
     mode: 0600
   tags: [edegal-deploy]
 
-- name: "Setup nginx vhost for {{ edegal_hostname }}"
+- name: "Setup nginx vhost for {{ edegal_hostname }}"
   template:
     src: edegal.nginx.j2
     dest: /etc/nginx/sites-available/{{ edegal_hostname }}
@@ -50,10 +50,10 @@
   notify: restart nginx
   tags: [edegal-nginx]
 
-- name: "Enable nginx vhost for {{ edegal_hostname }}"
+- name: "Enable nginx vhost for {{ edegal_hostname }}"
   file:
-      src: /etc/nginx/sites-available/{{ edegal_hostname }}
-      path: /etc/nginx/sites-enabled/{{ edegal_hostname }}
+      src: /etc/nginx/sites-available/{{ edegal_hostname }}
+      path: /etc/nginx/sites-enabled/{{ edegal_hostname }}
       state: link
   notify: restart nginx
   tags: [edegal-nginx]

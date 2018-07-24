@@ -20,15 +20,15 @@
   template: src=kompassi.env.j2 dest=/srv/{{ kompassi_hostname }}/env mode=0600
   tags: [kompassi-deploy]
 
-- name: "Setup nginx vhost for {{ kompassi_hostname }}"
+- name: "Setup nginx vhost for {{ kompassi_hostname }}"
   template: src=kompassi.nginx.j2 dest=/etc/nginx/sites-available/{{ kompassi_hostname }} mode=0644
   notify: restart nginx
   tags: [kompassi-nginx]
 
-- name: "Enable nginx vhost for {{ kompassi_hostname }}"
+- name: "Enable nginx vhost for {{ kompassi_hostname }}"
   file: >
-    src=/etc/nginx/sites-available/{{ kompassi_hostname }}
-    path=/etc/nginx/sites-enabled/{{ kompassi_hostname }}
+    src=/etc/nginx/sites-available/{{ kompassi_hostname }}
+    path=/etc/nginx/sites-enabled/{{ kompassi_hostname }}
     state=link
   notify: restart nginx
   tags: [kompassi-nginx]

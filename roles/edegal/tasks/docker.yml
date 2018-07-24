@@ -1,6 +1,6 @@
 - name: "Update edegal docker image from the registry"
   docker_image:
-    name: "{{ edegal_image }}"
+    name: "{{ edegal_image }}"
     force: yes
   tags: [edegal-deploy]
 
@@ -14,8 +14,8 @@
     env:
       RABBITMQ_ERLANG_COOKIE: "{{ edegal_rabbitmq_cookie }}"
       RABBITMQ_DEFAULT_USER: "{{ edegal_rabbitmq_username }}"
-      RABBITMQ_DEFAULT_PASS: "{{ edegal_rabbitmq_password }}"
-      RABBITMQ_DEFAULT_VHOST: "{{ edegal_rabbitmq_vhost }}"
+      RABBITMQ_DEFAULT_PASS: "{{ edegal_rabbitmq_password }}"
+      RABBITMQ_DEFAULT_VHOST: "{{ edegal_rabbitmq_vhost }}"
 
 - name: "Create {{ edegal_hostname }}-memcache container"
   docker_container:
@@ -26,13 +26,13 @@
 - name: "Create {{ edegal_hostname }}-gunicorn container"
   docker_container:
     name: "{{ edegal_hostname }}-gunicorn"
-    image: "{{ edegal_image }}"
+    image: "{{ edegal_image }}"
     env_file: /srv/{{ edegal_hostname }}/env
     recreate: yes
     restart_policy: unless-stopped
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ edegal_workers }} --timeout={{ edegal_timeout }} edegal_site.wsgi:application"
     ports:
-      - "127.0.0.1:{{ edegal_port }}:8000"
+      - "127.0.0.1:{{ edegal_port }}:8000"
     volumes:
       - /mnt/coppermine_albums:/usr/src/app/media/coppermine_albums
       - /mnt/coppermine_albums/pictures:/usr/src/app/media/pictures
@@ -45,7 +45,7 @@
 - name: "Create {{ edegal_hostname }}-celery container"
   docker_container:
     name: "{{ edegal_hostname }}-celery"
-    image: "{{ edegal_image }}"
+    image: "{{ edegal_image }}"
     restart_policy: unless-stopped
     command: "celery -A edegal_site.celery:app worker"
     env_file: /srv/{{ edegal_hostname }}/env
@@ -65,10 +65,10 @@
 
 # - name: "Extract static files from inside container (docker_container version)"
 #   docker_container:
-#     name: "{{ edegal_hostname }}-extract-static"
+#     name: "{{ edegal_hostname }}-extract-static"
 #     cleanup: yes
 #     detach: no
-#     image: "{{ edegal_image }}"
+#     image: "{{ edegal_image }}"
 #     command: "rsync -aqH --delete-after /usr/src/app/static /tmp/edegal-static-files/"
 #     volumes:
 #       - "/tmp/edegal-static-files:/srv/{{ edegal_hostname }}/public_html"

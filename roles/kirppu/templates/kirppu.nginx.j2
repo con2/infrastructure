@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ kirppu_allowed_hosts }};
+    server_name {{ kirppu_allowed_hosts }};
 
 {% if kirppu_letsencrypt %}
     location /.well-known/acme-challenge/ {
@@ -23,7 +23,7 @@ server {
 
     ssl on;
     ssl_certificate {{ kirppu_ssl_certificate }};
-    ssl_certificate_key {{ kirppu_ssl_certificate_key }};
+    ssl_certificate_key {{ kirppu_ssl_certificate_key }};
 
 {% endif %}
     location ~ ^/static/(.*)$ {

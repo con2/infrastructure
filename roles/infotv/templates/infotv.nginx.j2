@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ infotv_allowed_hosts }};
+    server_name {{ infotv_allowed_hosts }};
 
 {% if infotv_letsencrypt %}
     location /.well-known/acme-challenge/ {
@@ -23,7 +23,7 @@ server {
 
     ssl on;
     ssl_certificate {{ infotv_ssl_certificate }};
-    ssl_certificate_key {{ infotv_ssl_certificate_key }};
+    ssl_certificate_key {{ infotv_ssl_certificate_key }};
 
 {% endif %}
     location ~ ^/static/(.*)$ {

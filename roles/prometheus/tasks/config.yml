@@ -4,15 +4,15 @@
     system: true
 
 
-- name: create host data directory for {{ alertmanager_hostname }}
+- name: create host data directory for {{ alertmanager_hostname }}
   file:
-    path: /srv/{{ alertmanager_hostname }}
+    path: /srv/{{ alertmanager_hostname }}
     state: directory
     owner: root
     group: prometheus
     mode: 0750
 
-- name: create config file for {{ alertmanager_hostname }}
+- name: create config file for {{ alertmanager_hostname }}
   template:
     src: alertmanager.yml.j2
     dest: /srv/{{ alertmanager_hostname }}/config.yml
@@ -21,7 +21,7 @@
     mode: 0640
 
 
-- name: create host data directories for {{ prometheus_hostname }}
+- name: create host data directories for {{ prometheus_hostname }}
   file:
     path: "{{ item }}"
     state: directory
@@ -29,10 +29,10 @@
     group: prometheus
     mode: 0750
   with_items:
-    - /srv/{{ prometheus_hostname }}
-    - /srv/{{ prometheus_hostname }}/rules
+    - /srv/{{ prometheus_hostname }}
+    - /srv/{{ prometheus_hostname }}/rules
 
-- name: create config file for {{ prometheus_hostname }}
+- name: create config file for {{ prometheus_hostname }}
   template:
     src: prometheus.yml.j2
     dest: /srv/{{ prometheus_hostname }}/prometheus.yml
@@ -40,10 +40,10 @@
     group: prometheus
     mode: 0640
 
-- name: copy rules files for {{ prometheus_hostname }}
+- name: copy rules files for {{ prometheus_hostname }}
   copy:
     src: "{{ item }}"
-    dest: "/srv/{{ prometheus_hostname }}/rules/{{ item }}"
+    dest: "/srv/{{ prometheus_hostname }}/rules/{{ item }}"
     owner: root
     group: prometheus
     mode: 0640
@@ -51,9 +51,9 @@
     - node.rules
     - generic.rules
 
-- name: remove stale rule files from {{ prometheus_hostname }}
+- name: remove stale rule files from {{ prometheus_hostname }}
   file:
-    path: "/srv/{{ prometheus_hostname }}/rules/{{ item }}"
+    path: "/srv/{{ prometheus_hostname }}/rules/{{ item }}"
     state: absent
   with_items:
     - django.rules

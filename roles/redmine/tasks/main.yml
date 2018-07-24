@@ -1,12 +1,12 @@
-- name: "Setup nginx vhost for {{ redmine_hostname }}"
+- name: "Setup nginx vhost for {{ redmine_hostname }}"
   template: src=redmine.nginx.j2 dest=/etc/nginx/sites-available/{{ redmine_hostname }} mode=0644
   notify: restart nginx
   tags: [redmine-nginx]
 
-- name: "Enable nginx vhost for {{ redmine_hostname }}"
+- name: "Enable nginx vhost for {{ redmine_hostname }}"
   file: >
-    src=/etc/nginx/sites-available/{{ redmine_hostname }}
-    path=/etc/nginx/sites-enabled/{{ redmine_hostname }}
+    src=/etc/nginx/sites-available/{{ redmine_hostname }}
+    path=/etc/nginx/sites-enabled/{{ redmine_hostname }}
     state=link
   notify: restart nginx
   tags: [redmine-nginx]
@@ -24,7 +24,7 @@
     restart_policy: unless-stopped
     recreate: yes
     ports:
-      - "127.0.0.1:{{ redmine_port }}:3000"
+      - "127.0.0.1:{{ redmine_port }}:3000"
     volumes:
       - "{{ redmine_hostname }}-files:/usr/src/redmine/files"
     env:
@@ -41,7 +41,7 @@
     mode: 0755
 
 - name: Make sure backup directories exist
-  file: path={{ item }} state=directory
+  file: path={{ item }} state=directory
   with_items:
     - /var/backups
     - /var/backups/redmine

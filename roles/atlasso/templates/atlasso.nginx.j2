@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ atlasso_allowed_hosts }};
+    server_name {{ atlasso_allowed_hosts }};
 
 {% if atlasso_letsencrypt %}
     location /.well-known/acme-challenge/ {
@@ -23,7 +23,7 @@ server {
 
     ssl on;
     ssl_certificate {{ atlasso_ssl_certificate }};
-    ssl_certificate_key {{ atlasso_ssl_certificate_key }};
+    ssl_certificate_key {{ atlasso_ssl_certificate_key }};
 
 {% endif %}
     location ~ ^/static/(.*)$ {

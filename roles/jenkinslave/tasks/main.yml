@@ -32,7 +32,7 @@
 
 - name: install jenkinslave ssh public key
   copy:
-    dest: /srv/jenkinslave/.ssh/{{ item }}
+    dest: /srv/jenkinslave/.ssh/{{ item }}
     content: "{{ jenkinslave_ssh_public_key_data }}"
     owner: jenkinslave
     group: jenkinslave
@@ -51,7 +51,7 @@
 
 - name: install ansible deps
   apt:
-    name: "{{ item }}"
+    name: "{{ item }}"
   with_items:
     - libffi-dev
     - libssl-dev

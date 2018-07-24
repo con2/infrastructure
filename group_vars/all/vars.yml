@@ -2,7 +2,7 @@ base_backup_public_keys: "{{ vault_base_backup_public_keys }}"
 
 slackirc_api_token: "{{ vault_slackirc_api_token }}"
 slackirc_con2_api_token: "{{ vault_slackirc_con2_api_token }}"
-base_admin_users: "{{ vault_base_admin_users }}"
+base_admin_users: "{{ vault_base_admin_users }}"
 jenkinslave_ssh_public_key_data: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCtatM4cpiEjWF2xlRRwwY5+tTYVCTXbvc2dlUTafj7vY6GOKheg8pNMrJMB1Cfd//2WZO3ppcqesfSDZShoqNxaWsRazQlia2aNtYg5M+u5rAfpRiOY8n0LcQ9EEyDrxpDQoTKRUEzmI7YjZh7w+1qTWscdozvLOKrewSBzUwabNCZiGLuUsYAQ1h0ULiUYRuPw0804tRhJi61g+OC2WGY+HfqL2fdAl5AuPEDvEqFGFZyBtuwnk26q2kt1ERq/k9GbHsffYOlKRgdBI8AtQM06OAtBQ9hQW6E1TwGwoOVraVcFvtshRqKyme4j6iB9sEDE52LDsGZyLX909suZqjLC4HfAxCiyEJ57SU92Wg27+KcVtQqUBUT+Qk9pT27lrg8o7DatttShn0xC0Qnj94tWRBXGhuVPkOb0xTNrAhCDYVx97R8e0VgysUd6jplQDDvniPBBUXmbUUbD2vSnGHJZ/gfnHiCGTpLMn0qrnTPig5F4XofY4T8L72fF8Hh3KsJyv/MAxTOkwNoMrYp6JqM+NCKjjFnxK+ZQnk5CXLebJLdf/XMXcFJ+8udnAlOC4SxBzK6UtmqTyOBgGZ4aoHkPryc/yyLJb2RZ1/6eW1kIDiQ/SwwFqFdTagsO7nfV1qjxAexUYeszAEDTZ1SbJ+ewNb+Vur/oQMKdKgQ9cOAPQ== jenkinslave@jenkins.tracon.fi"
 letsencrypt_account_key_data: "{{ vault_letsencrypt_account_key_data }}"
 

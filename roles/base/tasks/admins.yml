@@ -12,7 +12,7 @@
 
 - name: set local admin private keys
   authorized_key: >
-    user={{ item.username }}
+    user={{ item.username }}
     key="{{ item.key }}"
   tags:
     - base

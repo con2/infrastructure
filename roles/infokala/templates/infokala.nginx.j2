@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ infokala_allowed_hosts }};
+    server_name {{ infokala_allowed_hosts }};
 
 {% if infokala_letsencrypt %}
     location /.well-known/acme-challenge/ {
@@ -23,7 +23,7 @@ server {
 
     ssl on;
     ssl_certificate {{ infokala_ssl_certificate }};
-    ssl_certificate_key {{ infokala_ssl_certificate_key }};
+    ssl_certificate_key {{ infokala_ssl_certificate_key }};
 
 {% endif %}
     location ~ ^/static/(.*)$ {

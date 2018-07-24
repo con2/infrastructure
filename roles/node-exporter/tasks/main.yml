@@ -10,7 +10,7 @@
     system: true
 
 - name: install node-exporter binary
-  shell: "curl -L {{ node_exporter_tarball_url }} | tar -xzC /usr/local/bin --strip-components 1 --wildcards '*/node_exporter'"
+  shell: "curl -L {{ node_exporter_tarball_url }} | tar -xzC /usr/local/bin --strip-components 1 --wildcards '*/node_exporter'"
   args:
     creates: /usr/local/bin/node_exporter
 

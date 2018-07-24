@@ -12,7 +12,7 @@
 
 - name: create directories for barman
   file:
-    path: "{{ item }}"
+    path: "{{ item }}"
     state: directory
     owner: "{{ postgresql_barman_user }}"
     group: "{{ postgresql_barman_user }}"

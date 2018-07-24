@@ -1,4 +1,4 @@
-- name: "create nginx vhost for {{ alertmanager_hostname }}"
+- name: "create nginx vhost for {{ alertmanager_hostname }}"
   template:
     src: alertmanager.nginx.j2
     dest: /etc/nginx/sites-available/{{ alertmanager_hostname }}
@@ -12,13 +12,13 @@
     state: link
   notify: restart nginx
 
-- name: "create htpasswd file for {{ alertmanager_hostname }}"
+- name: "create htpasswd file for {{ alertmanager_hostname }}"
   copy:
     dest: /etc/nginx/{{ alertmanager_hostname }}.htpasswd
-    content: "{{ alertmanager_basic_auth }}"
+    content: "{{ alertmanager_basic_auth }}"
 
 
-- name: "create nginx vhost for {{ prometheus_hostname }}"
+- name: "create nginx vhost for {{ prometheus_hostname }}"
   template:
     src: prometheus.nginx.j2
     dest: /etc/nginx/sites-available/{{ prometheus_hostname }}
@@ -32,13 +32,13 @@
     state: link
   notify: restart nginx
 
-- name: "create htpasswd file for {{  prometheus_hostname }}"
+- name: "create htpasswd file for {{  prometheus_hostname }}"
   copy:
-    dest: /etc/nginx/{{ prometheus_hostname }}.htpasswd
-    content: "{{ prometheus_basic_auth }}"
+    dest: /etc/nginx/{{ prometheus_hostname }}.htpasswd
+    content: "{{ prometheus_basic_auth }}"
 
 
-- name: "create nginx vhost for {{ grafana_hostname }}"
+- name: "create nginx vhost for {{ grafana_hostname }}"
   template:
     src: grafana.nginx.j2
     dest: /etc/nginx/sites-available/{{ grafana_hostname }}

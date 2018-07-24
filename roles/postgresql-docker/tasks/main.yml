@@ -26,18 +26,18 @@
       POSTGRES_BARMAN_DB_USER: "{{ postgresql_barman_db_user }}"
       POSTGRES_BARMAN_IP: "{{ postgresql_barman_ip }}"
       POSTGRES_DB: "{{ postgresql_database }}"
-      POSTGRES_PASSWORD: "{{ postgresql_password }}"
-      POSTGRES_USER: "{{ postgresql_username }}"
+      POSTGRES_PASSWORD: "{{ postgresql_password }}"
+      POSTGRES_USER: "{{ postgresql_username }}"
     ports:
       - 5432:5432
     volumes:
-      - "{{ postgresql_hostname }}-postgres-data:/var/lib/postgresql/data"
+      - "{{ postgresql_hostname }}-postgres-data:/var/lib/postgresql/data"
       - "{{ postgresql_ssl_certificate }}:/server.crt:ro"
       - "{{ postgresql_ssl_certificate_key }}.root-owned-because-postgresql-is-a-fucking-turd:/server.key:ro"
 
 - name: Make sure backup directories exist
   file:
-    path: "{{ item }}"
+    path: "{{ item }}"
     state: directory
   with_items:
     - /var/backups
@@ -55,5 +55,5 @@
     port: 5432
     from: "{{ item }}"
   with_items:
-    - "{{ postgresql_access_network }}"
+    - "{{ postgresql_access_network }}"
     - "{{ postgresql_barman_ip }}"

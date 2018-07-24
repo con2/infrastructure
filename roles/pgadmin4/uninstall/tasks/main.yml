@@ -7,7 +7,7 @@
   tags:
     - pgadmin4-uninstall
 
-- name: "Remove nginx config for {{ pgadmin4_hostname }}"
+- name: "Remove nginx config for {{ pgadmin4_hostname }}"
   file:
     path: /etc/nginx/sites-available/{{ pgadmin4_hostname }}
     state: absent
@@ -15,9 +15,9 @@
   tags:
     - pgadmin4-uninstall
 
-- name: "Disable nginx vhost for {{ pgadmin4_hostname }}"
+- name: "Disable nginx vhost for {{ pgadmin4_hostname }}"
   file:
-    path: /etc/nginx/sites-enabled/{{ pgadmin4_hostname }}
+    path: /etc/nginx/sites-enabled/{{ pgadmin4_hostname }}
     state: absent
   notify: restart nginx
   tags:

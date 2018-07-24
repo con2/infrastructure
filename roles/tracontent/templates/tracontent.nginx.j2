@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ tracontent_allowed_host_list|join(" ") }};
+    server_name {{ tracontent_allowed_host_list|join(" ") }};
 
 {% if tracontent_letsencrypt %}
     location /.well-known/acme-challenge/ {
@@ -23,7 +23,7 @@ server {
 
     ssl on;
     ssl_certificate {{ tracontent_ssl_certificate }};
-    ssl_certificate_key {{ tracontent_ssl_certificate_key }};
+    ssl_certificate_key {{ tracontent_ssl_certificate_key }};
 
 {% endif %}
     location ~ ^/static/(.*)$ {

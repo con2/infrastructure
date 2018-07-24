@@ -5,7 +5,7 @@ atlasso_ssl: true
 atlasso_letsencrypt: true
 atlasso_ssl_certificate: /srv/letsencrypt/secrets/atlasso.tracon.fi/chained.pem
 atlasso_ssl_certificate_key: /srv/letsencrypt/secrets/atlasso.tracon.fi/domain.key
-atlasso_allowed_hosts: "{{ atlasso_hostname }}"
+atlasso_allowed_hosts: "{{ atlasso_hostname }}"
 atlasso_default_from_email: suunnistajat@kompassi.eu
 atlasso_email_host: sr0a.pahaip.fi
 atlasso_crowd_application_name: atlasso

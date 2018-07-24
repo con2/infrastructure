@@ -13,7 +13,7 @@
     creates: /dev/mapper/control
 
 - name: Install Docker Engine and other required packages
-  apt: name={{ item }} state=present
+  apt: name={{ item }} state=present
   with_items:
     - docker-engine
     - python-docker

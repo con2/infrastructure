@@ -134,7 +134,7 @@
       tags: [redirect]
       redirect_hostname: ohjelma.tracon.fi
       redirect_allowed_hosts: ohjelma.tracon.fi
-      redirect_target: https://kompassi.eu/events/tracon2017/programme
+      redirect_target: https://kompassi.eu/events/tracon2018/programme
       redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
@@ -460,6 +460,22 @@
       redirect_ssl_certificate: /srv/letsencrypt/secrets/atlasso.tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/atlasso.tracon.fi/domain.key
 
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: "www.animecon.fi"
+      redirect_allowed_hosts: "www.animecon.fi"
+      redirect_target: https://animecon.fi
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
+
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: "www.conit.fi"
+      redirect_allowed_hosts: "www.conit.fi"
+      redirect_target: https://conit.fi
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
+
     - role: postgresql-docker
       tags: [postgresql-docker]
       postgresql_hostname: kompassi.eu
@@ -519,7 +535,7 @@
       tags: [letsencrypt]
       letsencrypt_domains:
         - name: kompassi.eu
-          subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:neula.kompassi.eu,DNS:pgadmin.neula.kompassi.eu"
+          subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:neula.kompassi.eu,DNS:animecon.fi,DNS:www.animecon.fi,DNS:conit.fi,DNS:www.conit.fi"
         - name: dev.kompassi.eu
           subject_alt_name: "DNS:dev.kompassi.eu"
         - name: photoshoot.conikuvat.fi

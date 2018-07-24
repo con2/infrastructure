@@ -13,7 +13,7 @@
 
 - name: "Update slackirc docker image from the registry"
   docker_image:
-    name: "{{ slackirc_image }}"
+    name: "{{ slackirc_image }}"
     force: yes
 
 - name: Create slackirc container

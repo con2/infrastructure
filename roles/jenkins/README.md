@@ -3,7 +3,7 @@
 ## Persistent data
 
 Jenkins keeps all its data in XML and JAR files under `/var/docker_home`. No database required.
-This file is made into a volume called `{{ jenkins_hostname }}-data`.
+This file is made into a volume called `{{ jenkins_hostname }}-data`.
 
 To migrate a Jenkins installation from one machine, I did the following:
 

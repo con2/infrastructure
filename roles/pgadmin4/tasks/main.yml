@@ -1,4 +1,4 @@
-- name: "Setup nginx vhost for {{ pgadmin4_hostname }}"
+- name: "Setup nginx vhost for {{ pgadmin4_hostname }}"
   template:
     src: pgadmin4.nginx.j2
     dest: /etc/nginx/sites-available/{{ pgadmin4_hostname }}
@@ -6,10 +6,10 @@
   notify: restart nginx
   tags: [pgadmin4-nginx]
 
-- name: "Enable nginx vhost for {{ pgadmin4_hostname }}"
+- name: "Enable nginx vhost for {{ pgadmin4_hostname }}"
   file:
-    src: /etc/nginx/sites-available/{{ pgadmin4_hostname }}
-    path: /etc/nginx/sites-enabled/{{ pgadmin4_hostname }}
+    src: /etc/nginx/sites-available/{{ pgadmin4_hostname }}
+    path: /etc/nginx/sites-enabled/{{ pgadmin4_hostname }}
     state: link
   notify: restart nginx
   tags: [pgadmin4-nginx]
@@ -27,7 +27,7 @@
     restart_policy: unless-stopped
     recreate: yes
     ports:
-      - "127.0.0.1:{{ pgadmin4_port }}:5050"
+      - "127.0.0.1:{{ pgadmin4_port }}:5050"
     links: "{{ pgadmin4_container_links }}"
     volumes:
       - "{{ pgadmin4_hostname }}-data:/var/lib/pgadmin4"

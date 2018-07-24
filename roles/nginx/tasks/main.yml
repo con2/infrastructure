@@ -42,7 +42,7 @@
   tags: [nginx, config]
 
 - name: Allow http and https in firewall
-  ufw: rule=allow proto=tcp port={{ item }}
+  ufw: rule=allow proto=tcp port={{ item }}
   with_items:
     - http
     - https

@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ shoottikala_allowed_hosts }};
+    server_name {{ shoottikala_allowed_hosts }};
 
 {% if shoottikala_letsencrypt %}
     location /.well-known/acme-challenge/ {
@@ -23,7 +23,7 @@ server {
 
     ssl on;
     ssl_certificate {{ shoottikala_ssl_certificate }};
-    ssl_certificate_key {{ shoottikala_ssl_certificate_key }};
+    ssl_certificate_key {{ shoottikala_ssl_certificate_key }};
 
 {% endif %}
     location ~ ^/static/(.*)$ {

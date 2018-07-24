@@ -1,6 +1,6 @@
 - name: "Update Kompassi docker image from the registry"
   docker_image:
-    name: "{{ kompassi_image }}"
+    name: "{{ kompassi_image }}"
     force: yes
   tags: [kompassi-deploy]
 
@@ -14,8 +14,8 @@
     env:
       RABBITMQ_ERLANG_COOKIE: "{{ kompassi_rabbitmq_cookie }}"
       RABBITMQ_DEFAULT_USER: "{{ kompassi_rabbitmq_username }}"
-      RABBITMQ_DEFAULT_PASS: "{{ kompassi_rabbitmq_password }}"
-      RABBITMQ_DEFAULT_VHOST: "{{ kompassi_rabbitmq_vhost }}"
+      RABBITMQ_DEFAULT_PASS: "{{ kompassi_rabbitmq_password }}"
+      RABBITMQ_DEFAULT_VHOST: "{{ kompassi_rabbitmq_vhost }}"
 
 - name: "Create {{ kompassi_hostname }}-memcache container"
   docker_container:
@@ -26,13 +26,13 @@
 - name: "Create {{ kompassi_hostname }}-gunicorn container"
   docker_container:
     name: "{{ kompassi_hostname }}-gunicorn"
-    image: "{{ kompassi_image }}"
+    image: "{{ kompassi_image }}"
     env_file: /srv/{{ kompassi_hostname }}/env
     recreate: yes
     restart_policy: unless-stopped
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ kompassi_workers }} --timeout={{ kompassi_timeout }} kompassi.wsgi:application"
     ports:
-      - "127.0.0.1:{{ kompassi_port }}:8000"
+      - "127.0.0.1:{{ kompassi_port }}:8000"
     links:
       - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
       - "{{ kompassi_postgresql_container }}:postgres"
@@ -46,7 +46,7 @@
 - name: "Create {{ kompassi_hostname }}-celery container"
   docker_container:
     name: "{{ kompassi_hostname }}-celery"
-    image: "{{ kompassi_image }}"
+    image: "{{ kompassi_image }}"
     restart_policy: unless-stopped
     command: "celery -A kompassi.celery_app:app worker"
     env_file: /srv/{{ kompassi_hostname }}/env
@@ -63,10 +63,10 @@
 
 # - name: "Extract static files from inside container (docker_container version)"
 #   docker_container:
-#     name: "{{ kompassi_hostname }}-extract-static"
+#     name: "{{ kompassi_hostname }}-extract-static"
 #     cleanup: yes
 #     detach: no
-#     image: "{{ kompassi_image }}"
+#     image: "{{ kompassi_image }}"
 #     command: "rsync -aqH --delete-after /usr/src/app/static /tmp/kompassi-static-files/"
 #     volumes:
 #       - "/tmp/kompassi-static-files:/srv/{{ kompassi_hostname }}/public_html"

@@ -28,15 +28,15 @@
     restart_policy: unless-stopped
     command: "gunicorn --bind=0.0.0.0:8000 --workers={{ tracontent_workers }} tracontent.wsgi:application"
     ports:
-      - "127.0.0.1:{{ tracontent_port }}:8000"
+      - "127.0.0.1:{{ tracontent_port }}:8000"
     volumes:
       - "{{ tracontent_hostname }}-media:/usr/src/app/media"
     env:
       ADMINS: "{{ tracontent_admins }}"
       ALLOWED_HOSTS: '{{ tracontent_allowed_host_list|join(" ") }}'
-      DATABASE_URL: "postgres://{{ tracontent_postgresql_username }}:{{ tracontent_postgresql_password }}@{{ tracontent_postgresql_hostname }}/{{ tracontent_postgresql_database }}"
+      DATABASE_URL: "postgres://{{ tracontent_postgresql_username }}:{{ tracontent_postgresql_password }}@{{ tracontent_postgresql_hostname }}/{{ tracontent_postgresql_database }}"
       DEFAULT_FROM_EMAIL: "{{ tracontent_default_from_email }}"
-      EMAIL_HOST: "{{ tracontent_email_host }}"
+      EMAIL_HOST: "{{ tracontent_email_host }}"
       KOMPASSI_OAUTH2_CLIENT_ID: "{{ tracontent_kompassi_oauth2_client_id }}"
       KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ tracontent_kompassi_oauth2_client_secret }}"
       KOMPASSI_EDITOR_GROUPS: '{{ tracontent_editor_group_list|join(" ") }}'
@@ -53,7 +53,7 @@
     path: /var/backups/tracontent
     state: directory
 
-- name: "Setup pre-backup script for {{ tracontent_hostname }}"
+- name: "Setup pre-backup script for {{ tracontent_hostname }}"
   template:
     src: pre-backup.sh.j2
     dest: /etc/pre-backup.d/{{ tracontent_hostname }}.sh

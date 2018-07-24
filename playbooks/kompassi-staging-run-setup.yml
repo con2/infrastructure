@@ -10,7 +10,7 @@
         cleanup: yes
         env_file: /srv/dev.kompassi.eu/env
         env:
-          DATABASE_URL: postgres://{{ kompassi_staging_postgresql_ddl_username }}:{{ kompassi_staging_postgresql_ddl_password }}@postgres/{{ kompassi_staging_postgresql_database }}
+          DATABASE_URL: postgres://{{ kompassi_staging_postgresql_ddl_username }}:{{ kompassi_staging_postgresql_ddl_password }}@postgres/{{ kompassi_staging_postgresql_database }}
         recreate: yes
         command: python manage.py setup
         links:
