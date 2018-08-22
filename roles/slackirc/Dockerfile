@@ -1,4 +1,5 @@
 FROM node:8
+USER root
 RUN groupadd -r slackirc && \
     useradd -r -g slackirc slackirc && \
     npm install --global slack-irc
