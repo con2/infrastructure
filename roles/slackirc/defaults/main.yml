@@ -24,3 +24,10 @@ slackirc_config:
     token: "{{ slackirc_con2_api_token }}"
     ircOptions:
       messageSplit: 200
+  - channelMapping:
+      vaarikosto: "#vaarikosto"
+    nickname: c2
+    server: tampere.fi.b2irc.net
+    token: "{{ slackirc_con2_api_token }}"
+    ircOptions:
+      messageSplit: 200
