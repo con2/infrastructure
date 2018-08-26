@@ -1,2 +1,4 @@
 #!/bin/sh
-docker restart slackirc
+docker stop slackirc
+sleep 60
+docker start slackirc
