@@ -13,4 +13,4 @@ infotv_postgresql_hostname: siilo.tracon.fi
 infotv_postgresql_username: infotv
 infotv_postgresql_database: infotv
 infotv_workers: 2
-infotv_default_event: tracon2017
+infotv_default_event: tracon2018
