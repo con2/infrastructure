@@ -174,7 +174,7 @@
       tags: [redirect]
       redirect_hostname: m.tracon.fi
       redirect_allowed_hosts: m.tracon.fi
-      redirect_target: https://kompassi.eu/events/tracon2017/programme/mobile
+      redirect_target: https://kompassi.eu/events/tracon2018/programme/mobile
       redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
