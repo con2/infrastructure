@@ -27,6 +27,7 @@ server {
 {% endif %}
     rewrite ^/favicon.ico$ /static/favicon.ico last;
     gzip_static on;
+    client_max_body_size 100m;
 
     location /static/ {
         alias /srv/{{ edegal_hostname }}/public_html/static/;
