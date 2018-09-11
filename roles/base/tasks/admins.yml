@@ -56,6 +56,11 @@
     - username: codez
       key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA5ViSwxcxnqHFpkQlyCUvjTyig0w9uhEmxDH6fTjz4c himeji
 
+    - username: aketzu
+      key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMgt+MnTL6Act6b0P49Vtz2SAoWnCJu6uYCqptytYykz akolehma@powell
+    - username: aketzu
+      key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHPXMznOJ+G413wPIMw2M6EFEd64+EQZqSUgsCKiV4sp akolehma@kelvin.aketzu.net
+
     - username: root
       key: "{{ jenkinslave_ssh_public_key_data }}"
 
