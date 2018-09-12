@@ -75,7 +75,9 @@
 
 # PROBLEMS:
 # - does not remove stale files
-- name: "Extract static files from inside container (command version)"
-  command: >
-    /usr/bin/docker cp {{ edegal_hostname }}-gunicorn:/usr/src/app/static /srv/{{ edegal_hostname }}/public_html/
-  tags: [edegal-deploy]
+# - name: "Extract static files from inside container (command version)"
+#   command: >
+#     /usr/bin/docker cp {{ edegal_hostname }}-gunicorn:/usr/src/app/static /srv/{{ edegal_hostname }}/public_html/
+#   tags: [edegal-deploy]
+
+# Rsynced from github.com/conikuvat/edegal/tree/master/Jenkinsfile instead!
