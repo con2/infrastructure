@@ -22,7 +22,7 @@ slackirc_config:
       "#concon": "#concon"
     nickname: c2
     slackUsernameFormat: "$username"
-    server: open.ircnet.net
+    server: irb.nbl.fi
     token: "{{ slackirc_con2_api_token }}"
     ircOptions:
       messageSplit: 200
