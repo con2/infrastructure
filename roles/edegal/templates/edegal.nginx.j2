@@ -49,6 +49,11 @@ server {
         expires 30m;
     }
 
+    location /media/uploads/ {
+        alias /mnt/coppermine_albums/uploads/;
+        expires 30m;
+    }
+
     location /media/ {
         return 404;
     }
