@@ -197,8 +197,8 @@
     - role: redirect
       tags: [redirect]
       redirect_hostname: beta.conikuvat.fi
-      redirect_allowed_hosts: conikuvat.fi conkuvat.fi www.conikuvat.fi www.conkuvat.fi
-      redirect_target: https://con2.fi/conikuvat
+      redirect_allowed_hosts: beta.conikuvat.fi conkuvat.fi www.conikuvat.fi www.conkuvat.fi kuvat.aniki.fi uusi.kuvat.aniki.fi
+      redirect_target: https://conikuvat.fi
       redirect_ssl_certificate: /srv/letsencrypt/secrets/conikuvat.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/conikuvat.fi/domain.key
 
@@ -403,7 +403,7 @@
 
     - role: edegal
       tags: [edegal]
-      edegal_allowed_hosts: beta.conikuvat.fi
+      edegal_allowed_hosts: conikuvat.fi
 
     - role: redmine
       tags: [redmine]
