@@ -1,5 +1,5 @@
 # prometheus_ip_addrs: group_vars/all
 node_exporter_user: prometheus
-node_exporter_tarball_url: "https://github.com/prometheus/node_exporter/releases/download/v0.14.0/node_exporter-0.14.0.linux-amd64.tar.gz"
+node_exporter_tarball_url: "https://github.com/prometheus/node_exporter/releases/download/v0.16.0/node_exporter-0.16.0.linux-amd64.tar.gz"
 node_exporter_init: systemd
 node_exporter_firewall: ufw
