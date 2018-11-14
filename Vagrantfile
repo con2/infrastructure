@@ -23,6 +23,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "base_resolv_conf_enabled" => "0",
           "postgresql_barman_hostname" => "192.168.50.5",
           "postgresql_barman_ip" => "192.168.50.5",
+
+          # FIXME nowadays a list, postgresql_access_networks. we prolly can't set complex vars herein?
           "postgresql_access_network" => "192.168.50.0/24",
           "postgresql_listen" => "192.168.50.4",
           "pgadmin4_ssl" => false,

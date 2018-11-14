@@ -6,7 +6,9 @@ host    all             all             127.0.0.1/32            md5
 host    all             all             ::1/128                 md5
 
 # external hosts
-hostssl all             all             {{ postgresql_access_network }} md5
+{% for network in postgresql_access_networks %}
+hostssl all             all             {{ network }} md5
+{% endfor %}
 
 # docker bridge
 host    all             all             172.17.0.1/16           md5

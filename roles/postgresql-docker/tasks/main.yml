@@ -54,6 +54,4 @@
     rule: allow
     port: 5432
     from: "{{ item }}"
-  with_items:
-    - "{{ postgresql_access_network }}"
-    - "{{ postgresql_barman_ip }}"
+  with_items: "{{ postgresql_access_networks }}"
