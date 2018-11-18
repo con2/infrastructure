@@ -235,6 +235,7 @@
         - 2016.tracon.fi
         - 2017.tracon.fi
         - 2018.tracon.fi
+        - 2019.tracon.fi
         - blog.tracon.fi
         - r.tracon.fi
         - ry.tracon.fi
@@ -277,6 +278,7 @@
         - 2016.tracon.fi
         - 2017.tracon.fi
         - 2018.tracon.fi
+        - 2019.tracon.fi
         - blog.tracon.fi
         - r.tracon.fi
       tracontent_static_dir: /srv/tracontent.tracon.fi/public_html/static
