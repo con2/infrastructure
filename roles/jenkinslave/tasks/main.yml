@@ -60,6 +60,21 @@
   pip:
     name: ansible
 
+- name: install emrichen via pip
+  pip:
+    executable: pip3
+    name: git+https://github.com/japsu/emrichen.git
+  tags:
+    - jenkinslave-install-emrichen
+
+- name: install kubectl (for jenkins to do deployment with)
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/{{ kubectl_version }}/bin/linux/amd64/kubectl
+    dest: /usr/local/bin/kubectl
+    mode: 0755
+  tags:
+    - jenkinslave-install-kubectl
+
 - name: log in to docker hub
   become_user: jenkinslave
   docker_login:

@@ -1,3 +1,5 @@
 jenkinslave_docker_hub_username: traconjenkins
 jenkinslave_docker_hub_email: santtu@pajukanta.fi
 jenkinslave_postgresql_username: jenkinslave
+
+kubectl_version: v1.12.2
