@@ -30,6 +30,11 @@ server {
         expires 30m;
     }
 
+    location ~ ^/media/(.*)$ {
+        alias /srv/{{ kompassi_hostname }}/public_html/media/$1;
+        expires 30m;
+    }
+
     rewrite ^/favicon.ico$ /static/favicon.ico last;
     gzip_static on;
     client_max_body_size 30m;
