@@ -29,34 +29,7 @@ server {
     gzip_static on;
     client_max_body_size 100m;
 
-    location /static/ {
-        alias /srv/{{ edegal_hostname }}/public_html/static/;
-        expires 30m;
-    }
-
-    location /media/coppermine_albums/ {
-        alias /mnt/coppermine_albums/;
-        expires 30m;
-    }
-
-    location /media/pictures/ {
-        alias /mnt/coppermine_albums/pictures/;
-        expires 30m;
-    }
-
-    location /media/previews/ {
-        alias /mnt/coppermine_albums/previews/;
-        expires 30m;
-    }
-
-    location /media/uploads/ {
-        alias /mnt/coppermine_albums/uploads/;
-        expires 30m;
-    }
-
-    location /media/ {
-        return 404;
-    }
+{{ edegal_media_nginx_fragment }}
 
     location /admin {
         proxy_pass http://localhost:{{ edegal_port }};
@@ -75,7 +48,8 @@ server {
     }
 
     location / {
-        alias /srv/{{ edegal_hostname }}/public_html/;
+        # NOTE: both conikuvat.fi and larppikuvat.fi use the same static files here
+        alias /srv/conikuvat.fi/public_html/;
         try_files $uri /index.html;
     }
 }

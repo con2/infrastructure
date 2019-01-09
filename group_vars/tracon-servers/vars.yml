@@ -28,4 +28,12 @@ edegal_coppermine_mysql_password: "{{ vault_edegal_coppermine_mysql_password }}"
 edegal_kompassi_oauth2_client_id: "{{ vault_edegal_kompassi_oauth2_client_id }}"
 edegal_kompassi_oauth2_client_secret: "{{ vault_edegal_kompassi_oauth2_client_secret }}"
 
+larppikuvat_secret_key: "{{ vault_larppikuvat_secret_key }}"
+larppikuvat_postgresql_password: "{{ vault_larppikuvat_postgresql_password }}"
+larppikuvat_rabbitmq_cookie: "{{ vault_larppikuvat_rabbitmq_cookie }}"
+larppikuvat_rabbitmq_password: "{{ vault_larppikuvat_rabbitmq_password }}"
+larppikuvat_kompassi_oauth2_client_id: "{{ vault_larppikuvat_kompassi_oauth2_client_id }}"
+larppikuvat_kompassi_oauth2_client_secret: "{{ vault_larppikuvat_kompassi_oauth2_client_secret }}"
+
+
 redmine_postgresql_password: "{{ vault_redmine_postgresql_password }}"

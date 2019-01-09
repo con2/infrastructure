@@ -27,10 +27,48 @@ edegal_rabbitmq_vhost: conikuvat
 edegal_postgresql_hostname: siilo.tracon.fi
 edegal_postgresql_username: conikuvat
 edegal_postgresql_database: conikuvat
-edegal_workers: 4
-edegal_timeout: 30
+edegal_workers: 8
+edegal_timeout: 60
 
 # coppermine import
 edegal_coppermine_mysql_host: kirito.b2.fi
 edegal_coppermine_mysql_username: b2_coppermine
 edegal_coppermine_mysql_database: b2_coppermine
+
+# FIXME ugly. but we'll move to kubernetes anyway soon.
+edegal_volumes:
+  - /mnt/coppermine_albums:/usr/src/app/media/coppermine_albums
+  - /mnt/coppermine_albums/pictures:/usr/src/app/media/pictures
+  - /mnt/coppermine_albums/previews:/usr/src/app/media/previews
+  - /mnt/coppermine_albums/uploads:/usr/src/app/media/uploads
+
+edegal_media_nginx_fragment: |
+    # both conikuvat and larppikuvat use the same static files here!
+    location /static/ {
+        alias /srv/conikuvat.fi/public_html/static/;
+        expires 30m;
+    }
+
+    location /media/coppermine_albums/ {
+        alias /mnt/coppermine_albums/;
+        expires 30m;
+    }
+
+    location /media/pictures/ {
+        alias /mnt/coppermine_albums/pictures/;
+        expires 30m;
+    }
+
+    location /media/previews/ {
+        alias /mnt/coppermine_albums/previews/;
+        expires 30m;
+    }
+
+    location /media/uploads/ {
+        alias /mnt/coppermine_albums/uploads/;
+        expires 30m;
+    }
+
+    location /media/ {
+        return 404;
+    }

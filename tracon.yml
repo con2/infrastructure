@@ -217,6 +217,12 @@
       redirect_target: https://confluence.tracon.fi/display/YUKICON2019
       redirect_ssl: false
 
+    - role: redirect
+      tags: [redirect]
+      redirect_hostname: www.larppikuvat.fi
+      redirect_allowed_hosts: www.larppikuvat.fi
+      redirect_target: https://larppikuvat.fi
+
     - role: postgresql-docker
       tags: [postgresql-docker]
       postgresql_hostname: nuoli.tracon.fi
@@ -407,8 +413,57 @@
       tags: [infotv]
 
     - role: edegal
-      tags: [edegal]
+      tags: [edegal, conikuvat]
       edegal_allowed_hosts: conikuvat.fi
+
+    - role: edegal
+      tags: [edegal, larppikuvat]
+      edegal_image: conikuvat/edegal
+      edegal_hostname: larppikuvat.fi
+      edegal_port: 8017
+      edegal_letsencrypt: true
+
+      edegal_ssl_certificate: /srv/letsencrypt/secrets/larppikuvat.fi/chained.pem
+      edegal_ssl_certificate_key: /srv/letsencrypt/secrets/larppikuvat.fi/domain.key
+
+      edegal_allowed_hosts: larppikuvat.fi
+      edegal_default_from_email: larppikuvat@con2.fi
+      edegal_email_host: sr0a.pahaip.fi
+      edegal_cache_url: memcache://memcache
+      edegal_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
+      edegal_rabbitmq_username: larppikuvat
+      edegal_rabbitmq_vhost: larppikuvat
+      edegal_postgresql_hostname: siilo.tracon.fi
+      edegal_postgresql_username: larppikuvat
+      edegal_postgresql_database: larppikuvat
+
+      edegal_secret_key: "{{ larppikuvat_secret_key }}"
+      edegal_postgresql_password: "{{ larppikuvat_postgresql_password }}"
+      edegal_rabbitmq_cookie: "{{ larppikuvat_rabbitmq_cookie }}"
+      edegal_rabbitmq_password: "{{ larppikuvat_rabbitmq_password }}"
+      edegal_kompassi_oauth2_client_id: "{{ larppikuvat_kompassi_oauth2_client_id }}"
+      edegal_kompassi_oauth2_client_secret: "{{ larppikuvat_kompassi_oauth2_client_secret }}"
+
+      # no coppermine import :)
+      edegal_coppermine_mysql_host: ''
+      edegal_coppermine_mysql_username: ''
+      edegal_coppermine_mysql_database: ''
+
+      # FIXME ugly. but we'll move to kubernetes anyway soon.
+      edegal_volumes:
+        - /mnt/coppermine_albums/larppikuvat:/usr/src/app/media
+
+      edegal_media_nginx_fragment: |
+          # both conikuvat and larppikuvat use the same static files here!
+          location /static/ {
+              alias /srv/conikuvat.fi/public_html/static/;
+              expires 30m;
+          }
+
+          location /media/ {
+              alias /mnt/coppermine_albums/larppikuvat/;
+              expires 30m;
+          }
 
     - role: redmine
       tags: [redmine]
@@ -441,6 +496,8 @@
           subject_alt_name: "DNS:aicon.fi,DNS:www.aicon.fi,DNS:2016.aicon.fi,DNS:2017.aicon.fi,DNS:2018.aicon.fi,DNS:m.aicon.fi"
         - name: conikuvat.fi
           subject_alt_name: "DNS:conikuvat.fi,DNS:conkuvat.fi,DNS:www.conikuvat.fi,DNS:www.conkuvat.fi,DNS:beta.conikuvat.fi"
+        - name: larppikuvat.fi
+          subject_alt_name: "DNS:larppikuvat.fi,DNS:www.larppikuvat.fi"
         - name: con2.fi
           subject_alt_name: "DNS:con2.fi,DNS:www.con2.fi"
 
