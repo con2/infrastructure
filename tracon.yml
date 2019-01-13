@@ -436,6 +436,7 @@
       edegal_postgresql_hostname: siilo.tracon.fi
       edegal_postgresql_username: larppikuvat
       edegal_postgresql_database: larppikuvat
+      edegal_editor_group: larppikuvat-staff
 
       edegal_secret_key: "{{ larppikuvat_secret_key }}"
       edegal_postgresql_password: "{{ larppikuvat_postgresql_password }}"
