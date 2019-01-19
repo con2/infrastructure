@@ -57,6 +57,10 @@
       - "{{ kompassi_hostname }}-rabbitmq:rabbitmq"
       - "{{ kompassi_postgresql_container }}:postgres"
       - "{{ kompassi_hostname }}-memcache:memcache"
+    volumes:
+      - "/srv/{{ kompassi_hostname }}/public_html/media:/usr/src/app/media"
+      - "/srv/{{ kompassi_hostname }}/id_rsa:/id_rsa"
+      - "/srv/{{ kompassi_hostname }}/known_hosts:/known_hosts"
   tags: [kompassi-deploy]
 
 # PROBLEMS:
