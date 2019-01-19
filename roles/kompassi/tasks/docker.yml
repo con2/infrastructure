@@ -39,6 +39,8 @@
       - "{{ kompassi_hostname }}-memcache:memcache"
     volumes:
       - "/srv/{{ kompassi_hostname }}/public_html/media:/usr/src/app/media"
+      - "/srv/{{ kompassi_hostname }}/id_rsa:/id_rsa"
+      - "/srv/{{ kompassi_hostname }}/known_hosts:/known_hosts"
     etc_hosts:
       "desucon.fi": "94.237.37.206"
   tags: [kompassi-deploy]

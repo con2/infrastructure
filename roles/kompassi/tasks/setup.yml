@@ -20,6 +20,30 @@
   template: src=kompassi.env.j2 dest=/srv/{{ kompassi_hostname }}/env mode=0600
   tags: [kompassi-deploy]
 
+- name: "Create ssh private key"
+  command: /usr/bin/ssh-keygen -q -t rsa -b 2048 -m pem -N '' -f /srv/{{ kompassi_hostname }}/id_rsa
+  args:
+    creates: /srv/{{ kompassi_hostname }}/id_rsa
+  tags: [foo]
+
+- name: "Fix ssh private key privileges"
+  file:
+    path: /srv/{{ kompassi_hostname }}/id_rsa
+    owner: "{{ kompassi_user }}"
+  tags: [foo]
+
+- name: "Create ssh known hosts file"
+  shell: 'ssh-keyscan sakataki.ext.b2.fi > /srv/{{ kompassi_hostname }}/known_hosts'
+  args:
+    creates: /srv/{{ kompassi_hostname }}/known_hosts
+  tags: [foo]
+
+- name: "Fix ssh known hosts file privileges"
+  file:
+    path: /srv/{{ kompassi_hostname }}/known_hosts
+    owner: "{{ kompassi_user }}"
+  tags: [foo]
+
 - name: "Setup nginx vhost for {{ kompassi_hostname }}"
   template: src=kompassi.nginx.j2 dest=/etc/nginx/sites-available/{{ kompassi_hostname }} mode=0644
   notify: restart nginx
