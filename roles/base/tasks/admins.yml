@@ -57,7 +57,7 @@
       key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA5ViSwxcxnqHFpkQlyCUvjTyig0w9uhEmxDH6fTjz4c himeji
 
     - username: aketzu
-      key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMgt+MnTL6Act6b0P49Vtz2SAoWnCJu6uYCqptytYykz akolehma@powell
+      key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP4tvwQlqmnoGSmTLx11lkOgR8NM0f0jHtz1uIRFqdD7 akolehma@ampere
     - username: aketzu
       key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHPXMznOJ+G413wPIMw2M6EFEd64+EQZqSUgsCKiV4sp akolehma@kelvin.aketzu.net
 
