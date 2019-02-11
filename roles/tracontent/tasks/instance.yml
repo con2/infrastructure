@@ -43,6 +43,7 @@
       KOMPASSI_OAUTH2_CLIENT_SECRET: "{{ tracontent_kompassi_oauth2_client_secret }}"
       KOMPASSI_EDITOR_GROUPS: '{{ tracontent_editor_group_list|join(" ") }}'
       SECRET_KEY: "{{ tracontent_secret_key }}"
+      TRACONTENT_BLOG_COMMENT_MODERATORS: "{{ tracontent_blog_comment_moderators }}"
   tags: [tracontent-instance,tracontent-deploy]
 
 - name: "Extract static files from inside container"
