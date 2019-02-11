@@ -47,7 +47,7 @@
       redirect_default: true
       redirect_hostname: "{{ inventory_hostname }}"
       redirect_allowed_hosts: "{{ inventory_hostname }}"
-      redirect_target: https://2018.tracon.fi
+      redirect_target: https://2019.tracon.fi
       redirect_ssl_certificate: /srv/letsencrypt/secrets/siilo.tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/siilo.tracon.fi/domain.key
 
@@ -70,7 +70,7 @@
       redirect_default: true
       redirect_hostname: "{{ inventory_hostname }}"
       redirect_allowed_hosts: "{{ inventory_hostname }}"
-      redirect_target: https://2018.tracon.fi
+      redirect_target: https://2019.tracon.fi
       redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
