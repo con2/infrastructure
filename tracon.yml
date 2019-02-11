@@ -220,8 +220,9 @@
     - role: redirect
       tags: [redirect]
       redirect_hostname: www.larppikuvat.fi
-      redirect_allowed_hosts: www.larppikuvat.fi
+      redirect_allowed_hosts: www.larppikuvat.fi larpkuvat.fi www.larpkuvat.fi larp-kuvat.fi www.larp-kuvat.fi
       redirect_target: https://larppikuvat.fi
+      redirect_ssl: false
 
     - role: postgresql-docker
       tags: [postgresql-docker]
