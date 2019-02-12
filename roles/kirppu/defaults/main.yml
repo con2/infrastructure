@@ -17,5 +17,5 @@ kirppu_workers: 2
 kirppu_languages: fi
 
 # TZ=Helsinki / in kirppu settings.py.
-kirppu_registration_end: "2018-09-03 23:59:59"
+kirppu_registration_end: "2019-03-04 23:59:59"
 kirppu_checkout_active: 1
