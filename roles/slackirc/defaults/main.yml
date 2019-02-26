@@ -10,7 +10,7 @@ slackirc_config:
       hallitus: "#mansecon.hallitus"
       hitpointconitea: "#hitpoint_conitea"
       isosali: "#mansecon.is"
-      ohjelma: "#mansecon.ohjelma"
+      ohjelmatiimi: "#mansecon.ohjelma"
       tekniikka: "#mansecon.tekniikka"
       artemis: "#mansecon.artemis"
     nickname: sir
