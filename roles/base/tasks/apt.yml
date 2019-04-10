@@ -2,34 +2,25 @@
   copy: src=00jumalauta.conf dest=/etc/apt/apt.conf.d/00jumalauta.conf
 
 - name: Install some basic packages
-  apt: name={{ item }} state=installed
-  with_items:
-    - acl
-    - apt-transport-https
-    - build-essential
-    - ca-certificates
-    - curl
-    - git
-    - htop
-    - man-db
-    - ntp
-    - python-apt
-    - python-pip
-    - python3-pip
-    - python3-setuptools
-    - python-dev
-    - rsync
-    - screen
-    - ssl-cert
-    - vim
-    - wget
-    - whois
-
-# - name: Update pip, setuptools and wheel
-#   pip:
-#     name: "{{ item }}"
-#     state: latest
-#   with_items:
-#     - pip
-#     - setuptools
-#     - wheel
+  apt:
+    name:
+      - acl
+      - apt-transport-https
+      - build-essential
+      - ca-certificates
+      - curl
+      - git
+      - htop
+      - man-db
+      - ntp
+      - python-apt
+      - python-pip
+      - python3-pip
+      - python3-setuptools
+      - python-dev
+      - rsync
+      - screen
+      - ssl-cert
+      - vim
+      - wget
+      - whois

@@ -11,7 +11,7 @@ neula.kompassi.eu
 putki.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
 
 [postgresql-servers]
-siilo.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
+siilo.tracon.fi ansible_python_interpreter=/usr/bin/python3 ansible_ssh_host=91.105.252.70
 
 [barman-servers]
 piilo.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
@@ -23,4 +23,3 @@ kurikka.tracon.fi node_exporter_init=upstart node_exporter_firewall=none
 tracon-servers
 management-servers
 kompassi-servers
-postgresql-servers

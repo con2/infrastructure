@@ -1,10 +1,9 @@
 - name: install packages for postgresql
   apt:
-    name: "{{ item }}"
-  with_items:
-    - postgresql-{{ postgresql_version }}
-    - python-psycopg2
-    - rsync
+    name:
+      - postgresql-{{ postgresql_version }}
+      - python3-psycopg2
+      - rsync
 
 - name: setup pg_hba.conf
   template:
@@ -25,11 +24,11 @@
     from: "{{ item }}"
   with_items: "{{ postgresql_access_networks }}"
 
-- name: allow postgresql in firewall (docker bridge)
-  ufw:
-    rule: allow
-    port: 5432
-    from: "172.17.0.0/16"
+# - name: allow postgresql in firewall (docker bridge)
+#   ufw:
+#     rule: allow
+#     port: 5432
+#     from: "172.17.0.0/16"
 
 - name: make sure postgresql is running
   service:

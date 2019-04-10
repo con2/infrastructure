@@ -7,12 +7,8 @@
   apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
   tags: [nginx, repo]
 
-- name: Remove old nginx repository
-  apt_repository: repo='deb http://nginx.org/packages/ubuntu/ trusty nginx' state=absent
-  tags: [nginx, repo]
-
 - name: Add nginx repository
-  apt_repository: repo='deb http://nginx.org/packages/ubuntu/ xenial nginx' state=present update_cache=yes
+  apt_repository: repo='deb http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx' state=present update_cache=yes
   tags: [nginx, repo]
 
 - name: Install nginx

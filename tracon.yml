@@ -1,5 +1,5 @@
 - hosts: docker-servers
-  gather_facts: no
+  gather_facts: yes
   roles:
     - role: base
       tags: [base]
@@ -13,7 +13,7 @@
       tags: [nginx]
 
 - hosts: logstash-centrals
-  gather_facts: no
+  gather_facts: yes
   roles:
     - role: logstash-central
       tags: [logstash-central]
@@ -29,8 +29,17 @@
       tags: [node-exporter]
 
 - hosts: postgresql-servers
-  gather_facts: no
+  gather_facts: yes
   roles:
+    - role: base
+      tags: [base]
+    - role: node-exporter
+      tags: [node-exporter]
+    - role: prebackup
+      tags: [prebackup]
+    - role: nginx
+      tags: [nginx]
+
     - role: postgresql
       tags: [postgresql]
 
@@ -52,7 +61,7 @@
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/siilo.tracon.fi/domain.key
 
 - hosts: barman-servers
-  gather_facts: no
+  gather_facts: yes
   roles:
     - role: base
       tags: [base]
@@ -62,7 +71,7 @@
       tags: [postgresql-barman]
 
 - hosts: tracon-servers
-  gather_facts: no
+  gather_facts: yes
   roles:
     # default site
     - role: redirect
@@ -504,7 +513,7 @@
           subject_alt_name: "DNS:con2.fi,DNS:www.con2.fi"
 
 - hosts: kompassi-servers
-  gather_facts: no
+  gather_facts: yes
   roles:
     # default site
     - role: redirect
@@ -610,7 +619,7 @@
           subject_alt_name: "DNS:atlasso.tracon.fi,DNS:kompassi.tracon.fi"
 
 - hosts: management-servers
-  gather_facts: no
+  gather_facts: yes
   roles:
     - role: jenkins
       tags: [jenkins]
@@ -649,7 +658,7 @@
 
 
 - hosts: hop-servers
-  gather_facts: no
+  gather_facts: yes
   roles:
     - role: base
       tags: [base]
