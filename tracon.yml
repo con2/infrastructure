@@ -439,7 +439,7 @@
 
       edegal_allowed_hosts: larppikuvat.fi
       edegal_default_from_email: larppikuvat@con2.fi
-      edegal_email_host: sr0a.pahaip.fi
+      edegal_email_host: sr1.pahaip.fi
       edegal_cache_url: memcache://memcache
       edegal_admins: "Santtu Pajukanta <santtu@pajukanta.fi>"
       edegal_rabbitmq_username: larppikuvat

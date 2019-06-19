@@ -8,7 +8,7 @@ kirppu_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
 kirppu_allowed_hosts: "{{ kirppu_hostname }}"
 kirppu_default_from_email: suunnistajat@kompassi.eu
-kirppu_email_host: sr0a.pahaip.fi
+kirppu_email_host: sr1.pahaip.fi
 kirppu_admins: "Jyrki Launonen <codez@tracon.fi>"
 kirppu_postgresql_container: nuoli.tracon.fi-postgres
 kirppu_postgresql_username: kirppu
