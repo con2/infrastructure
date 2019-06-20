@@ -2,7 +2,7 @@
 nuoli.tracon.fi
 
 [management-servers]
-monokkeli.tracon.fi ansible_ssh_host=91.105.252.66 prometheus_ip_address=172.17.0.0/16
+monokkeli.tracon.fi prometheus_ip_address=172.17.0.0/16
 
 [kompassi-servers]
 neula.kompassi.eu
@@ -11,7 +11,7 @@ neula.kompassi.eu
 putki.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
 
 [postgresql-servers]
-siilo.tracon.fi ansible_python_interpreter=/usr/bin/python3 ansible_ssh_host=91.105.252.70
+siilo.tracon.fi ansible_python_interpreter=/usr/bin/python3
 
 [barman-servers]
 piilo.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
