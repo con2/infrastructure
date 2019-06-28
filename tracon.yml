@@ -135,7 +135,7 @@
       tags: [redirect]
       redirect_hostname: tyovoima.tracon.fi
       redirect_allowed_hosts: tyovoima.tracon.fi
-      redirect_target: https://kompassi.eu/events/tracon2018/signup
+      redirect_target: https://kompassi.eu/events/tracon2019/signup
       redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
@@ -143,7 +143,7 @@
       tags: [redirect]
       redirect_hostname: ohjelma.tracon.fi
       redirect_allowed_hosts: ohjelma.tracon.fi
-      redirect_target: https://kompassi.eu/events/tracon2018/programme
+      redirect_target: https://kompassi.eu/events/tracon2019/programme
       redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
@@ -183,7 +183,7 @@
       tags: [redirect]
       redirect_hostname: m.tracon.fi
       redirect_allowed_hosts: m.tracon.fi
-      redirect_target: https://kompassi.eu/events/tracon2018/programme/mobile
+      redirect_target: https://kompassi.eu/events/tracon2019/programme/mobile
       redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
