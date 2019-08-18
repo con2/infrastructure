@@ -1,0 +1,63 @@
+- name: set hostname
+  copy:
+    dest: /etc/hostname
+    content: "{{ inventory_hostname }}"
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - k3s-base-hostname
+
+- name: set hostname more
+  hostname:
+    name: "{{ inventory_hostname }}"
+  tags:
+    - k3s-base-hostname
+
+- name: set hostname even more
+  replace:
+    path: /etc/cloud/cloud.cfg
+    regexp: 'preserve_hostname: false'
+    replace: 'preserve_hostname: true'
+  tags:
+    - k3s-base-hostname
+
+- name: set internal network interface IP address
+  template:
+    src: 99-internal-network.yml.j2
+    dest: /etc/netplan/99-internal-network.yaml
+    mode: 0644
+  notify: netplan apply
+  tags:
+    - k3s-base-internal-ip-address
+
+- name: enable universe repo
+  apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release|lower }} universe"
+    state: present
+
+- name: install ssh config file
+  copy: dest=/etc/ssh/sshd_config src=sshd_config mode=0600
+  notify: restart ssh
+
+- name: create local admin users
+  user:
+    append: yes
+    groups: sudo
+    name: "{{ item.username }}"
+    password: "{{ item.password }}"
+    shell: /bin/bash
+  with_items: "{{ base_admin_users }}"
+
+- name: set local admin private keys
+  authorized_key:
+    user: "{{ item.username }}"
+    key: "{{ item.key }}"
+  with_items: "{{ base_authorized_keys }}"
+
+- name: remove obsolete users
+  user:
+    name: "{{ item }}"
+    state: absent
+    remove: true
+  with_items: "{{ base_users_to_remove }}"

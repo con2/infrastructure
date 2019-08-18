@@ -1,0 +1,11 @@
+# These vars come from the vault, prefixed with vault_:
+# base_admin_users:
+#   - username: japsu
+#     password: $6$salt$hash…
+
+# base_authorized_keys:
+#   - username: japsu
+#     key: ssh-rsa AAAAB3Nz…
+
+base_users_to_remove:
+  - asennus

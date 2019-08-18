@@ -1,0 +1,9 @@
+- hosts: k3s-servers
+  gather_facts: no
+  tasks:
+    - command: /usr/local/bin/k3s-uninstall.sh
+
+- hosts: k3s-nodes
+  gather_facts: no
+  tasks:
+    - command: /usr/local/bin/k3s-agent-uninstall.sh

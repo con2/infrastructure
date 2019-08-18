@@ -1,0 +1,7 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth1:
+      addresses:
+        - "{{ k3s_node_ip_address }}/24"

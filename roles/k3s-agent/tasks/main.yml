@@ -1,0 +1,4 @@
+- name: install k3s-agent
+  shell: curl -sfL https://get.k3s.io | K3S_URL=https://{{ k3s_server_hostname }}:6443 K3S_TOKEN={{ k3s_token }} INSTALL_K3S_EXEC='--node-ip {{ k3s_node_ip_address }}' sh -
+  args:
+    creates: /etc/systemd/system/k3s-agent.service

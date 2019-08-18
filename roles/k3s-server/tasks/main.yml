@@ -1,0 +1,4 @@
+- name: install k3s-server
+  shell: curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='--no-deploy traefik --node-ip {{ k3s_server_ip_address }} --storage-endpoint postgres://{{ k3s_postgresql_username }}:{{ k3s_postgresql_password }}@{{ k3s_postgresql_hostname }}/{{ k3s_postgresql_database }}' sh -
+  args:
+    creates: /etc/systemd/system/k3s-server.service

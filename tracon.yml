@@ -701,3 +701,23 @@
           subject_alt_name: "DNS:putki.tracon.fi"
         - name: vara.kompassi.eu
           subject_alt_name: "DNS:vara.kompassi.eu"
+
+
+- hosts: k3s-servers
+  gather_facts: yes
+  roles:
+    - role: k3s-base
+      tags: [base, k3s, k3s-base]
+
+    - role: k3s-server
+      tags: [k3s, k3s-server]
+
+
+- hosts: k3s-nodes
+  gather_facts: yes
+  roles:
+    - role: k3s-base
+      tags: [base, k3s, k3s-base]
+
+    - role: k3s-agent
+      tags: [k3s, k3s-agent]
