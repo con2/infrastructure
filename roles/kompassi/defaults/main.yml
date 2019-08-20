@@ -5,7 +5,7 @@ kompassi_ssl: true
 kompassi_letsencrypt: true
 kompassi_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
 kompassi_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
-kompassi_allowed_hosts: "{{ kompassi_hostname }} vara.kompassi.eu"
+kompassi_allowed_hosts: kompassi.eu vara.kompassi.eu animecon.fi conit.fi
 kompassi_installation_name: Kompassi
 kompassi_installation_slug: turska
 kompassi_default_from_email: suunnistajat@kompassi.eu
