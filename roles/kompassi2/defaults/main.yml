@@ -1,0 +1,8 @@
+kompassi2_hostname: v2.kompassi.eu
+kompassi2_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
+kompassi2_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
+kompassi2_port: 8018
+kompassi2_default: false
+kompassi2_letsencrypt: true
+kompassi2_ssl: true
+kompassi2_image: tracon/kompassi2

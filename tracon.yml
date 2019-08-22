@@ -573,6 +573,11 @@
         - kompassi
         - kompassi-production
 
+    - role: kompassi2
+      tags:
+        - kompassi2
+        - kompassi2-production
+
     - role: kompassi
       tags: [kompassi-staging]
       kompassi_allowed_hosts: dev.kompassi.eu

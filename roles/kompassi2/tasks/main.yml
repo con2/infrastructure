@@ -1,0 +1,28 @@
+- name: "Setup nginx vhost for {{ kompassi2_hostname }}"
+  template: src=kompassi2.nginx.j2 dest=/etc/nginx/sites-available/{{ kompassi2_hostname }} mode=0644
+  notify: restart nginx
+  tags: [kompassi2-nginx]
+
+- name: "Enable nginx vhost for {{ kompassi2_hostname }}"
+  file: >
+    src=/etc/nginx/sites-available/{{ kompassi2_hostname }}
+    path=/etc/nginx/sites-enabled/{{ kompassi2_hostname }}
+    state=link
+  notify: restart nginx
+  tags: [kompassi2-nginx]
+
+- name: "Update kompassi2 docker image from the registry"
+  docker_image:
+    name: "{{ kompassi2_image }}"
+    force: yes
+  tags: [kompassi2-deploy]
+
+- name: "Create kompassi2 container for {{ kompassi2_hostname }}"
+  docker_container:
+    name: "{{ kompassi2_hostname }}"
+    image: "{{ kompassi2_image }}"
+    restart_policy: unless-stopped
+    recreate: yes
+    ports:
+      - "127.0.0.1:{{ kompassi2_port }}:80"
+  tags: [kompassi2-deploy]
