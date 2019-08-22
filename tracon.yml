@@ -621,9 +621,7 @@
       tags: [letsencrypt]
       letsencrypt_domains:
         - name: kompassi.eu
-          subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:neula.kompassi.eu,DNS:animecon.fi,DNS:www.animecon.fi,DNS:conit.fi,DNS:www.conit.fi"
-        - name: dev.kompassi.eu
-          subject_alt_name: "DNS:dev.kompassi.eu"
+          subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:neula.kompassi.eu,DNS:v2.kompassi.eu,DNS:animecon.fi,DNS:www.animecon.fi,DNS:conit.fi,DNS:www.conit.fi"
         - name: photoshoot.conikuvat.fi
           subject_alt_name: "DNS:photoshoot.conikuvat.fi"
 
