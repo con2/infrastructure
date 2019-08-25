@@ -1,0 +1,58 @@
+- name: Set up partitions
+  parted:
+    device: "{{ item }}"
+    number: 1
+    state: present
+  with_items:
+    - "{{ k3s_storage_fast_disk }}"
+    - "{{ k3s_storage_slow_disk }}"
+  tags:
+    - k3s-storage-partitions
+
+- name: Format partitions
+  filesystem:
+    dev: "{{ item }}"
+    fstype: xfs
+  with_items:
+    - "{{ k3s_storage_fast_partition }}"
+    - "{{ k3s_storage_slow_partition }}"
+  tags:
+    - k3s-storage-partitions
+
+- name: Mount partitions
+  mount:
+    state: mounted
+    path: /var/lib/rook
+    src: "{{ k3s_storage_fast_partition }}"
+    fstype: xfs
+  tags:
+    - k3s-storage-partitions
+    - k3s-storage-mount
+
+- name: Make sure required directories exist
+  file:
+    path: /var/lib/kubelet/plugins_registry
+    state: directory
+  tags:
+    - k3s-storage-directories
+
+- name: Disable swap
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+  tags:
+    - k3s-storage-swap
+
+- name: Ensure swap is not mounted at boot
+  mount:
+    name: none
+    fstype: swap
+    state: absent
+  tags:
+    - k3s-storage-swap
+
+- name: Remove swap file
+  file:
+    path: /swap.img
+    state: absent
+  tags:
+    - k3s-storage-swap

@@ -1,0 +1,20 @@
+apiVersion: ceph.rook.io/v1
+kind: CephFilesystem
+metadata:
+  name: qbfs
+  namespace: rook-ceph
+spec:
+  metadataPool:
+    failureDomain: host
+    replicated:
+      size: 3
+  dataPools:
+    - failureDomain: host
+      replicated:
+        size: 3
+  metadataServer:
+    activeCount: 1
+    activeStandby: true
+    annotations: {}
+    placement: {}
+    resources: {}

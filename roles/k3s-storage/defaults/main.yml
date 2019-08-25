@@ -1,0 +1,4 @@
+k3s_storage_fast_disk: /dev/sdb
+k3s_storage_fast_partition: /dev/sdb1
+k3s_storage_slow_disk: /dev/sdc
+k3s_storage_slow_partition: /dev/sdc1
