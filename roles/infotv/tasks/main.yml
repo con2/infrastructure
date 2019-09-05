@@ -21,6 +21,17 @@
     state=link
   notify: restart nginx
 
+- name: "Setup nginx vhost for {{ infotv_insecure_hostname }}"
+  template: src=infotv-insecure.nginx.j2 dest=/etc/nginx/sites-available/{{ infotv_insecure_hostname }} mode=0644
+  notify: restart nginx
+
+- name: "Enable nginx vhost for {{ infotv_insecure_hostname }}"
+  file: >
+    src=/etc/nginx/sites-available/{{ infotv_insecure_hostname }}
+    path=/etc/nginx/sites-enabled/{{ infotv_insecure_hostname }}
+    state=link
+  notify: restart nginx
+
 - name: "Update Info-TV docker image from the registry"
   docker_image:
     name: tracon/infotv
