@@ -506,7 +506,7 @@
         - name: aicon.fi
           subject_alt_name: "DNS:aicon.fi,DNS:www.aicon.fi,DNS:2016.aicon.fi,DNS:2017.aicon.fi,DNS:2018.aicon.fi,DNS:m.aicon.fi"
         - name: conikuvat.fi
-          subject_alt_name: "DNS:conikuvat.fi,DNS:conkuvat.fi,DNS:www.conikuvat.fi,DNS:www.conkuvat.fi,DNS:beta.conikuvat.fi"
+          subject_alt_name: "DNS:conikuvat.fi,DNS:conkuvat.fi,DNS:www.conikuvat.fi,DNS:www.conkuvat.fi"
         - name: larppikuvat.fi
           subject_alt_name: "DNS:larppikuvat.fi,DNS:www.larppikuvat.fi"
         - name: con2.fi
