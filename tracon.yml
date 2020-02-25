@@ -263,7 +263,7 @@
         - turska-hitpoint2020-labour-conitea
         - turska-tracon2020-labour-conitea
         - traconry-hallitus-nykyinen
-      tracontent_blog_comment_moderators: 'Santtu Pajukanta <santtu@pajukanta.fi>, Marjaana Karttunen <maryjane@tracon.fi>, Mitol Meerna <mitol@tracon.fi>, Mari Niemi <lokki@tracon.fi>'
+      tracontent_blog_comment_moderators: 'Santtu Pajukanta <santtu@pajukanta.fi>, Marjaana Karttunen <maryjane@tracon.fi>, Mari Niemi <lokki@tracon.fi>'
 
     - role: tracontent
       tags: [tracontent]
