@@ -79,7 +79,7 @@
       redirect_default: true
       redirect_hostname: "{{ inventory_hostname }}"
       redirect_allowed_hosts: "{{ inventory_hostname }}"
-      redirect_target: https://2019.tracon.fi
+      redirect_target: https://2020.tracon.fi
       redirect_ssl_certificate: /srv/letsencrypt/secrets/tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/tracon.fi/domain.key
 
@@ -103,7 +103,7 @@
       tags: [redirect]
       redirect_hostname: hitpoint.tracon.fi
       redirect_allowed_hosts: hitpoint.tracon.fi www.hitpoint.tracon.fi
-      redirect_target: https://2019.hitpoint.tracon.fi
+      redirect_target: https://2020.hitpoint.tracon.fi
       redirect_ssl_certificate: /srv/letsencrypt/secrets/hitpoint.tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/hitpoint.tracon.fi/domain.key
 
@@ -260,6 +260,7 @@
         - 2016.hitpoint.tracon.fi
         - 2017.hitpoint.tracon.fi
         - 2019.hitpoint.tracon.fi
+        - 2020.hitpoint.tracon.fi
       tracontent_editor_group_list:
         - turska-hitpoint2020-labour-conitea
         - turska-tracon2020-labour-conitea
@@ -275,6 +276,7 @@
         - 2016.hitpoint.tracon.fi
         - 2017.hitpoint.tracon.fi
         - 2019.hitpoint.tracon.fi
+        - 2020.hitpoint.tracon.fi
       tracontent_static_dir: /srv/tracontent.tracon.fi/public_html/static
       tracontent_ssl_certificate: /srv/letsencrypt/secrets/hitpoint.tracon.fi/chained.pem
       tracontent_ssl_certificate_key: /srv/letsencrypt/secrets/hitpoint.tracon.fi/domain.key
@@ -493,7 +495,7 @@
         - name: tracon.fi
           subject_alt_name: "DNS:tracon.fi,DNS:www.tracon.fi,DNS:nuoli.tracon.fi,DNS:2016.tracon.fi,DNS:2017.tracon.fi,DNS:2018.tracon.fi,DNS:2019.tracon.fi,DNS:2020.tracon.fi,DNS:blog.tracon.fi,DNS:r.tracon.fi,DNS:2005.tracon.fi,DNS:2006.tracon.fi,DNS:2007.tracon.fi,DNS:2008.tracon.fi,DNS:2009.tracon.fi,DNS:2010.tracon.fi,DNS:2011.tracon.fi,DNS:2012.tracon.fi,DNS:2013.tracon.fi,DNS:2014.tracon.fi,DNS:2015.tracon.fi,DNS:media.tracon.fi,DNS:kulukorvaus.tracon.fi,DNS:kirppu.tracon.fi,DNS:tera.tracon.fi,DNS:pora.tracon.fi,DNS:pgadmin.nuoli.tracon.fi,DNS:m.tracon.fi,DNS:wiki.tracon.fi,DNS:tyovoima.tracon.fi"
         - name: hitpoint.tracon.fi
-          subject_alt_name: "DNS:hitpoint.tracon.fi,DNS:www.hitpoint.tracon.fi,DNS:2015.hitpoint.tracon.fi,DNS:2016.hitpoint.tracon.fi,DNS:2017.hitpoint.tracon.fi,DNS:2019.hitpoint.tracon.fi,DNS:kulukorvaus.hitpoint.tracon.fi"
+          subject_alt_name: "DNS:hitpoint.tracon.fi,DNS:www.hitpoint.tracon.fi,DNS:2015.hitpoint.tracon.fi,DNS:2016.hitpoint.tracon.fi,DNS:2017.hitpoint.tracon.fi,DNS:2019.hitpoint.tracon.fi,DNS:2020.hitpoint.tracon.fi,DNS:kulukorvaus.hitpoint.tracon.fi"
         - name: ry.tracon.fi
           subject_alt_name: "DNS:ry.tracon.fi,DNS:kulukorvaus.ry.tracon.fi"
 
