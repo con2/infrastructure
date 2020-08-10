@@ -44,6 +44,7 @@
       ADMINS: "{{ kirppu_admins }}"
       ALLOWED_HOSTS: "{{ kirppu_allowed_hosts }}"
       DATABASE_URL: "postgres://{{ kirppu_postgresql_username }}:{{ kirppu_postgresql_password }}@postgres/{{ kirppu_postgresql_database }}"
+      KIRPPU_EXTRA_DATABASES: "tracon2018=postgres://{{ kirppu_postgresql_username }}:{{ kirppu_postgresql_password }}@postgres/kirppu_tracon2018"
       DEFAULT_FROM_EMAIL: "{{ kirppu_default_from_email }}"
       EMAIL_HOST: "{{ kirppu_email_host }}"
       KOMPASSI_OAUTH2_CLIENT_ID: "{{ kirppu_kompassi_oauth2_client_id }}"
