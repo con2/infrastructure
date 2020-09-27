@@ -33,9 +33,12 @@ edegal_editor_group: conikuvat-staff
 edegal_enable_larppikuvat_features: "false"
 
 # coppermine import
-edegal_coppermine_mysql_host: kirito.b2.fi
-edegal_coppermine_mysql_username: b2_coppermine
-edegal_coppermine_mysql_database: b2_coppermine
+# edegal_coppermine_mysql_host: kirito.b2.fi
+# edegal_coppermine_mysql_username: b2_coppermine
+# edegal_coppermine_mysql_database: b2_coppermine
+edegal_coppermine_mysql_host: ''
+edegal_coppermine_mysql_username: ''
+edegal_coppermine_mysql_database: ''
 
 # FIXME ugly. but we'll move to kubernetes anyway soon.
 edegal_volumes:

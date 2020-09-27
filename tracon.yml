@@ -460,11 +460,6 @@
       edegal_kompassi_oauth2_client_id: "{{ larppikuvat_kompassi_oauth2_client_id }}"
       edegal_kompassi_oauth2_client_secret: "{{ larppikuvat_kompassi_oauth2_client_secret }}"
 
-      # no coppermine import :)
-      edegal_coppermine_mysql_host: ''
-      edegal_coppermine_mysql_username: ''
-      edegal_coppermine_mysql_database: ''
-
       # FIXME ugly. but we'll move to kubernetes anyway soon.
       edegal_volumes:
         - /mnt/coppermine_albums/larppikuvat:/usr/src/app/media
