@@ -56,7 +56,7 @@
       redirect_default: true
       redirect_hostname: "{{ inventory_hostname }}"
       redirect_allowed_hosts: "{{ inventory_hostname }}"
-      redirect_target: https://2019.tracon.fi
+      redirect_target: https://2020.tracon.fi
       redirect_ssl_certificate: /srv/letsencrypt/secrets/siilo.tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/siilo.tracon.fi/domain.key
 
@@ -111,7 +111,7 @@
       tags: [redirect]
       redirect_hostname: wiki.hitpoint.tracon.fi
       redirect_allowed_hosts: wiki.hitpoint.tracon.fi
-      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/HITPOINT2019
+      redirect_target: https://atlasso.tracon.fi/crowd?next=https://confluence.tracon.fi/display/HITPOINT2020
       redirect_ssl_certificate: /srv/letsencrypt/secrets/hitpoint.tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/hitpoint.tracon.fi/domain.key
 
@@ -127,7 +127,7 @@
       tags: [redirect]
       redirect_hostname: tyovoima.hitpoint.tracon.fi
       redirect_allowed_hosts: tyovoima.hitpoint.tracon.fi
-      redirect_target: https://kompassi.eu/events/hitpoint2019/signup
+      redirect_target: https://kompassi.eu/events/hitpoint2020/signup
       redirect_ssl_certificate: /srv/letsencrypt/secrets/hitpoint.tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/hitpoint.tracon.fi/domain.key
 
@@ -451,6 +451,7 @@
       edegal_postgresql_username: larppikuvat
       edegal_postgresql_database: larppikuvat
       edegal_editor_group: larppikuvat-staff
+      edegal_enable_larppikuvat_features: "true"
 
       edegal_secret_key: "{{ larppikuvat_secret_key }}"
       edegal_postgresql_password: "{{ larppikuvat_postgresql_password }}"

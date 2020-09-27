@@ -30,6 +30,7 @@ edegal_postgresql_database: conikuvat
 edegal_workers: 8
 edegal_timeout: 60
 edegal_editor_group: conikuvat-staff
+edegal_enable_larppikuvat_features: "false"
 
 # coppermine import
 edegal_coppermine_mysql_host: kirito.b2.fi
