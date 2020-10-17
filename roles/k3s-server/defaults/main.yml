@@ -1,6 +1,2 @@
 k3s_server_ip_address: 10.9.1.2
 k3s_server_hostname: qb1.con2.fi
-k3s_postgresql_hostname: siilo.tracon.fi
-k3s_postgresql_username: k3s
-# k3s_postgresql_password: from vault
-k3s_postgresql_database: k3s

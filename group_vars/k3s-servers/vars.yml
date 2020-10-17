@@ -1,1 +1,0 @@
-k3s_postgresql_password: "{{ vault_k3s_postgresql_password }}"

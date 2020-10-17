@@ -1,3 +1,9 @@
+- name: Install packages
+  apt:
+    name:
+      - xfsprogs
+      - lvm2
+
 - name: Set up partitions
   parted:
     device: "{{ item }}"
@@ -13,17 +19,28 @@
   filesystem:
     dev: "{{ item }}"
     fstype: xfs
+    opts: "-n ftype=1"
   with_items:
     - "{{ k3s_storage_fast_partition }}"
     - "{{ k3s_storage_slow_partition }}"
   tags:
     - k3s-storage-partitions
 
-- name: Mount partitions
+- name: Mount K3s data partition
   mount:
     state: mounted
-    path: /var/lib/rook
+    path: /var/lib/rancher
     src: "{{ k3s_storage_fast_partition }}"
+    fstype: xfs
+  tags:
+    - k3s-storage-partitions
+    - k3s-storage-mount
+
+- name: Mount Longhorn partitions
+  mount:
+    state: mounted
+    path: /var/lib/longhorn
+    src: "{{ k3s_storage_slow_partition }}"
     fstype: xfs
   tags:
     - k3s-storage-partitions

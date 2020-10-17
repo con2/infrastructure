@@ -1,0 +1,4 @@
+- name: install k3s-server
+  shell: curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION='{{ k3s_version }}' INSTALL_K3S_EXEC='server --disable traefik --node-ip {{ k3s_node_ip_address }} --cluster-init' sh -
+  args:
+    creates: /etc/systemd/system/k3s.service
