@@ -3,6 +3,11 @@
     name:
       - xfsprogs
       - lvm2
+      - open-iscsi
+      - jq
+      - nfs-common
+  tags:
+    - k3s-storage-packages
 
 - name: Set up partitions
   parted:
