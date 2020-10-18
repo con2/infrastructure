@@ -16,6 +16,7 @@ TODO:
   * [CrunchyData](https://github.com/CrunchyData/postgres-operator)
   * [Zalando](https://github.com/zalando/postgres-operator)
 * [ ] Minio in distributed mode (requires `qb4`)
+* [ ] Harbor should probably use external database
 
 ## Pre-requisites
 
@@ -27,9 +28,7 @@ TODO:
 
 ## SSH via bastion server
 
-Qb servers only have HTTP/HTTPS open to the world in the network-level firewall.
-
-Monokkeli can be used as a bastion server. `~/.ssh/config`:
+Qb servers only have HTTP/HTTPS open to the world in the network-level firewall. For SSH, `monokkeli` can be used as a bastion server. Add this to your `~/.ssh/config`:
 
     Host monokkeli
         Hostname monokkeli.tracon.fi

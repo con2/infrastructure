@@ -3,3 +3,12 @@ expose:
     hosts:
       core: harbor.con2.fi
       notary: notary.con2.fi
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+  tls:
+    certSource: secret
+    secret:
+      secretName: con2-harbor-ingress-tls
+      notarySecretName: con2-notary-ingress-tls
+
+externalURL: https://harbor.con2.fi
