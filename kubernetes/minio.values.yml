@@ -1,0 +1,7 @@
+persistence:
+  storageClass: longhorn
+  size: 50Gi
+ingress:
+  enabled: true
+  hosts:
+    - minio.con2.fi

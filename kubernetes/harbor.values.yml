@@ -1,0 +1,5 @@
+expose:
+  ingress:
+    hosts:
+      core: harbor.con2.fi
+      notary: notary.con2.fi
