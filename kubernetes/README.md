@@ -9,7 +9,12 @@
 
 TODO:
 
-* [ ] In-cluster PostgreSQL using either [CrunchyData](https://github.com/CrunchyData/postgres-operator) or [Zalando](https://github.com/zalando/postgres-operator) PostgreSQL operator
+* [ ] Automate Helm chart installations
+  * Ansible?
+  * Some in-cluster Helm operator/controller?
+* [ ] In-cluster PostgreSQL using a PostgreSQL operator:
+  * [CrunchyData](https://github.com/CrunchyData/postgres-operator)
+  * [Zalando](https://github.com/zalando/postgres-operator)
 * [ ] Minio in distributed mode (requires `qb4`)
 
 ## Pre-requisites
