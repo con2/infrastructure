@@ -77,13 +77,14 @@ Now you should be able to `kubectl` locally for increased happiness and comfort.
 
 Install the following
 
+* [`kubernetes-secret-generator`](https://github.com/mittwald/kubernetes-secret-generator#helm)
 * [`ingress-nginx`](https://kubernetes.github.io/ingress-nginx/deploy/#using-helm)
 * [`cert-manager`](https://cert-manager.io/docs/installation/kubernetes/#installing-with-helm)
 * [`longhorn`](https://longhorn.io/docs/0.8.0/install/install-with-helm/)
 * [`minio`](https://github.com/minio/charts)
 * [`harbor`](https://github.com/goharbor/harbor-helm)
 
-using Helm. Links above are to Helm installation instructions of each app.
+using Helm. Links above are to Helm installation instructions of each app. If a value file is required, it should be placed in this directory for future reference.
 
 * **Values**: Use values files from this directory.
 * **Release name**: The release name should be the same as the application name.
@@ -97,6 +98,10 @@ Using Longhorn as an example:
 Yes, that's five `longhorn`s in the same command.
 
 ## Miscellaneous
+
+### Creating namespaces
+
+If you need a namespace for an application that has images stored in [Con2 Harbor](https://harbor.con2.fi), you need to create an image pull secret in that namespace and bind it to the `default` service account. The `create-namespace.sh` script does just that, using the `con2-harbor` image pull secret in the `default` namespace as reference.
 
 ### Longhorn ingress
 

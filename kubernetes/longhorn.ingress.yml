@@ -4,15 +4,16 @@ metadata:
   name: longhorn
   namespace: longhorn-system
   annotations:
-    # type of authentication
-    nginx.ingress.kubernetes.io/auth-type: basic
-    # prevent the controller from redirecting (308) to HTTPS
-    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
-    # name of the secret that contains the user/password definitions
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/auth-realm: 'kubectl get -n longhorn-system secret/longhorn-basic-auth'
     nginx.ingress.kubernetes.io/auth-secret: longhorn-basic-auth
-    # message to display with an appropriate context why the authentication is required
-    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required '
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
+  tls:
+    - secretName: longhorn-letsencrypt
+      hosts:
+        - longhorn.con2.fi
   rules:
   - host: longhorn.con2.fi
     http:
