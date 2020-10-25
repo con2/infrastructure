@@ -1,8 +1,8 @@
 postgresql_user: postgres
 postgresql_directory: /var/lib/postgresql
 postgresql_config_directory: /etc/postgresql/{{ postgresql_version }}/main
-postgresql_ssl_certificate: /etc/ssl/certs/ssl-cert-snakeoil.pem
-postgresql_ssl_certificate_key: /etc/ssl/private/ssl-cert-snakeoil.key
+postgresql_ssl_certificate: /srv/letsencrypt/secrets/siilo.tracon.fi/chained.pem
+postgresql_ssl_certificate_key: /srv/letsencrypt/secrets/siilo.tracon.fi/domain.key
 
 # https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server
 # a reasonable starting value for shared_buffers is 1/4 of the memory in your system

@@ -78,3 +78,13 @@
     src: pre-backup.sh.j2
     dest: /etc/pre-backup.d/{{ postgresql_hostname }}-postgres.sh
     mode: 0755
+
+- name: "Create a root-owned copy of SSL key"
+  copy:
+    src: "{{ postgresql_ssl_certificate_key }}"
+    remote_src: yes
+    dest: "{{ postgresql_ssl_certificate_key }}.root-owned-because-postgresql-is-a-fucking-turd"
+    owner: root
+    group: postgres
+    mode: 0640
+    force: yes
