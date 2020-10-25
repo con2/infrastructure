@@ -1,0 +1,29 @@
+# NOTE: This file is stored for reference only and secret values have been omitted.
+# To get the actual version with secrets, use `helm get values -n outline outline`.
+
+outline:
+  secretKey: censored
+  utilsSecretKey: censored
+  url: https://outline.con2.fi
+
+kompassi:
+  clientId: censored
+  clientSecret: censored
+
+image:
+  tag: 0.43.3-helm3
+
+ingress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+  hostname: outline.con2.fi
+  tlsSecretName: outline-tls
+
+postgres:
+  hostname: siilo.tracon.fi
+  username: outline
+  password: censored
+  database: outline
+  ssl: true

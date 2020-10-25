@@ -1,0 +1,20 @@
+image:
+  repository: redis
+  tag: 6.0.8-buster
+
+redis:
+  # must match ^[\\w-\\.]+$) and can be templated
+  masterGroupName: "qb-redis-ha"
+
+haproxy:
+  enabled: true
+
+exporter:
+  enabled: true
+
+persistentVolume:
+  enabled: true
+  storageClass: longhorn
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
