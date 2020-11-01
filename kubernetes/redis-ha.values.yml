@@ -14,7 +14,7 @@ exporter:
 
 persistentVolume:
   enabled: true
-  storageClass: longhorn
+  storageClass: local-path
   accessModes:
     - ReadWriteOnce
   size: 10Gi

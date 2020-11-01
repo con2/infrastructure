@@ -44,7 +44,7 @@
 - name: Mount Longhorn partitions
   mount:
     state: mounted
-    path: /var/lib/longhorn
+    path: /mnt/big
     src: "{{ k3s_storage_slow_partition }}"
     fstype: xfs
   tags:
@@ -53,10 +53,23 @@
 
 - name: Make sure required directories exist
   file:
-    path: /var/lib/kubelet/plugins_registry
+    path: '{{ item }}'
     state: directory
+  with_items:
+    - /mnt/big/longhorn
+    - /mnt/big/localpath
   tags:
     - k3s-storage-directories
+
+- name: Bind mounts
+  mount:
+    state: mounted
+    path: /var/lib/longhorn
+    src: /mnt/big/longhorn
+    opts: bind
+    fstype: none
+  tags:
+    - k3s-storage-bind-mounts
 
 - name: Disable swap
   command: swapoff -a

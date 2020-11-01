@@ -12,3 +12,6 @@ expose:
       notarySecretName: con2-notary-ingress-tls
 
 externalURL: https://harbor.con2.fi
+
+clair:
+  enabled: false

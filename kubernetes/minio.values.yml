@@ -1,7 +1,23 @@
+# NOTE: secrets redacted, see `helm get values -n minio minio`
+
+# mode: distributed
+
+accessKey: redacted
+secretKey: redacted
+
 persistence:
-  storageClass: longhorn
-  size: 50Gi
+  storageClass: local-path-big
+  size: 8Gi
+
 ingress:
   enabled: true
   hosts:
     - minio.con2.fi
+  tls:
+    - secretName: minio-letsencrypt
+      hosts:
+        - minio.con2.fi
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m

@@ -1,0 +1,12 @@
+# NOTE: this is the LPP for the local-path-big(/slow) storageclass
+# local-path(-fast/small) is provided by the one installed by k3s by default
+
+storageClass:
+  name: local-path-big
+  provisionerName: con2.fi/local-path-big
+
+nodePathMap:
+  - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
+    paths:
+      - /mnt/big/localpath
+
