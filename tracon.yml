@@ -20,7 +20,7 @@
     - role: kibana
       tags: [kibana]
 
-- hosts: legacy-servers
+- hosts: legacy_servers
   gather_facts: yes
   roles:
     # - role: rsyslog-to-logstash
@@ -28,7 +28,7 @@
     - role: node-exporter
       tags: [node-exporter]
 
-- hosts: postgresql-servers
+- hosts: postgresql_servers
   gather_facts: yes
   roles:
     - role: base
@@ -60,7 +60,7 @@
       redirect_ssl_certificate: /srv/letsencrypt/secrets/siilo.tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/siilo.tracon.fi/domain.key
 
-- hosts: barman-servers
+- hosts: barman_servers
   gather_facts: yes
   roles:
     - role: base
@@ -70,7 +70,7 @@
     - role: postgresql-barman
       tags: [postgresql-barman]
 
-- hosts: tracon-servers
+- hosts: tracon_servers
   gather_facts: yes
   roles:
     # default site
@@ -512,7 +512,7 @@
         - name: con2.fi
           subject_alt_name: "DNS:con2.fi,DNS:www.con2.fi"
 
-- hosts: kompassi-servers
+- hosts: kompassi_servers
   gather_facts: yes
   roles:
     # default site
@@ -594,7 +594,7 @@
         - name: atlasso.tracon.fi
           subject_alt_name: "DNS:atlasso.tracon.fi,DNS:kompassi.tracon.fi,DNS:paikkaliput.tracon.fi"
 
-- hosts: management-servers
+- hosts: management_servers
   gather_facts: yes
   roles:
     - role: jenkins
@@ -633,7 +633,7 @@
           subject_alt_name: "DNS:jenkins.tracon.fi,DNS:kibana.tracon.fi,DNS:grafana.tracon.fi,DNS:prometheus.tracon.fi,DNS:alertmanager.tracon.fi,DNS:pgadmin.monokkeli.tracon.fi"
 
 
-- hosts: hop-servers
+- hosts: hop_servers
   gather_facts: yes
   roles:
     - role: base

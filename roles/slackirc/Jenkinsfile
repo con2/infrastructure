@@ -33,7 +33,7 @@ stage("Deploy") {
       ansible-playbook \
         --vault-password-file=~/.vault_pass.txt \
         --user root \
-        --limit tracon-servers \
+        --limit tracon_servers \
         --tags slackirc \
         tracon.yml
     """

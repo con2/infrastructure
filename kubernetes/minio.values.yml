@@ -1,13 +1,17 @@
 # NOTE: secrets redacted, see `helm get values -n minio minio`
 
-# mode: distributed
+mode: distributed
 
 accessKey: redacted
 secretKey: redacted
 
 persistence:
   storageClass: local-path-big
-  size: 8Gi
+  size: 850Gi
+
+resources:
+  requests:
+    memory: 1Gi
 
 ingress:
   enabled: true

@@ -1,4 +1,4 @@
-- hosts: kompassi-servers
+- hosts: kompassi_servers
   gather_facts: no
   become: yes
   tasks:

@@ -1,22 +1,22 @@
-[tracon-servers]
+[tracon_servers]
 nuoli.tracon.fi
 
-[management-servers]
+[management_servers]
 monokkeli.tracon.fi prometheus_ip_address=172.17.0.0/16
 
-[kompassi-servers]
+[kompassi_servers]
 neula.kompassi.eu
 
-[hop-servers]
+[hop_servers]
 putki.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
 
-[postgresql-servers]
+[postgresql_servers]
 siilo.tracon.fi ansible_python_interpreter=/usr/bin/python3
 
-[barman-servers]
+[barman_servers]
 piilo.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
 
-[legacy-servers]
+[legacy_servers]
 kurikka.tracon.fi node_exporter_init=upstart node_exporter_firewall=none
 
 [k3s_initial_server]
@@ -29,10 +29,10 @@ qb3 k3s_node_ip_address=10.9.1.4 ansible_python_interpreter=/usr/bin/python3
 [k3s_nodes]
 qb4 k3s_node_ip_address=10.9.1.5 ansible_python_interpreter=/usr/bin/python3
 
-[docker-servers:children]
-tracon-servers
-management-servers
-kompassi-servers
+[docker_servers:children]
+tracon_servers
+management_servers
+kompassi_servers
 
 [k3s:children]
 k3s_initial_server

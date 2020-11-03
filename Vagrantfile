@@ -31,7 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       }
       ansible.groups = {
           "docker-servers" => ["siilo"],
-          "postgresql-servers" => ["siilo"],
+          "postgresql_servers" => ["siilo"],
       }
       ansible.host_key_checking = false
     end
@@ -48,7 +48,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "postgresql_hostname" => "192.168.50.4",
       }
       ansible.groups = {
-          "barman-servers" => ["piilo"]
+          "barman_servers" => ["piilo"]
       }
       ansible.host_key_checking = false
     end
@@ -66,7 +66,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #         "letsencrypt_enabled" => "0",
   #     }
   #     ansible.groups = {
-  #         "tracon-servers" => ["nuoli"]
+  #         "tracon_servers" => ["nuoli"]
   #     }
   #     ansible.host_key_checking = false
   #   end
@@ -84,7 +84,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #         "letsencrypt_enabled" => "0",
   #     }
   #     ansible.groups = {
-  #         "kompassi-servers" => ["neula"]
+  #         "kompassi_servers" => ["neula"]
   #     }
   #     ansible.host_key_checking = false
   #   end
@@ -100,7 +100,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #         "letsencrypt_enabled" => "0",
   #     }
   #     ansible.groups = {
-  #         "management-servers" => ["monokkeli"]
+  #         "management_servers" => ["monokkeli"]
   #     }
   #     ansible.host_key_checking = false
   #   end
