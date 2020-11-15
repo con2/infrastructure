@@ -58,6 +58,7 @@
       KOMPASSI_API_APPLICATION_NAME: "{{ kirppu_kompassi_api_v1_name }}"
       KOMPASSI_API_APPLICATION_PASSWORD: "{{ kirppu_kompassi_api_v1_password }}"
       ASSUME_SSL_HEADER: "HTTP_X_FORWARDED_PROTO=https"
+      KIRPPU_ALLOW_PROVISION_FUNCTIONS: "1"
   tags: [kirppu-deploy]
 
 - name: "Extract static files from inside container (command version)"
