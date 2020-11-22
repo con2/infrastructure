@@ -13,8 +13,8 @@
 
 - name: Create locales
   command: locale-gen {{ locale.LC_CTYPE }} {{ locale.LANG }}
-  when: lc_ctype|failed or lang|failed
+  when: lc_ctype is failed or lang is failed
 
 - name: Set LC_CTYPE=fi_FI.UTF-8 and LANG=en_US.UTF-8
   command: update-locale LC_CTYPE={{ locale.LC_CTYPE }} LANG={{ locale.LANG }}
-  when: lc_ctype|failed or lang|failed
+  when: lc_ctype is failed or lang is failed

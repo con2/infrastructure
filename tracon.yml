@@ -677,3 +677,15 @@
           subject_alt_name: "DNS:putki.tracon.fi"
         - name: vara.kompassi.eu
           subject_alt_name: "DNS:vara.kompassi.eu"
+
+- hosts: atlassian_servers
+  gather_facts: yes
+  roles:
+    - role: base
+      tags: [base]
+
+    - role: node-exporter
+      tags: [node-exporter]
+
+    - role: prebackup
+      tags: [prebackup]

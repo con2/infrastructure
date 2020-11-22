@@ -13,7 +13,6 @@
       - htop
       - man-db
       - python-apt
-      - python-pip
       - python3-pip
       - python3-setuptools
       - python-dev
