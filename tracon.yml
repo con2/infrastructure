@@ -689,3 +689,12 @@
 
     - role: prebackup
       tags: [prebackup]
+
+    - role: docker
+      tags: [docker]
+
+    - role: nginx
+      tags: [nginx]
+
+    - role: atlassian
+      tags: [atlassian]

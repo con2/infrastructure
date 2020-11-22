@@ -1,0 +1,7 @@
+FROM atlassian/jira-software:latest
+
+# Kompassi SSO, override entrypoint template generator
+COPY jira-seraph-config.xml /opt/atlassian/etc/seraph-config.xml.j2
+
+# Secret key for auth
+COPY jira-crowd.properties ${JIRA_INSTALL_DIR}/atlassian-jira/WEB-INF/classes/crowd.properties

@@ -1,0 +1,83 @@
+- name: Setup Atlassian groups
+  group:
+    name: "{{ item.name }}"
+    gid: "{{ item.id }}"
+  loop: "{{ atlassian_ids }}"
+
+- name: Setup Atlassian users
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ item.id }}"
+    group: "{{ item.name }}"
+    home: "/opt/atlassian/{{ item.name }}-home"
+  loop: "{{ atlassian_ids }}"
+
+- name: Setup Atlassian directories
+  file:
+    path: "/opt/atlassian/{{ item.name }}-home"
+    state: directory
+    mode: '0700'
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  loop: "{{ atlassian_ids }}"
+
+- name: "Setup nginx vhosts for Atlassian"
+  template:
+    src: "{{ item.name }}.nginx.j2"
+    dest: "/etc/nginx/sites-available/{{ item.name }}.tracon.fi"
+    mode: 0644
+  notify: restart nginx
+  loop: "{{ atlassian_ids }}"
+
+- name: "Enable nginx vhost for Atlassian"
+  file: 
+    src: "/etc/nginx/sites-available/{{ item.name }}.tracon.fi"
+    path: "/etc/nginx/sites-enabled/{{ item.name }}.tracon.fi"
+    state: link
+  notify: restart nginx
+  loop: "{{ atlassian_ids }}"
+
+- name: Create postgres data directory
+  file:
+    path: /opt/atlassian/db
+    state: directory
+    mode: '0700'
+
+
+- name: Create build directory
+  file:
+    path: "/opt/atlassian-build"
+    state: directory
+
+- name: Copy docker files
+  copy:
+    src: "{{ item }}"
+    dest: "/opt/atlassian-build/{{ item }}"
+  loop:
+    - Dockerfile.confluence
+    - Dockerfile.jira
+    - confluence-seraph-config.xml
+    - jira-seraph-config.xml
+
+- name: Generate crowd.properties
+  template:
+    src: crowd.properties.j2
+    dest: "/opt/atlassian-build/{{ item.name }}-crowd.properties"
+  loop: "{{ atlassian_crowd_properties }}"
+
+- name: Build images
+  command:
+    chdir: /opt/atlassian-build
+    cmd: "docker build -f Dockerfile.{{ item }} -t tracon-{{ item }} ."
+  loop:
+    - confluence
+    - jira
+
+- name: Install docker-compose
+  apt:
+    pkg: docker-compose
+
+- name: Docker-compose config
+  copy:
+    src: docker-compose.yml
+    dest: /opt/atlassian/docker-compose.yml
