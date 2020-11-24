@@ -8,6 +8,11 @@ redis:
 
 haproxy:
   enabled: true
+  timeout:
+    # redis default timeout is "about 5 minutes" so make this longer
+    # NOTE: these are milliseconds if no unit is provided :)))
+    client: 330s
+    server: 330s
 
 exporter:
   enabled: true
