@@ -15,3 +15,8 @@ externalURL: https://harbor.con2.fi
 
 clair:
   enabled: false
+
+persistence:
+  persistentVolumeClaim:
+    registry:
+      size: 20Gi

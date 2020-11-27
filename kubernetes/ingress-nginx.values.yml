@@ -1,4 +1,15 @@
 controller:
+  # run on every node
+  kind: DaemonSet
+
+  # needs to be on host network in order for hostPort to work on CNI
   hostNetwork: true
-  hostPort:
-    enabled: true
+
+  # allow traffic into cluster using a host port
+  daemonset:
+    useHostPort: true
+
+  # while we use hostPort in hostNetwork to access ingress from outside,
+  # a service is still necessary, otherwise the controller will fail to boot
+  service:
+    type: ClusterIP
