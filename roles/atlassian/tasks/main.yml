@@ -43,7 +43,6 @@
     state: directory
     mode: '0700'
 
-
 - name: Create build directory
   file:
     path: "/opt/atlassian-build"
@@ -86,3 +85,13 @@
   copy:
     src: atlassian.service
     dest: /etc/systemd/system/atlassian.service
+
+- name: Install pbzip2
+  apt:
+    pkg: pbzip2
+
+- name: Add daily database dump
+  copy:
+    src: atlassian-db-backup.sh
+    dest: /etc/cron.daily/atlassian-db-backup.sh
+    mode: 0755
