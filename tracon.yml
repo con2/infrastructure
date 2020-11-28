@@ -698,3 +698,9 @@
 
     - role: atlassian
       tags: [atlassian]
+
+    - role: letsencrypt
+      tags: [letsencrypt]
+      letsencrypt_domains:
+        - name: confluence.tracon.fi
+          subject_alt_name: "DNS:confluence.tracon.fi,DNS:jira.tracon.fi,DNS:crowd.tracon.fi"

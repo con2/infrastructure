@@ -16,8 +16,8 @@ server {
     listen 443 http2 ssl;
     server_name confluence.tracon.fi;
 
-    ssl_certificate /etc/ssl/private/tmp/confluence.crt;
-    ssl_certificate_key /etc/ssl/private/tmp/confluence.pem;
+    ssl_certificate /srv/letsencrypt/secrets/confluence.tracon.fi/chained.pem;
+    ssl_certificate_key /srv/letsencrypt/secrets/confluence.tracon.fi/domain.key;
 
     add_header Strict-Transport-Security max-age=15768000;
 
