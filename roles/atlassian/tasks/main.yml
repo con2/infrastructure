@@ -81,3 +81,8 @@
   copy:
     src: docker-compose.yml
     dest: /opt/atlassian/docker-compose.yml
+
+- name: Add systemd service
+  copy:
+    src: atlassian.service
+    dest: /etc/systemd/system/atlassian.service
