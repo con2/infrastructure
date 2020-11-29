@@ -29,6 +29,7 @@ qb4 k3s_node_ip_address=10.9.1.5 ansible_python_interpreter=/usr/bin/python3
 [docker_servers:children]
 management_servers
 kompassi_servers
+atlassian_servers
 
 [k3s:children]
 k3s_initial_server

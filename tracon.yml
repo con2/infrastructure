@@ -1,4 +1,4 @@
-- hosts: docker-servers
+- hosts: docker_servers
   gather_facts: yes
   roles:
     - role: base
@@ -223,21 +223,6 @@
 - hosts: atlassian_servers
   gather_facts: yes
   roles:
-    - role: base
-      tags: [base]
-
-    - role: node-exporter
-      tags: [node-exporter]
-
-    - role: prebackup
-      tags: [prebackup]
-
-    - role: docker
-      tags: [docker]
-
-    - role: nginx
-      tags: [nginx]
-
     - role: atlassian
       tags: [atlassian]
 
