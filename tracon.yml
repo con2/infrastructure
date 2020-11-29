@@ -479,11 +479,6 @@
     - role: redmine
       tags: [redmine]
 
-    - role: oidentd
-      tags: [oidentd]
-    - role: slackirc
-      tags: [slackirc]
-
     - role: letsencrypt
       tags: [letsencrypt]
       letsencrypt_domains:
@@ -704,3 +699,8 @@
       letsencrypt_domains:
         - name: confluence.tracon.fi
           subject_alt_name: "DNS:confluence.tracon.fi,DNS:jira.tracon.fi,DNS:crowd.tracon.fi"
+
+    - role: oidentd
+      tags: [oidentd]
+    - role: slackirc
+      tags: [slackirc]

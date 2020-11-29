@@ -1,0 +1,45 @@
+user:
+  create: true
+  email: root@tracon.fi
+  password: aiChiceiVae1AeshoQuoo0eishi8Foo5Cha2eef0ohdoh5au0ib5phio2eiZahp
+
+nginx:
+  enabled: false
+
+ingress:
+  enabled: true
+  hostname: sentry.con2.fi
+
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+
+  tls:
+    - secretName: sentry-letsencrypt
+      hosts:
+        - sentry.con2.fi
+
+filestore:
+  filesystem:
+    persistence:
+      storageClass: longhorn-nfs
+      persistentWorkers: true
+
+postgresql:
+  enabled: false
+
+externalPostgresql:
+  host: siilo.tracon.fi
+  username: sentry
+  password: Oopae9Ho5taoranget5ahchee5isang6oxiaH0
+
+rabbitmq:
+  enabled: false
+
+metrics:
+  enabled: true
+
+redis:
+  enabled: false
+
+externalRedis:
+  host: redis-ha-haproxy.redis-ha.svc.cluster.local
