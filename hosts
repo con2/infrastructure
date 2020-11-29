@@ -19,6 +19,9 @@ piilo.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
 [legacy_servers]
 kurikka.tracon.fi node_exporter_init=upstart node_exporter_firewall=none
 
+[atlassian_servers]
+riimu.tracon.fi ansible_python_interpreter=/usr/bin/python3
+
 [k3s_initial_server]
 qb1 k3s_node_ip_address=10.9.1.2 ansible_python_interpreter=/usr/bin/python3
 

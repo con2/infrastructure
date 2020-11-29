@@ -1,0 +1,5 @@
+atlassian_ids:
+  - { name: jira, id: 2001 }
+  - { name: confluence, id: 2002 }
+  - { name: crowd, id: 2004 }
+

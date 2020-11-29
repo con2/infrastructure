@@ -1,0 +1,7 @@
+FROM atlassian/confluence-server:latest
+
+# Kompassi SSO, override entrypoint template generator
+COPY confluence-seraph-config.xml /opt/atlassian/etc/seraph-config.xml.j2
+
+# Secret key for auth
+COPY confluence-crowd.properties ${CONFLUENCE_INSTALL_DIR}/confluence/WEB-INF/classes/crowd.properties

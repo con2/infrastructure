@@ -677,3 +677,30 @@
           subject_alt_name: "DNS:putki.tracon.fi"
         - name: vara.kompassi.eu
           subject_alt_name: "DNS:vara.kompassi.eu"
+
+- hosts: atlassian_servers
+  gather_facts: yes
+  roles:
+    - role: base
+      tags: [base]
+
+    - role: node-exporter
+      tags: [node-exporter]
+
+    - role: prebackup
+      tags: [prebackup]
+
+    - role: docker
+      tags: [docker]
+
+    - role: nginx
+      tags: [nginx]
+
+    - role: atlassian
+      tags: [atlassian]
+
+    - role: letsencrypt
+      tags: [letsencrypt]
+      letsencrypt_domains:
+        - name: confluence.tracon.fi
+          subject_alt_name: "DNS:confluence.tracon.fi,DNS:jira.tracon.fi,DNS:crowd.tracon.fi"

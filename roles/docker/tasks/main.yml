@@ -1,8 +1,8 @@
 - name: Add docker signing key to APT
-  apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id=58118E89F3A912897C070ADBF76221572C52609D state=present
+  apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id=9DC858229FC7DD38854AE2D88D81803C0EBFCD88 state=present
 
 - name: Add docker APT repository
-  apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-xenial main' state=present update_cache=yes
+  apt_repository: repo='deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable' state=present update_cache=yes
 
 - name: Install dmsetup (needed on Ubuntu 16.04 Xenial to stop apt-get install docker-engine from hanging indefinitely)
   apt: name=dmsetup state=present
@@ -13,11 +13,13 @@
     creates: /dev/mapper/control
 
 - name: Install Docker Engine and other required packages
-  apt: name={{ item }} state=present
-  with_items:
-    - docker-engine
-    - python-docker
-    - python-ipaddress
+  apt: 
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - python3-docker
+      - python3-ipaddr
 
 - name: Delete untagged containers, images and volumes every night to save space
   copy:
