@@ -1,7 +1,7 @@
 user:
   create: true
   email: root@tracon.fi
-  password: aiChiceiVae1AeshoQuoo0eishi8Foo5Cha2eef0ohdoh5au0ib5phio2eiZahp
+  password: redacted
 
 nginx:
   enabled: false
@@ -30,7 +30,7 @@ postgresql:
 externalPostgresql:
   host: siilo.tracon.fi
   username: sentry
-  password: Oopae9Ho5taoranget5ahchee5isang6oxiaH0
+  password: redacted
 
 rabbitmq:
   enabled: false
