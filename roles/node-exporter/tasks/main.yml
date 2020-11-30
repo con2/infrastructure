@@ -34,7 +34,7 @@
   ufw:
     rule: allow
     from_ip: '{{ prometheus_ip_address }}'
-    to_port: 9100
+    to_port: "9100"
   when: "node_exporter_firewall == 'ufw'"
 
 - name: make sure node-exporter is running

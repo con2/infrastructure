@@ -11,7 +11,7 @@
   cron:
     name: "letsencrypt renewal"
     user: letsencrypt
-    day: 1
-    hour: 4
-    minute: 45
+    day: "1"
+    hour: "4"
+    minute: "45"
     job: "/srv/letsencrypt/renew-all.sh"
