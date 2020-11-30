@@ -5,7 +5,7 @@ monokkeli.tracon.fi prometheus_ip_address=172.17.0.0/16
 neula.kompassi.eu
 
 [hop_servers]
-putki.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
+putki.tracon.fi ansible_python_interpreter=/usr/bin/python3
 
 [postgresql_servers]
 siilo.tracon.fi ansible_python_interpreter=/usr/bin/python3
