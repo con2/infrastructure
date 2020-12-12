@@ -20,6 +20,7 @@ server {
     ssl_certificate_key /srv/letsencrypt/secrets/confluence.tracon.fi/domain.key;
 
     add_header Strict-Transport-Security max-age=15768000;
+    client_max_body_size 100M;
 
     # Block the People Directory
     location /browsepeople.action {

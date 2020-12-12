@@ -20,6 +20,7 @@ server {
     ssl_certificate_key /srv/letsencrypt/secrets/confluence.tracon.fi/domain.key;
 
     add_header Strict-Transport-Security max-age=15768000;
+    client_max_body_size 100M;
 
     location /secure/MyJiraHome.jspa {
         return 302 https://atlasso.tracon.fi/crowd?next=https%3a%2f%2fjira.tracon.fi%2fsecure%2fDashboard.jspa;
