@@ -2,7 +2,7 @@ expose:
   ingress:
     hosts:
       core: harbor.con2.fi
-      notary: notary.con2.fi
+      # notary: notary.con2.fi
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
   tls:
@@ -11,12 +11,49 @@ expose:
       secretName: con2-harbor-ingress-tls
       notarySecretName: con2-notary-ingress-tls
 
+harborAdminPassword: redacted
 externalURL: https://harbor.con2.fi
+
+updateStrategy:
+  # RollingUpdate needs RWM
+  type: Recreate
 
 clair:
   enabled: false
 
+notary:
+  enabled: false
+
 persistence:
+  imageChartStorage:
+    type: s3
+    disableredirect: true
+    s3:
+      region: eu-west-1
+      bucket: harbor
+      accesskey: harbor
+      secretkey: redacted
+      regionendpoint: https://minio.con2.fi
   persistentVolumeClaim:
     registry:
       size: 20Gi
+      # storageClass: longhorn-nfs
+      # accessMode: ReadWriteMany
+    jobservice:
+      size: 20Gi
+      # storageClass: longhorn-nfs
+      # accessMode: ReadWriteMany
+    trivy:
+      size: 20Gi
+      # storageClass: longhorn-nfs
+      # accessMode: ReadWriteMany
+
+database:
+  type: external
+  external:
+    host: siilo.tracon.fi
+    port: 5432
+    coreDatabase: harbor
+    username: harbor
+    password: redacted
+    sslmode: verify-full

@@ -1,0 +1,26 @@
+persistence:
+  worker:
+    accessMode: ReadWriteMany
+    storageClass: longhorn-nfs
+
+postgresql:
+  enabled: false
+
+concourse:
+  web:
+    postgres:
+      host: siilo.tracon.fi
+      user: concourse
+      database: concourse
+      password: redacted
+
+    ingress:
+      enabled: true
+      hosts:
+        - ci.con2.fi
+      tls:
+        - secretName: ingress-letsencrypt
+          hosts:
+            - ci.con2.fi
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
