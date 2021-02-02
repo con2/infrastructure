@@ -172,7 +172,7 @@
       tags: [letsencrypt]
       letsencrypt_domains:
         - name: monokkeli.tracon.fi
-          subject_alt_name: "DNS:jenkins.tracon.fi,DNS:kibana.tracon.fi,DNS:grafana.tracon.fi,DNS:prometheus.tracon.fi,DNS:alertmanager.tracon.fi,DNS:pgadmin.monokkeli.tracon.fi"
+          subject_alt_name: "DNS:jenkins.tracon.fi,DNS:pgadmin.monokkeli.tracon.fi"
 
 
 - hosts: hop_servers
