@@ -72,20 +72,6 @@
     - role: jenkinslave
       tags: [jenkinslave]
 
-    - role: prometheus
-      tags: [prometheus]
-
-    # get SSL for future service
-    - role: redirect
-      tags: [redirect]
-      redirect_hostname: kibana.tracon.fi
-      redirect_allowed_hosts: kibana.tracon.fi
-      redirect_target: https://tracon.fi
-      redirect_ssl: false
-      redirect_letsencrypt: true
-      redirect_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
-      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key
-
     - role: letsencrypt
       tags: [letsencrypt]
       letsencrypt_domains:

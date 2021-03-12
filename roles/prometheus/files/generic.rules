@@ -1,7 +1,0 @@
-ALERT ServiceDown
-  IF up == 0
-  FOR 1m
-  ANNOTATIONS {
-    summary = "A service is down",
-    description = "Prometheus was unable to scrape a service. This indicates either the service is down, or Prometheus is having trouble connecting to it."
-  }
