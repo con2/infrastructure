@@ -54,88 +54,6 @@
     - role: postgresql-barman
       tags: [postgresql-barman]
 
-- hosts: kompassi_servers
-  gather_facts: yes
-  roles:
-    # default site
-    - role: redirect
-      tags: [redirect]
-      redirect_hostname: "{{ inventory_hostname }}"
-      redirect_allowed_hosts: "{{ inventory_hostname }} www.{{ inventory_hostname }}"
-      redirect_target: https://kompassi.eu
-      redirect_default: true
-      redirect_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
-      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
-
-    - role: redirect
-      tags: [redirect]
-      redirect_hostname: kompassi.tracon.fi
-      redirect_allowed_hosts: kompassi.tracon.fi
-      redirect_target: https://kompassi.eu
-      redirect_ssl_certificate: /srv/letsencrypt/secrets/atlasso.tracon.fi/chained.pem
-      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/atlasso.tracon.fi/domain.key
-
-    - role: redirect
-      tags: [redirect]
-      redirect_hostname: "www.animecon.fi"
-      redirect_allowed_hosts: "www.animecon.fi"
-      redirect_target: https://animecon.fi
-      redirect_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
-      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
-
-    - role: redirect
-      tags: [redirect]
-      redirect_hostname: "www.conit.fi"
-      redirect_allowed_hosts: "www.conit.fi"
-      redirect_target: https://conit.fi
-      redirect_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
-      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
-
-    - role: redirect
-      tags: [redirect]
-      redirect_hostname: "paikkaliput.tracon.fi"
-      redirect_allowed_hosts: "paikkaliput.tracon.fi"
-      redirect_target: https://kompassi.eu/profile/reservations
-      redirect_ssl_certificate: /srv/letsencrypt/secrets/atlasso.tracon.fi/chained.pem
-      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/atlasso.tracon.fi/domain.key
-
-    - role: postgresql-docker
-      tags: [postgresql-docker]
-      postgresql_hostname: kompassi.eu
-      postgresql_username: kompassi
-      postgresql_password: "{{ kompassi_postgresql_password }}"
-      postgresql_database: kompassi
-      postgresql_ssl_certificate: /srv/letsencrypt/secrets/kompassi.eu/chained.pem
-      postgresql_ssl_certificate_key: /srv/letsencrypt/secrets/kompassi.eu/domain.key
-
-    - role: kompassi
-      kompassi_hostname: kompassi.eu
-      tags:
-        - kompassi
-        - kompassi-production
-
-    - role: kompassi2
-      tags:
-        - kompassi2
-        - kompassi2-production
-
-    - role: atlasso
-      tags: [atlasso]
-    - role: shoottikala
-      tags: [shoottikala]
-
-    - role: letsencrypt
-      tags: [letsencrypt]
-      letsencrypt_domains:
-        - name: kompassi.eu
-          subject_alt_name: "DNS:kompassi.eu,DNS:www.kompassi.eu,DNS:neula.kompassi.eu,DNS:v2.kompassi.eu,DNS:animecon.fi,DNS:www.animecon.fi,DNS:conit.fi,DNS:www.conit.fi"
-        - name: photoshoot.conikuvat.fi
-          subject_alt_name: "DNS:photoshoot.conikuvat.fi"
-
-        # bad name, but use this for all *.tracon.fi that run on neula
-        - name: atlasso.tracon.fi
-          subject_alt_name: "DNS:atlasso.tracon.fi,DNS:kompassi.tracon.fi,DNS:paikkaliput.tracon.fi"
-
 - hosts: management_servers
   gather_facts: yes
   roles:
@@ -173,7 +91,6 @@
       letsencrypt_domains:
         - name: monokkeli.tracon.fi
           subject_alt_name: "DNS:jenkins.tracon.fi,DNS:monokkeli.tracon.fi"
-
 
 - hosts: hop_servers
   gather_facts: yes
