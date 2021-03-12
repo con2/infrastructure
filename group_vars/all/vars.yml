@@ -85,3 +85,6 @@ base_authorized_keys:
 
   - username: darkismus
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOiDUpFoBBGe0fjHJrbnaWmrwKb0JM+bmP2dQ751+t4uA5VasKd04mJv2DUOvimAWqsf34ClfA0rb7podF+G8uc= darkismus-20200923
+
+  - username: vekotin
+    key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGf/7M7xVNzPqvNVd5nZFGA+iS7MlU3QIdG7QHlOh1jY backuppc@hau
