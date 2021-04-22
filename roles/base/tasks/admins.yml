@@ -19,6 +19,17 @@
     - base-admins
   with_items: "{{ base_authorized_keys }}"
 
+- name: remove obsolete local admin private keys
+  authorized_key:
+    user: "{{ item.username }}"
+    key: "{{ item.key }}"
+    state: absent
+  tags:
+    - base
+    - base-admins
+    - base-admins-ssh-keys-to-remove
+  with_items: "{{ base_authorized_keys_to_remove }}"
+
 - name: set jenkinslave private keys
   authorized_key:
     user: "{{ item.username }}"

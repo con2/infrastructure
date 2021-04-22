@@ -41,8 +41,6 @@ base_authorized_keys:
   - username: japsu
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHrfQOJSKe+A9W7E1XEJC5pcFM9fJvsYh1AXiCV4PgYKJ0UyhD5mY0K3b5NjyZUD6YrZFrowqTb5/WTpnjgWdAU= japsu@korok-20200923
   - username: japsu
-    key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMnNhwEHiBu47qktABn0joZ+6gGxCmd54t/MVdzkUVx6 japsu@panam-20210228
-  - username: japsu
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOvP3HPYu35ZRZ4K3GCSD7QKgywlcx3lWsloYzvL0pN9KfcF3n0zFIsO1kxaCubtdt4q6TtVah5MpR/+PvzZqTY= con2-20210310@secretive.evelyn.local
 
   - username: mieleton
@@ -84,7 +82,13 @@ base_authorized_keys:
     key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHPXMznOJ+G413wPIMw2M6EFEd64+EQZqSUgsCKiV4sp akolehma@kelvin.aketzu.net
 
   - username: darkismus
-    key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOiDUpFoBBGe0fjHJrbnaWmrwKb0JM+bmP2dQ751+t4uA5VasKd04mJv2DUOvimAWqsf34ClfA0rb7podF+G8uc= darkismus-20200923
+    key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBM6LR2l8iBRIrfuidd62GZxkDJbo4s5kj85inm1JBcOOomaILNwO/T15xxzs2TikNOiuCft+BRie1VKyH9c3AWY= blackrabbit@secretive.Talvikettu.local
 
   - username: vekotin
     key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGf/7M7xVNzPqvNVd5nZFGA+iS7MlU3QIdG7QHlOh1jY backuppc@hau
+
+base_authorized_keys_to_remove:
+  - username: japsu
+    key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMnNhwEHiBu47qktABn0joZ+6gGxCmd54t/MVdzkUVx6 japsu@panam-20210228
+  - username: darkismus
+    key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOiDUpFoBBGe0fjHJrbnaWmrwKb0JM+bmP2dQ751+t4uA5VasKd04mJv2DUOvimAWqsf34ClfA0rb7podF+G8uc= darkismus-20200923
