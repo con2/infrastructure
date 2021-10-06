@@ -54,30 +54,6 @@
     - role: postgresql-barman
       tags: [postgresql-barman]
 
-- hosts: management_servers
-  gather_facts: yes
-  roles:
-    - role: jenkins
-      tags: [jenkins]
-
-    - role: postgresql-docker
-      tags: [postgresql-docker]
-      postgresql_hostname: jenkins.tracon.fi
-      postgresql_username: jenkinslave
-      postgresql_password: "{{ jenkinslave_postgresql_password }}"
-      postgresql_database: test_kompassi
-      postgresql_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
-      postgresql_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key
-
-    - role: jenkinslave
-      tags: [jenkinslave]
-
-    - role: letsencrypt
-      tags: [letsencrypt]
-      letsencrypt_domains:
-        - name: monokkeli.tracon.fi
-          subject_alt_name: "DNS:jenkins.tracon.fi,DNS:monokkeli.tracon.fi"
-
 - hosts: hop_servers
   gather_facts: yes
   roles:
