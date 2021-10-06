@@ -48,12 +48,26 @@
     password: "{{ item.password }}"
     shell: /bin/bash
   with_items: "{{ base_admin_users }}"
+  # NOTE: base-admins tag same as in roles/base for compatibility
+  tags:
+    - base-admins
 
 - name: set local admin private keys
   authorized_key:
     user: "{{ item.username }}"
     key: "{{ item.key }}"
   with_items: "{{ base_authorized_keys }}"
+  tags:
+    - base-admins
+
+- name: remove obsolete local admin private keys
+  authorized_key:
+    user: "{{ item.username }}"
+    key: "{{ item.key }}"
+    state: absent
+  with_items: "{{ base_authorized_keys_to_remove }}"
+  tags:
+    - base-admins
 
 - name: remove obsolete users
   user:
@@ -61,6 +75,9 @@
     state: absent
     remove: true
   with_items: "{{ base_users_to_remove }}"
+  tags:
+    - base
+    - base-admins
 
 - name: install Helm
   unarchive:
