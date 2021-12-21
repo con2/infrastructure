@@ -2,7 +2,7 @@
 set -xueo pipefail
 
 for SECRETNAME in con2-harbor con2-ghcr; do
-DOCKERCONFIGJSON="$(kubectl get secret -o json con2-harbor | jq -r '.data.".dockerconfigjson"')"
+  DOCKERCONFIGJSON="$(kubectl get secret -o json $SECRETNAME | jq -r '.data.".dockerconfigjson"')"
 
   kubectl apply -f - << ENOYAML
 apiVersion: v1
