@@ -1,23 +1,25 @@
 #!/bin/bash
 set -xueo pipefail
 
+for SECRETNAME in con2-harbor con2-ghcr; do
 DOCKERCONFIGJSON="$(kubectl get secret -o json con2-harbor | jq -r '.data.".dockerconfigjson"')"
 
-kubectl apply -f - << ENOYAML
+  kubectl apply -f - << ENOYAML
 apiVersion: v1
 kind: Namespace
 metadata:
   name: $1
 ENOYAML
 
-kubectl apply -n "$1" -f - << ENOYAML
+  kubectl apply -n "$1" -f - << ENOYAML
 apiVersion: v1
 kind: Secret
 type: kubernetes.io/dockerconfigjson
 metadata:
-  name: con2-harbor
+  name: $SECRETNAME
 data:
   .dockerconfigjson: $DOCKERCONFIGJSON
 ENOYAML
+done
 
-kubectl patch serviceaccount default -n "$1" -p '{"imagePullSecrets": [{"name": "con2-harbor"}]}'
+kubectl patch serviceaccount default -n "$1" -p '{"imagePullSecrets": [{"name": "con2-harbor"}, {"name": "con2-ghcr"}]}'
