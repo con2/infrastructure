@@ -53,7 +53,7 @@
 
 - name: ensure letsencrypt intermediate certificate is downloaded
   get_url:
-    url: https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem
+    url: https://letsencrypt.org/certs/lets-encrypt-r3.pem
     dest: /srv/letsencrypt/intermediate.pem
     owner: letsencrypt
     group: letsencrypt
