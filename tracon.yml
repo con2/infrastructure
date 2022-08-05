@@ -111,6 +111,15 @@
         - name: confluence.tracon.fi
           subject_alt_name: "DNS:confluence.tracon.fi,DNS:jira.tracon.fi,DNS:crowd.tracon.fi"
 
+    - role: proxy
+      tags: [proxy]
+      proxy_hostname: infotv-insecure.tracon.fi
+
+      # nuoli.kompassi.eu
+      proxy_target: https://infotv.tracon.fi
+      proxy_ssl: false
+
+
     - role: oidentd
       tags: [oidentd]
     - role: slackirc
