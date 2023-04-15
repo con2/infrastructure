@@ -119,8 +119,5 @@
       proxy_target: https://infotv.tracon.fi
       proxy_ssl: false
 
-
     - role: oidentd
       tags: [oidentd]
-    - role: slackirc
-      tags: [slackirc]

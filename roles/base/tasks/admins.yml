@@ -30,16 +30,6 @@
     - base-admins-ssh-keys-to-remove
   with_items: "{{ base_authorized_keys_to_remove }}"
 
-- name: set jenkinslave private keys
-  authorized_key:
-    user: "{{ item.username }}"
-    key: "{{ item.key }}"
-  tags:
-    - base
-  with_items:
-    - username: root
-      key: "{{ jenkinslave_ssh_public_key_data }}"
-
 - name: set backup public keys
   authorized_key:
     user: root

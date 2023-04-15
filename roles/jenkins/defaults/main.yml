@@ -1,9 +1,0 @@
-jenkins_hostname: jenkins.tracon.fi
-jenkins_allowed_hosts: "{{ jenkins_hostname }}"
-jenkins_image: jenkins/jenkins
-jenkins_port: 8080
-jenkins_api_port: 50000
-jenkins_ssl: true
-jenkins_letsencrypt: true
-jenkins_ssl_certificate: /srv/letsencrypt/secrets/monokkeli.tracon.fi/chained.pem
-jenkins_ssl_certificate_key: /srv/letsencrypt/secrets/monokkeli.tracon.fi/domain.key

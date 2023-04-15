@@ -1,7 +1,4 @@
-jenkinslave_ssh_private_key_data: "{{ vault_jenkinslave_ssh_private_key_data }}"
 vault_password: "{{ vault_vault_password }}"
-jenkinslave_docker_hub_password: "{{ vault_jenkinslave_docker_hub_password }}"
-jenkinslave_postgresql_password: "{{ vault_jenkinslave_postgresql_password }}"
 
 prometheus_basic_auth: "{{ vault_prometheus_basic_auth }}"
 alertmanager_basic_auth: "{{ vault_alertmanager_basic_auth }}"

@@ -10,7 +10,5 @@ The pre-backup script is expected to eg. dump databases and do any other steps n
 
 This role sets up the said script to run any executable scripts from under `/etc/pre-backup.d` so that multiple roles may define their pre-backup actions. This facility is used at least by the following roles:
 
-* `jenkins`
 * `postgresql-docker`
 * `tracontent`
-
