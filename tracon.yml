@@ -85,11 +85,28 @@
       tags: [proxy]
       proxy_hostname: vara.kompassi.eu
 
-      # nuoli.kompassi.eu
-      proxy_target: https://91.105.251.77
-
+      # qb2.con2.fi
+      proxy_target: https://91.105.252.82
       proxy_ssl_certificate: /srv/letsencrypt/secrets/vara.kompassi.eu/chained.pem
       proxy_ssl_certificate_key: /srv/letsencrypt/secrets/vara.kompassi.eu/domain.key
+
+      # NOTE: not managed via ansible, see
+      # https://github.com/con2/kompassi/blob/b3f8482203a70584e3610121dc48512ff36d84d7/kubernetes/ingress/generate_backup_ingress_tls.sh
+      proxy_ssl_trusted_certificate: /srv/letsencrypt/secrets/vara.kompassi.eu/backup-ingress-tls.crt
+
+    - role: proxy
+      tags: [proxy]
+      proxy_hostname: vara.kirppu.tracon.fi
+
+      # qb2.con2.fi
+      proxy_target: https://91.105.252.82
+      proxy_ssl_certificate: /srv/letsencrypt/secrets/vara.kirppu.tracon.fi/chained.pem
+      proxy_ssl_certificate_key: /srv/letsencrypt/secrets/vara.kirppu.tracon.fi/domain.key
+
+      # NOTE: not managed via ansible, see
+      # https://github.com/con2/kompassi/blob/b3f8482203a70584e3610121dc48512ff36d84d7/kubernetes/ingress/generate_backup_ingress_tls.sh
+      proxy_ssl_trusted_certificate: /srv/letsencrypt/secrets/vara.kompassi.eu/backup-ingress-tls.crt
+
 
     - role: letsencrypt
       tags: [letsencrypt]
@@ -98,6 +115,8 @@
           subject_alt_name: "DNS:putki.tracon.fi"
         - name: vara.kompassi.eu
           subject_alt_name: "DNS:vara.kompassi.eu"
+        - name: vara.kirppu.tracon.fi
+          subject_alt_name: "DNS:vara.kirppu.tracon.fi"
 
 - hosts: atlassian_servers
   gather_facts: yes
