@@ -4,9 +4,9 @@
 #
 #    pip-compile
 #
-ansible==4.6.0
+ansible==7.0.0
     # via -r requirements.in
-ansible-core==2.11.5
+ansible-core==2.14.1
     # via ansible
 cffi==1.14.6
     # via cryptography
