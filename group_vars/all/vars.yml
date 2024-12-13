@@ -38,6 +38,8 @@ base_authorized_keys:
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHrfQOJSKe+A9W7E1XEJC5pcFM9fJvsYh1AXiCV4PgYKJ0UyhD5mY0K3b5NjyZUD6YrZFrowqTb5/WTpnjgWdAU= japsu@korok-20200923
   - username: japsu
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIR4L0DzKDl0ogmdwZ2LwDk5E+RE0egRZWrz9zjcWe6yKRocm9+FS47WJ+RtyPCvw7nn1+iITHgwPNuy8jqZDhU= evelyn-20211006@secretive.evelyn.local
+  - username: japsu
+    key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLZsRbpS/geKF2xrnYqiOBhbERFBB5T57CQck/HCjhmUeZX4+LG5kQonyMhGD73Z5aU80FvoKEM/t0FNHzX6Z5k= japsu@claire-20241212
 
   - username: mieleton
     key: ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA4NH/ESUc03Q3ls2GpILWtzU3eKLI3fLJhhBlbAxEi9un2oWSN/MLenmMcqmRb7wrsqd9cmGcuW9O3+tca4ppCCMHC65R46Rp0v/G/rNwYGkHv6DNWP7/hrWZesCMiH9XaxBbJlZqay6i3GKoaj7LgtaqozXwq2y/zczPBJ4y2vdM2QgtoU+D1WOwspl4nnkPCwGUjnqQ3JQKJoyDalNVj5tKrS0bLWUD97ugqEDjCYkHjSgGumFPLPio/6fAeSKw1FlBt/ikMYFzdP1/85EhP2jdTjbMIg11NJdUGozgVSn/iBwUqb4ndEcIDV2qauzSxozMHYyx+K8FwFJOLQE9XQ== mieleton@malek
