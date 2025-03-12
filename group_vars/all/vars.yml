@@ -35,11 +35,9 @@ pgadmin4_password: "{{ vault_pgadmin4_password }}"
 
 base_authorized_keys:
   - username: japsu
-    key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHrfQOJSKe+A9W7E1XEJC5pcFM9fJvsYh1AXiCV4PgYKJ0UyhD5mY0K3b5NjyZUD6YrZFrowqTb5/WTpnjgWdAU= japsu@korok-20200923
-  - username: japsu
-    key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIR4L0DzKDl0ogmdwZ2LwDk5E+RE0egRZWrz9zjcWe6yKRocm9+FS47WJ+RtyPCvw7nn1+iITHgwPNuy8jqZDhU= evelyn-20211006@secretive.evelyn.local
-  - username: japsu
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLZsRbpS/geKF2xrnYqiOBhbERFBB5T57CQck/HCjhmUeZX4+LG5kQonyMhGD73Z5aU80FvoKEM/t0FNHzX6Z5k= japsu@claire-20241212
+    username: japsu
+    key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGC1D+2TS4ZaPgS+K2St8K3GytLed6fyq6fdLT5+BasGhJuALnkfZ8TFYmzRmM6yKkZKYwAaFo0kETJPlny0i9U= japsu@evelyn-20250310
 
   - username: mieleton
     key: ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA4NH/ESUc03Q3ls2GpILWtzU3eKLI3fLJhhBlbAxEi9un2oWSN/MLenmMcqmRb7wrsqd9cmGcuW9O3+tca4ppCCMHC65R46Rp0v/G/rNwYGkHv6DNWP7/hrWZesCMiH9XaxBbJlZqay6i3GKoaj7LgtaqozXwq2y/zczPBJ4y2vdM2QgtoU+D1WOwspl4nnkPCwGUjnqQ3JQKJoyDalNVj5tKrS0bLWUD97ugqEDjCYkHjSgGumFPLPio/6fAeSKw1FlBt/ikMYFzdP1/85EhP2jdTjbMIg11NJdUGozgVSn/iBwUqb4ndEcIDV2qauzSxozMHYyx+K8FwFJOLQE9XQ== mieleton@malek
@@ -98,3 +96,7 @@ base_authorized_keys_to_remove:
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOiDUpFoBBGe0fjHJrbnaWmrwKb0JM+bmP2dQ751+t4uA5VasKd04mJv2DUOvimAWqsf34ClfA0rb7podF+G8uc= darkismus-20200923
   - username: japsu
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOvP3HPYu35ZRZ4K3GCSD7QKgywlcx3lWsloYzvL0pN9KfcF3n0zFIsO1kxaCubtdt4q6TtVah5MpR/+PvzZqTY= con2-20210310@secretive.evelyn.local
+  - username: japsu
+    key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHrfQOJSKe+A9W7E1XEJC5pcFM9fJvsYh1AXiCV4PgYKJ0UyhD5mY0K3b5NjyZUD6YrZFrowqTb5/WTpnjgWdAU= japsu@korok-20200923
+  - username: japsu
+    key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIR4L0DzKDl0ogmdwZ2LwDk5E+RE0egRZWrz9zjcWe6yKRocm9+FS47WJ+RtyPCvw7nn1+iITHgwPNuy8jqZDhU= evelyn-20211006@secretive.evelyn.local
