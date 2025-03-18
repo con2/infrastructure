@@ -10,7 +10,7 @@ ansible-core==2.11.5
     # via ansible
 cffi==1.14.6
     # via cryptography
-cryptography==35.0.0
+cryptography==39.0.1
     # via ansible-core
 jinja2==3.0.2
     # via ansible-core
