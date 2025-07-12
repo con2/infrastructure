@@ -23,7 +23,7 @@ spec:
          name: runner
       volumes:
        - emptyDir: {}
-         name: runner      
+         name: runner
 
 ---
 apiVersion: v1
@@ -38,8 +38,8 @@ kind: ClusterRole
 metadata:
   name: actions-runner
 rules:
-- apiGroups: ["", "apps", "networking.k8s.io", "extensions"] # "" indicates the core API group
-  resources: ["deployments", "services", "configmaps", "secrets", "ingresses", "persistentvolumeclaims"]
+- apiGroups: ["", "apps", "networking.k8s.io", "extensions", "batch"] # "" indicates the core API group
+  resources: ["deployments", "services", "configmaps", "secrets", "ingresses", "persistentvolumeclaims", "cronjobs"]
   verbs: ["get", "watch", "list", "patch", "update", "delete"]
 
 ---
