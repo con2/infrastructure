@@ -39,8 +39,8 @@ metadata:
   name: actions-runner
 rules:
 - apiGroups: ["", "apps", "networking.k8s.io", "extensions", "batch"] # "" indicates the core API group
-  resources: ["deployments", "services", "configmaps", "secrets", "ingresses", "persistentvolumeclaims", "cronjobs"]
-  verbs: ["get", "watch", "list", "patch", "update", "delete"]
+  resources: ["deployments", "services", "configmaps", "secrets", "ingresses", "persistentvolumeclaims", "cronjobs", "statefulsets", "pods"]
+  verbs: ["get", "watch", "list", "patch", "update", "delete", "create"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1

@@ -1,0 +1,21 @@
+# these hosts are firewalled and need to hop via riimu
+
+Host qb1
+        Hostname qb1.con2.fi
+        ProxyJump riimu.tracon.fi
+
+Host qb2
+        Hostname qb2.con2.fi
+        ProxyJump riimu.tracon.fi
+
+Host qb3
+        Hostname qb3.con2.fi
+        ProxyJump riimu.tracon.fi
+
+Host qb4
+        Hostname qb4.con2.fi
+        ProxyJump riimu.tracon.fi
+
+Host siilo
+        Hostname siilo.tracon.fi
+        ProxyJump riimu.tracon.fi

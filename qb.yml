@@ -1,6 +1,7 @@
 - hosts: k3s
   gather_facts: yes
   roles:
+    - role: admins
     - role: k3s-base
       tags: [base, k3s, k3s-base]
     - role: k3s-storage
@@ -9,17 +10,20 @@
 - hosts: k3s_initial_server
   gather_facts: yes
   roles:
+    - role: admins
     - role: k3s-initial-server
       tags: [k3s, k3s-initial-server]
 
 - hosts: k3s_servers
   gather_facts: yes
   roles:
+    - role: admins
     - role: k3s-server
       tags: [k3s, k3s-server]
 
 - hosts: k3s_nodes
   gather_facts: yes
   roles:
+    - role: admins
     - role: k3s-agent
       tags: [k3s, k3s-agent]

@@ -7,16 +7,14 @@
     shell: /bin/bash
   with_items: "{{ base_admin_users }}"
   tags:
-    - base
-    - base-admins
+    - admins
 
 - name: set local admin private keys
   authorized_key:
     user: "{{ item.username }}"
     key: "{{ item.key }}"
   tags:
-    - base
-    - base-admins
+    - admins
   with_items: "{{ base_authorized_keys }}"
 
 - name: remove obsolete local admin private keys
@@ -25,17 +23,5 @@
     key: "{{ item.key }}"
     state: absent
   tags:
-    - base
-    - base-admins
-    - base-admins-ssh-keys-to-remove
+    - admins
   with_items: "{{ base_authorized_keys_to_remove }}"
-
-- name: set backup public keys
-  authorized_key:
-    user: root
-    key: "{{ item.key }}"
-    key_options: 'from="{{ item.from_ip }}"'
-  with_items: "{{ base_backup_public_keys }}"
-  tags:
-    - base
-    - base-backup

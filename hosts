@@ -1,11 +1,14 @@
+# NOTE: hostnames without .tracon.fi or .con2.fi are firewalled and need to hop via siilo
+# see ssh-config
+
 [hop_servers]
 putki.tracon.fi ansible_python_interpreter=/usr/bin/python3
 
 [postgresql_servers]
-siilo.tracon.fi ansible_python_interpreter=/usr/bin/python3
+siilo ansible_python_interpreter=/usr/bin/python3
 
 [barman_servers]
-piilo.tracon.fi ansible_python_interpreter=/usr/bin/python2.7
+piilo.tracon.fi ansible_python_interpreter=/usr/bin/python3
 
 [atlassian_servers]
 riimu.tracon.fi ansible_python_interpreter=/usr/bin/python3

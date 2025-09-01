@@ -1,0 +1,9 @@
+- name: set backup public keys
+  authorized_key:
+    user: root
+    key: "{{ item.key }}"
+    key_options: 'from="{{ item.from_ip }}"'
+  with_items: "{{ base_backup_public_keys }}"
+  tags:
+    - base
+    - base-backup

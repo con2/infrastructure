@@ -1,26 +1,25 @@
 # Tracon infrastructure
 
-## Vault
+## Ansible status as of 2025-09-01
 
-There are numerous vaults for Secret Stuff™. You need to put the vault password in `.vault_pass.txt` in the root directory of this repository. To get the vault password, ask Japsu.
+Most of the repository is rotten. What works is setting admin SSH keys:
 
-## Trying stuff out locally
+    uv run ansible-playbook -bK admins.yml
 
-If you're lucky, Vagrant might be configured for some part of the repository so you can try it out locally.
+Some hosts are firewalled and SSH needs to hop via Riimu. See `ssh-config`.
 
-    vagrant up neula
-    vagrant up monokkeli
+If your SSH agent (eg. Secretive on macOS) dislikes multiple simultaneous authentication attempts, you need to run the hosts one by one by specifying eg. `-l qb1`.
 
-## Putting stuff in the cloud
+Password hashes are in `group_vars/all/vault`. You need to put the vault password in `.vault_pass.txt` in the root directory of this repository. To get the vault password, ask Japsu or see [Tracon KeePassXC](https://github.com/tracon/keepassxc-tracon).
 
-Use eg. `-l neula.kompassi.eu` to limit the scope to single machines, or `-t nginx,ssh` to limit to certain tags.
+## Kubernetes stuff
 
-    ansible-playbook --vault-password-file=.vault_pass.txt -sK tracon.yml
+Helm values files etc. (without secrets) can be found under `kubernetes/`.
 
 ## License
 
     ansible-tracon – 5th generation Tracon infrastructure with Ansible & Docker
-    Copyright © 2015–2016 Santtu Pajukanta
+    Copyright © 2015–2025 Santtu Pajukanta
     Copyright © 2016 Miika Ojamo
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
