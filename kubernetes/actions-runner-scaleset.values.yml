@@ -1,0 +1,6 @@
+githubConfigSecret:
+  github_token: redacted
+githubConfigUrl: https://github.com/con2
+template:
+  spec:
+    serviceAccountName: qb-arc-runners
