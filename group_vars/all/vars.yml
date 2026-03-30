@@ -36,7 +36,7 @@ pgadmin4_password: "{{ vault_pgadmin4_password }}"
 base_authorized_keys:
   - username: japsu
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLZsRbpS/geKF2xrnYqiOBhbERFBB5T57CQck/HCjhmUeZX4+LG5kQonyMhGD73Z5aU80FvoKEM/t0FNHzX6Z5k= japsu@claire-20241212
-    username: japsu
+  - username: japsu
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGC1D+2TS4ZaPgS+K2St8K3GytLed6fyq6fdLT5+BasGhJuALnkfZ8TFYmzRmM6yKkZKYwAaFo0kETJPlny0i9U= japsu@evelyn-20250310
 
   - username: mieleton
