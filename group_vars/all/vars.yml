@@ -76,6 +76,8 @@ base_authorized_keys:
     key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP4tvwQlqmnoGSmTLx11lkOgR8NM0f0jHtz1uIRFqdD7 akolehma@ampere
   - username: aketzu
     key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHPXMznOJ+G413wPIMw2M6EFEd64+EQZqSUgsCKiV4sp akolehma@kelvin.aketzu.net
+  - username: aketzu
+    key: no-touch-required sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHhinWGyxawLffsrzILHjBFYrcz2/WmReyKdCxNtj8SbAAAABHNzaDo= akolehma@taylor
 
   - username: darkismus
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBM6LR2l8iBRIrfuidd62GZxkDJbo4s5kj85inm1JBcOOomaILNwO/T15xxzs2TikNOiuCft+BRie1VKyH9c3AWY= blackrabbit@secretive.Talvikettu.local
@@ -91,6 +93,9 @@ base_authorized_keys:
 
   - username: ninnnu
     key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIANN7dxvdzQSGelI3mAzilxjYbvAx4dVqL0oKcLn/gue ninnnu@tracon
+
+  - username: tupsu
+    key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINaUfugbhACmM6m0BlS6hp+BA6b5rYPGIwiTaFj0n7OQ tupsu@maomao
 
 base_authorized_keys_to_remove:
   - username: japsu
