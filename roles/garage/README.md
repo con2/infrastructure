@@ -58,3 +58,8 @@ Point the object store at the public TLS endpoint and use **path-style** access
 The credentials live in `group_vars/all/vault` as `vault_garage_s3_key_id` and
 `vault_garage_s3_secret_key`; create the Kubernetes Secret CloudNativePG reads
 from those values.
+
+## Accessing Garage S3 with `aws` CLI
+
+    eval $(uv run bin/garage_env.py)
+    aws s3 ls
