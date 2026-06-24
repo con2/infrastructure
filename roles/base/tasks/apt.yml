@@ -12,6 +12,7 @@
       - git
       - htop
       - man-db
+      - parted
       - python3-apt
       - python3-pip
       - python3-setuptools
@@ -22,6 +23,7 @@
       - vim
       - wget
       - whois
+      - xfsprogs
 
 - name: Make sure some packages that are _too_ basic for 2019 are not installed
   apt:

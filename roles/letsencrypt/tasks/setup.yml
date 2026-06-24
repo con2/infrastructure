@@ -31,7 +31,7 @@
 
 - name: ensure acme_tiny.py script exists
   get_url:
-    url: https://github.com/diafygi/acme-tiny/raw/master/acme_tiny.py
+    url: https://raw.githubusercontent.com/diafygi/acme-tiny/refs/heads/main/acme_tiny.py
     dest: /srv/letsencrypt/acme_tiny.py
     mode: 0750
     owner: letsencrypt

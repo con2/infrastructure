@@ -6,7 +6,7 @@ garage_version: "v2.3.0"
 garage_binary_url: "https://garagehq.deuxfleurs.fr/_releases/{{ garage_version }}/x86_64-unknown-linux-musl/garage"
 
 garage_user: garage
-garage_config_file: /etc/garage/garage.toml
+garage_config_file: /etc/garage.toml
 
 # Where Garage stores its data. Override garage_base_dir to place everything on
 # a specific disk (e.g. a large data volume); metadata and data live under it.
@@ -42,3 +42,5 @@ garage_ssl_certificate_key: "/srv/letsencrypt/secrets/{{ garage_hostname }}/doma
 
 # Secrets (defined in group_vars/all/vars.yml -> vault):
 #   garage_rpc_secret, garage_s3_key_id, garage_s3_secret_key
+
+garage_ssl: true

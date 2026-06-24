@@ -98,12 +98,12 @@
 # id. Assign + apply only when this node is not yet part of the layout.
 - name: assign and apply garage layout
   shell: |
-    set -eo pipefail
+    set -e
     CONF="{{ garage_config_file }}"
     garage -c "$CONF" layout assign -z "{{ garage_zone }}" -c "{{ garage_capacity }}" "{{ garage_node_id.stdout.split('@')[0] }}"
     VERSION="$(garage -c "$CONF" layout show | grep -oE 'apply --version [0-9]+' | grep -oE '[0-9]+$')"
     garage -c "$CONF" layout apply --version "$VERSION"
-  when: garage_node_id.stdout.split('@')[0] not in garage_layout.stdout
+  when: garage_node_id.stdout.split('@')[0][:16] not in garage_layout.stdout
 
 - name: list garage buckets
   command: "garage -c {{ garage_config_file }} bucket list"

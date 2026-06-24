@@ -17,7 +17,7 @@ CHAINED=$DOMAINDIR/chained.pem
 
 set -e
 
-python $ACME_TINY --account-key $ACCOUNT_KEY --csr $CSR --acme-dir $CHALLENGES > $NEWCRT
+python3 $ACME_TINY --account-key $ACCOUNT_KEY --csr $CSR --acme-dir $CHALLENGES > $NEWCRT
 mv $SIGNED $OLDCRT || true
 mv $NEWCRT $SIGNED
 # wget -O $INTERMEDIATE $INTERMEDIATE_URL

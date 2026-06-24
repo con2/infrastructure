@@ -26,18 +26,13 @@ so multi-gigabyte base backups and restores stream straight through.
 ## Storage location
 
 `garage_base_dir` (default `/var/lib/garage`) sets where metadata and data live
-(`<base>/meta` and `<base>/data`). On `piilo` it is set to
-`/var/lib/barman/garage` so Garage uses the large `/var/lib/barman` disk instead
-of the small root filesystem.
+(`<base>/meta` and `<base>/data`). On `piilo` it is set to `/srv/garage`, a
+dedicated volume, keeping Garage off the small root filesystem and fully
+separate from the legacy Barman storage under `/var/lib/barman`.
 
-Because barman's home (`/var/lib/barman`) is mode `02770` and owned
-`barman:barman`, the `garage` user cannot traverse into it by default. Setting
-`garage_extra_groups: [barman]` adds `garage` to the `barman` group so it can.
-This does **not** interfere with the legacy Barman setup: the `postgresql-barman`
-role only enforces permissions on `/var/lib/barman` and `/var/log/barman` (never
-recursively), creates per-PostgreSQL-server subdirectories (none named
-`garage`), and the `garage/` subtree is owned by `garage`. The only thing the
-two now share is disk space on that volume.
+If you ever place `garage_base_dir` under a directory the `garage` user cannot
+traverse (e.g. another service's restrictive home), add the relevant group via
+`garage_extra_groups` so the `garage` user can reach it.
 
 ## Requirements
 

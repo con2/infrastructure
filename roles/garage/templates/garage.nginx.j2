@@ -8,6 +8,7 @@ server {
         try_files $uri =404;
     }
 
+{% if garage_ssl %}
     location / {
         return 301 https://$host$request_uri;
     }
@@ -19,6 +20,7 @@ server {
 
     ssl_certificate     {{ garage_ssl_certificate }};
     ssl_certificate_key {{ garage_ssl_certificate_key }};
+{% endif %}
 
     # Base backups can be many gigabytes — remove the body size cap
     client_max_body_size 0;
