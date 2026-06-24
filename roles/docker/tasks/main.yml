@@ -1,8 +1,20 @@
+- name: Ensure apt keyrings directory exists
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
 - name: Add docker signing key to APT
-  apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id=9DC858229FC7DD38854AE2D88D81803C0EBFCD88 state=present
+  get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: "0644"
 
 - name: Add docker APT repository
-  apt_repository: repo='deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable' state=present update_cache=yes
+  apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+    update_cache: yes
 
 - name: Install dmsetup (needed on Ubuntu 16.04 Xenial to stop apt-get install docker-engine from hanging indefinitely)
   apt: name=dmsetup state=present

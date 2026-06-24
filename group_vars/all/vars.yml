@@ -33,6 +33,11 @@ postgresql_version: "15"
 pgadmin4_username: "{{ vault_pgadmin4_username }}"
 pgadmin4_password: "{{ vault_pgadmin4_password }}"
 
+# Garage self-hosted S3 backup target (piilo.tracon.fi), consumed by CloudNativePG
+garage_rpc_secret: "{{ vault_garage_rpc_secret }}"
+garage_s3_key_id: "{{ vault_garage_s3_key_id }}"
+garage_s3_secret_key: "{{ vault_garage_s3_secret_key }}"
+
 base_authorized_keys:
   - username: japsu
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLZsRbpS/geKF2xrnYqiOBhbERFBB5T57CQck/HCjhmUeZX4+LG5kQonyMhGD73Z5aU80FvoKEM/t0FNHzX6Z5k= japsu@claire-20241212

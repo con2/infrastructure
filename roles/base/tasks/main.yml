@@ -1,8 +1,8 @@
 ---
-- include: dns.yml
-- include: locale.yml
-- include: ssh.yml
-- include: apt.yml
-# - include: admins.yml  # moved to admins role
-- include: firewall.yml
-- include: backup.yml
+- import_tasks: dns.yml
+- import_tasks: locale.yml
+- import_tasks: ssh.yml
+- import_tasks: apt.yml
+# - import_tasks: admins.yml  # moved to admins role
+- import_tasks: firewall.yml
+- import_tasks: backup.yml

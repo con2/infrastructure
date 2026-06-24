@@ -1,3 +1,6 @@
 redirect_ssl: true
 redirect_letsencrypt: true
 redirect_default: false
+
+# tracon.fi always points to the most recent event
+redirect_target: https://tracon.fi

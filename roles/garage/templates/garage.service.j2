@@ -1,0 +1,19 @@
+[Unit]
+Description=Garage S3-compatible object store
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Environment=RUST_LOG=garage=info
+ExecStart=/usr/local/bin/garage -c {{ garage_config_file }} server
+User={{ garage_user }}
+Group={{ garage_user }}
+Restart=on-failure
+RestartSec=5
+
+# Hardening
+NoNewPrivileges=true
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

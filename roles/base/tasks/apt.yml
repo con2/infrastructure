@@ -12,10 +12,10 @@
       - git
       - htop
       - man-db
-      - python-apt
+      - python3-apt
       - python3-pip
       - python3-setuptools
-      - python-dev
+      - python3-dev
       - rsync
       - screen
       - ssl-cert

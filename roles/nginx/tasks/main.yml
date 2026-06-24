@@ -1,14 +1,23 @@
 ---
-- name: Install python dependencies for managing apt repositories
-  apt: pkg=python-pycurl
+- name: Ensure apt keyrings directory exists
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
   tags: [nginx, repo]
 
 - name: Add nginx repository signing key
-  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+  get_url:
+    url: https://nginx.org/keys/nginx_signing.key
+    dest: /etc/apt/keyrings/nginx.asc
+    mode: "0644"
   tags: [nginx, repo]
 
 - name: Add nginx repository
-  apt_repository: repo='deb http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx' state=present update_cache=yes
+  apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/nginx.asc] http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx"
+    state: present
+    update_cache: yes
   tags: [nginx, repo]
 
 - name: Install nginx

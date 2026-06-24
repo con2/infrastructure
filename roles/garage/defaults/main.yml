@@ -1,0 +1,44 @@
+# Garage: single-binary, single-node S3-compatible object store used as an
+# off-site backup target for CloudNativePG / Barman Cloud.
+# See object-storage-findings.md for the rationale.
+
+garage_version: "v2.3.0"
+garage_binary_url: "https://garagehq.deuxfleurs.fr/_releases/{{ garage_version }}/x86_64-unknown-linux-musl/garage"
+
+garage_user: garage
+garage_config_file: /etc/garage/garage.toml
+
+# Where Garage stores its data. Override garage_base_dir to place everything on
+# a specific disk (e.g. a large data volume); metadata and data live under it.
+garage_base_dir: /var/lib/garage
+garage_metadata_dir: "{{ garage_base_dir }}/meta"
+garage_data_dir: "{{ garage_base_dir }}/data"
+
+# Supplementary groups for the garage user. Needed when garage_base_dir lives
+# under a directory the garage user cannot otherwise traverse (e.g. placing it
+# under barman's 02770 home requires membership in the barman group).
+garage_extra_groups: []
+
+# Garage binds everything to localhost; nginx terminates TLS and proxies the S3
+# API from :443. Nothing here is exposed directly to the network.
+garage_s3_api_bind_addr: "127.0.0.1:3900"
+garage_rpc_bind_addr: "127.0.0.1:3901"
+garage_admin_bind_addr: "127.0.0.1:3903"
+garage_s3_region: garage
+
+# Layout. On a single node the capacity is only a relative distribution weight,
+# not a quota — its absolute value is irrelevant as long as it is non-zero.
+garage_zone: dc1
+garage_capacity: 1G
+
+# Backup bucket and the access key CloudNativePG authenticates with.
+garage_bucket: cnpg-backups
+garage_s3_key_name: cnpg-backup-key
+
+# Public hostname for the S3 endpoint (nginx server_name + TLS certificate).
+garage_hostname: "{{ inventory_hostname }}"
+garage_ssl_certificate: "/srv/letsencrypt/secrets/{{ garage_hostname }}/chained.pem"
+garage_ssl_certificate_key: "/srv/letsencrypt/secrets/{{ garage_hostname }}/domain.key"
+
+# Secrets (defined in group_vars/all/vars.yml -> vault):
+#   garage_rpc_secret, garage_s3_key_id, garage_s3_secret_key

@@ -1,0 +1,151 @@
+---
+- name: create garage group
+  group:
+    name: "{{ garage_user }}"
+    system: true
+
+- name: create garage user
+  user:
+    name: "{{ garage_user }}"
+    group: "{{ garage_user }}"
+    groups: "{{ garage_extra_groups }}"
+    append: true
+    system: true
+    home: "{{ garage_base_dir }}"
+    shell: /usr/sbin/nologin
+
+- name: ensure garage directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ garage_user }}"
+    group: "{{ garage_user }}"
+    mode: "0750"
+  with_items:
+    - "{{ garage_base_dir }}"
+    - "{{ garage_metadata_dir }}"
+    - "{{ garage_data_dir }}"
+
+- name: ensure /etc/garage exists
+  file:
+    path: /etc/garage
+    state: directory
+    owner: root
+    group: "{{ garage_user }}"
+    mode: "0750"
+
+- name: download garage binary
+  get_url:
+    url: "{{ garage_binary_url }}"
+    dest: "/usr/local/bin/garage-{{ garage_version }}"
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: link garage binary
+  file:
+    src: "/usr/local/bin/garage-{{ garage_version }}"
+    path: /usr/local/bin/garage
+    state: link
+  notify: restart garage
+
+- name: install garage config file
+  template:
+    src: garage.toml.j2
+    dest: "{{ garage_config_file }}"
+    owner: root
+    group: "{{ garage_user }}"
+    mode: "0640"
+  notify: restart garage
+
+- name: install garage systemd unit
+  template:
+    src: garage.service.j2
+    dest: /etc/systemd/system/garage.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - reload systemd
+    - restart garage
+
+- name: flush handlers so garage is (re)started before cluster init
+  meta: flush_handlers
+
+- name: make sure garage is running
+  systemd:
+    name: garage
+    state: started
+    enabled: true
+
+- name: wait for garage RPC to be available
+  wait_for:
+    host: "{{ garage_rpc_bind_addr.split(':')[0] }}"
+    port: "{{ garage_rpc_bind_addr.split(':')[1] }}"
+    timeout: 30
+
+- name: get garage node id
+  command: "garage -c {{ garage_config_file }} node id -q"
+  register: garage_node_id
+  changed_when: false
+
+- name: show current garage layout
+  command: "garage -c {{ garage_config_file }} layout show"
+  register: garage_layout
+  changed_when: false
+
+# On a fresh node 'layout show' reports no role; once applied it lists the node
+# id. Assign + apply only when this node is not yet part of the layout.
+- name: assign and apply garage layout
+  shell: |
+    set -eo pipefail
+    CONF="{{ garage_config_file }}"
+    garage -c "$CONF" layout assign -z "{{ garage_zone }}" -c "{{ garage_capacity }}" "{{ garage_node_id.stdout.split('@')[0] }}"
+    VERSION="$(garage -c "$CONF" layout show | grep -oE 'apply --version [0-9]+' | grep -oE '[0-9]+$')"
+    garage -c "$CONF" layout apply --version "$VERSION"
+  when: garage_node_id.stdout.split('@')[0] not in garage_layout.stdout
+
+- name: list garage buckets
+  command: "garage -c {{ garage_config_file }} bucket list"
+  register: garage_buckets
+  changed_when: false
+
+- name: create garage backup bucket
+  command: "garage -c {{ garage_config_file }} bucket create {{ garage_bucket }}"
+  when: garage_bucket not in garage_buckets.stdout
+
+- name: check garage s3 access key exists
+  command: "garage -c {{ garage_config_file }} key info {{ garage_s3_key_id }}"
+  register: garage_key_info
+  changed_when: false
+  failed_when: false
+
+- name: import garage s3 access key
+  command: >
+    garage -c {{ garage_config_file }} key import
+    {{ garage_s3_key_id }} {{ garage_s3_secret_key }}
+    -n {{ garage_s3_key_name }} --yes
+  when: garage_key_info.rc != 0
+  no_log: true
+
+- name: grant the key full access to the backup bucket
+  command: >
+    garage -c {{ garage_config_file }} bucket allow
+    --read --write --owner
+    --key {{ garage_s3_key_id }} {{ garage_bucket }}
+  register: garage_bucket_allow
+  changed_when: "'access' in garage_bucket_allow.stdout or 'New permissions' in garage_bucket_allow.stdout"
+
+- name: install garage nginx vhost
+  template:
+    src: garage.nginx.j2
+    dest: "/etc/nginx/sites-available/{{ garage_hostname }}"
+    mode: "0644"
+  notify: restart nginx
+
+- name: enable garage nginx vhost
+  file:
+    src: "/etc/nginx/sites-available/{{ garage_hostname }}"
+    path: "/etc/nginx/sites-enabled/{{ garage_hostname }}"
+    state: link
+  notify: restart nginx

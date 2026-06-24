@@ -1,0 +1,42 @@
+server {
+    listen 80;
+    server_name {{ garage_hostname }};
+
+    # ACME HTTP-01 challenge for certificate renewal (letsencrypt role)
+    location /.well-known/acme-challenge/ {
+        alias /srv/letsencrypt/challenges/;
+        try_files $uri =404;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    server_name {{ garage_hostname }};
+
+    ssl_certificate     {{ garage_ssl_certificate }};
+    ssl_certificate_key {{ garage_ssl_certificate_key }};
+
+    # Base backups can be many gigabytes — remove the body size cap
+    client_max_body_size 0;
+
+    # Long transfers need long timeouts; the default 60s would cut off large restores
+    proxy_read_timeout 3600;
+    proxy_send_timeout 3600;
+
+    # Stream uploads directly to Garage — do not buffer in nginx first.
+    # Without this, nginx spools the entire upload body to disk before
+    # forwarding, which stalls multi-GB base backups and can exhaust disk.
+    proxy_request_buffering off;
+
+    location / {
+        proxy_pass http://{{ garage_s3_api_bind_addr }};
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

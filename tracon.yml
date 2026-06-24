@@ -42,7 +42,6 @@
       redirect_default: true
       redirect_hostname: "{{ inventory_hostname }}"
       redirect_allowed_hosts: "{{ inventory_hostname }}"
-      redirect_target: https://2020.tracon.fi
       redirect_ssl_certificate: /srv/letsencrypt/secrets/siilo.tracon.fi/chained.pem
       redirect_ssl_certificate_key: /srv/letsencrypt/secrets/siilo.tracon.fi/domain.key
 
@@ -56,6 +55,36 @@
       tags: [node-exporter]
     - role: postgresql-barman
       tags: [postgresql-barman]
+
+    # Off-site S3-compatible backup target for CloudNativePG (Garage behind
+    # nginx TLS termination). See object-storage-findings.md.
+    - role: nginx
+      tags: [nginx]
+
+    - role: letsencrypt
+      tags: [letsencrypt]
+      letsencrypt_domains:
+        - name: piilo.tracon.fi
+          subject_alt_name: "DNS:piilo.tracon.fi"
+        - name: piilo-s3.tracon.fi
+          subject_alt_name: "DNS:piilo-s3.tracon.fi"
+
+    # S3 endpoint vhost. Placed on the large /var/lib/barman disk; the garage
+    # user joins the barman group so it can traverse barman's 02770 home.
+    - role: garage
+      tags: [garage]
+      garage_hostname: piilo-s3.tracon.fi
+      garage_base_dir: /var/lib/barman/garage
+      garage_extra_groups: [barman]
+
+    # default site: redirect the machine hostname like the other tracon servers
+    - role: redirect
+      tags: [redirect]
+      redirect_default: true
+      redirect_hostname: "{{ inventory_hostname }}"
+      redirect_allowed_hosts: "{{ inventory_hostname }}"
+      redirect_ssl_certificate: /srv/letsencrypt/secrets/piilo.tracon.fi/chained.pem
+      redirect_ssl_certificate_key: /srv/letsencrypt/secrets/piilo.tracon.fi/domain.key
 
 - hosts: hop_servers
   gather_facts: yes
