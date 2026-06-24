@@ -1,4 +1,5 @@
 .vagrant/
 *.retry
 .vault_pass.txt
+.become_pass.txt
 *.log

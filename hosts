@@ -1,8 +1,9 @@
-# NOTE: hostnames without .tracon.fi or .con2.fi are firewalled and need to hop via siilo
+# NOTE: hostnames without .tracon.fi or .con2.fi are firewalled and need to hop via riimu
 # see ssh-config
 
 [hop_servers]
-putki.tracon.fi ansible_python_interpreter=/usr/bin/python3
+# not in operation as of 2026-06-24
+# putki.tracon.fi ansible_python_interpreter=/usr/bin/python3
 
 [postgresql_servers]
 siilo ansible_python_interpreter=/usr/bin/python3

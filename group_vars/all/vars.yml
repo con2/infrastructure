@@ -102,6 +102,9 @@ base_authorized_keys:
   - username: tupsu
     key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINaUfugbhACmM6m0BlS6hp+BA6b5rYPGIwiTaFj0n7OQ tupsu@maomao
 
+  - username: ana
+    key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKz95+jCwtc0M0d876nAvTouzMwZCeq1dBiAjihL7p2k ana@desucon
+
 base_authorized_keys_to_remove:
   - username: japsu
     key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMnNhwEHiBu47qktABn0joZ+6gGxCmd54t/MVdzkUVx6 japsu@panam-20210228
