@@ -1,7 +1,7 @@
 # Self-Hosted S3 Outside Kubernetes
 **CloudNativePG · Barman Cloud · Backup Storage**
 
-Evaluating Garage and SeaweedFS for a single-node S3-compatible backup target.
+NOTE: This is the original Claude-written document for evaluating Garage and SeaweedFS for a single-node S3-compatible backup target, retained for historical purposes. For an up-to-date admin documentation for our Garage setup, see [Con2 Outline](https://outline.con2.fi/doc/object-storage-garage-fubuhlj2S1).
 
 ---
 
