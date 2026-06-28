@@ -13,3 +13,10 @@ controller:
   # a service is still necessary, otherwise the controller will fail to boot
   service:
     type: ClusterIP
+
+  metrics:
+    enabled: true
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "10254"
