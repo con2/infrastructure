@@ -37,11 +37,11 @@ Last synced against the live cluster: 2026-08-03 (re-verified directly against `
 | freescout-tracon | freescout | freescout.tracon.fi | qb2 (.82) | — | 👤 External — own admin |
 | infokala | infokala | infokala.tracon.fi | qb2 (.82) | infokala-tracon | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect` middleware confirmed live. Held until qb2 migrates |
 | infotv | infotv | infotv.tracon.fi | qb2 (.82) | infotv-tracon | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect` middleware confirmed live. Held until qb2 migrates |
-| ~~infotv~~ | ~~infotv-insecure~~ | ~~infotv-insecure.tracon.fi~~ | external (91.105.252.70, not in this cluster) | infotv-tracon | ⚠️ **Needs manual cleanup** — repo change deployed, but the classless `infotv-insecure` Ingress is still live in-cluster (skaffold doesn't prune removed manifests); needs `kubectl delete ingress -n infotv infotv-insecure` by hand. Note: `infotv-insecure.tracon.fi` still listed in `production.vars.yaml`'s Django `ALLOWED_HOSTS` — harmless, left as-is, optional follow-up cleanup |
+| ~~infotv~~ | ~~infotv-insecure~~ | ~~infotv-insecure.tracon.fi~~ | external (91.105.252.70, not in this cluster) | infotv-tracon | ✅ Deleted 2026-08-03 — confirmed gone from the cluster. Note: `infotv-insecure.tracon.fi` still listed in `production.vars.yaml`'s Django `ALLOWED_HOSTS` — harmless, left as-is, optional follow-up cleanup |
 | kirppu | kirppu | kirppu.tracon.fi | qb2 (.82) | kirppu | 🤝 2nd party — still `ingressClassName: nginx` live in cluster; PR **not yet merged/deployed**. Held until qb2 migrates |
 | kirppu | kirppu-backup | vara.kirppu.tracon.fi | external (185.159.236.140, not in this cluster) | kirppu | 🤝 2nd party — still `nginx` live; PR **not yet merged/deployed**. Node-flip-independent (served off-cluster) |
 | kirppu-staging | kirppu | kirppudev.tracon.fi | qb2 (.82) | kirppu | 🤝 2nd party — still `nginx` live; PR **not yet merged/deployed**. Held until qb2 migrates |
-| konsti-production | konsti | ropekonsti.fi | qb3 (.83) | konsti | 🤝 2nd party — still `ingressClassName: nginx` live in cluster; **staging already deployed but prod not yet**. Held until qb3 migrates |
+| konsti-production | konsti | ropekonsti.fi | qb3 (.83) | konsti | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect`+`www-redirect` middlewares confirmed live. Held until qb3 migrates |
 | konsti-staging | konsti | dev.ropekonsti.fi | qb2 (.82) | konsti | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect`+`www-redirect` middlewares confirmed live (2nd party merged/deployed this without an explicit heads-up — caught via direct cluster check). Held until qb2 migrates |
 | minio | minio | minio.con2.fi | qb3 (.83) | infrastructure (`kubernetes/minio.ingress.yaml`, standalone, not via Helm) | ✅ Applied 2026-08-03 — `ingressClassName: traefik` confirmed live in cluster. Held until qb3 migrates. Legacy install, slated for GarageFS replacement (priority raised) |
 | outline | outline | outline.con2.fi | qb3 (.83) | outline (our own fork, `con2` branch) | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect` middleware confirmed live. Held until qb3 migrates |
@@ -56,25 +56,22 @@ Last synced against the live cluster: 2026-08-03 (re-verified directly against `
 | tracontent-con2 | tracontent | con2.fi | qb3 (.83) | tracontent-premium | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect`+`body-100m` middlewares confirmed live (build issue user was addressing appears resolved). Held until qb3 migrates |
 | tracontent-tracon | tracontent | 2015–2023.{hitpoint.,}tracon.fi, blog/r/ry.tracon.fi | qb2 (.82) | tracontent-premium | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect`+`body-100m` middlewares confirmed live. Held until qb2 migrates |
 
-**30 Ingress resources currently live in the cluster** (`larpit-staging` and `empresenten-staging` tracked above too, struck through, since both were deleted and are no longer part of this count): **21 deployed+verified, 5 still on `nginx` pending 2nd-party merge (kirppu ×3, konsti-production), 2 on hold, 1 needs manual cleanup (`infotv-insecure`), 1 external, 1 minimal-changes-only.**
+**29 Ingress resources currently live in the cluster** (`larpit-staging`, `empresenten-staging`, and `infotv-insecure` tracked above too, struck through, since all three were deleted and are no longer part of this count): **22 deployed+verified, 3 still on `nginx` pending 2nd-party merge (kirppu ×3), 2 on hold, 1 external, 1 minimal-changes-only.**
 
 ### Node cutover batches (derived from the Node column above)
 
-- **qb3-only batch**: konsti-production still pending (2nd party); outline main, tracontent-con2, minio all already deployed and just waiting on the qb3 flip.
-- **qb2-only batch**: kirppu (production+staging) still pending (2nd party); kompassi2-production still pending (manual GitHub environment approval); everything else in this batch (larpit-production, edegal ×3, infokala, infotv, konsti-staging, outline ×4, static, tracontent-tracon) is already deployed and just waiting on the qb2 flip.
-- **Needs both qb2 and qb3 migrated before it can deploy at all**: kompassi-production (still pending manual approval; single Ingress, `kompassi.eu`→qb2 and `conit.fi`→qb3), redirects (already deployed; single Ingress, ~44 hosts→qb2 and 6 `*.con2.fi`/`conit.fi`-variant hosts→qb3).
-- **Node-flip-independent** (served off-cluster or already migrated): kompassi-staging/kompassi2-staging (qb1, already migrated), kompassi-backup and kirppu-backup (external IP 185.159.236.140, still pending on the kompassi/kirppu side respectively), infotv-insecure (external IP 91.105.252.70, needs manual deletion regardless of node flips).
+- **qb3-only batch**: konsti-production, outline main, tracontent-con2, minio — all deployed and verified, just waiting on the qb3 flip.
+- **qb2-only batch**: kirppu (production+staging) still pending (2nd party, merged to `development`, build running before promoting to `master`); kompassi2-production still pending (manual GitHub environment approval, button pressed, build running); everything else in this batch (larpit-production, edegal ×3, infokala, infotv, konsti-staging, outline ×4, static, tracontent-tracon) is already deployed and just waiting on the qb2 flip.
+- **Needs both qb2 and qb3 migrated before it can deploy at all**: kompassi-production (button pressed, build running; single Ingress, `kompassi.eu`→qb2 and `conit.fi`→qb3), redirects (already deployed; single Ingress, ~44 hosts→qb2 and 6 `*.con2.fi`/`conit.fi`-variant hosts→qb3).
+- **Node-flip-independent** (served off-cluster or already migrated): kompassi-staging/kompassi2-staging (qb1, already migrated), kompassi-backup (external IP 185.159.236.140, build running same as kompassi-production) and kirppu-backup (external IP 185.159.236.140, same pending PR as kirppu).
 - **Not relevant right now**: rallly, redmine (on hold, replicas: 0); freescout (external admin).
 
-### Still outstanding as of this sync — nothing else to report back on except these
+### Still outstanding as of this sync
 
-1. **kirppu** PR (production, staging, backup) — not yet merged/deployed by the 2nd-party team.
-2. **konsti-production** — staging already deployed, but prod PR/deploy not yet done.
-3. **kompassi-production + kompassi-backup** — pushed, waiting on manual GitHub environment approval.
-4. **kompassi2-production** — pushed, waiting on manual GitHub environment approval.
-5. **infotv-insecure** — stale classless Ingress still live in-cluster, needs a manual `kubectl delete` (repo-side removal already deployed, skaffold didn't prune it).
-6. **tracontent-premium build** — user was fixing directly; cluster now shows both tracontent Ingresses already on `traefik`, so this appears resolved, worth a quick confirmation.
+1. **kirppu** — merged to `development`, waiting on that build before promoting `development` → `master` (production, staging, backup all still `nginx`).
+2. **kompassi-production + kompassi-backup** — GitHub environment approval given, build running.
+3. **kompassi2-production** — GitHub environment approval given, build running.
 
-Everything else in the qb2/qb3-only batches is deployed and verified — ready for the node flips once the above clears.
+Everything else is deployed and verified — ready for the qb3 flip right now (nothing left blocking it), and ready for the qb2 flip once kirppu and the two kompassi builds land.
 
 Node rollout is tracked separately (not per-app): qb1 and qb4 run Traefik; qb2 and qb3 (carrying most production traffic) still run ingress-nginx. See `README.md`.
