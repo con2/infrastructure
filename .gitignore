@@ -3,3 +3,4 @@
 .vault_pass.txt
 .become_pass.txt
 *.log
+*.values.local.yaml

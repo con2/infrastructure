@@ -1,5 +1,13 @@
-# NOTE: secrets redacted, see `helm get values -n minio minio`
-
+# Secrets redacted here - see minio.values.local.yaml (gitignored, not committed) for
+# the real accessKey/secretKey, or `helm get values -n minio minio` on the live cluster.
+#
+# This is a legacy install (chart minio-8.0.0, installed 2020) slated for replacement
+# with GarageFS or similar - see infrastructure/kubernetes/traefik-migration-inventory.md.
+# Keep changes here minimal until that replacement happens. Note: chart version 8.0.0 no
+# longer exists in the current minio.github.io/charts index (only up to 3.1.8 remains,
+# from 2021) - MinIO has since discontinued/restructured their official Helm chart, so
+# this release can't be cleanly `helm upgrade`d from the public repo anymore without
+# pinning to a mirrored/vendored copy of the original chart.
 mode: distributed
 
 accessKey: redacted
@@ -13,6 +21,10 @@ resources:
   requests:
     memory: 1Gi
 
+# ingressClassName on the live Ingress object is "nginx" - not set here as a
+# user-supplied value (confirmed via `helm get values`), so it must come from a chart
+# default. Left alone per the "minimal changes" note above; not part of the active
+# ingress-nginx -> Traefik migration.
 ingress:
   enabled: true
   hosts:

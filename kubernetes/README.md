@@ -103,6 +103,8 @@ Yes, that's five `longhorn`s in the same command.
 
 ## ingress-nginx to Traefik migration
 
+Per-app migration status is tracked in [`traefik-migration-inventory.md`](traefik-migration-inventory.md) - update it as apps move over.
+
 The cluster is migrating its ingress controller from `ingress-nginx` to `traefik`. Both are installed side by side during the migration, using DaemonSets with `hostNetwork: true` and `hostPort` 80/443 (same operational model `ingress-nginx` has always used - not k3s's bundled Traefik, which uses a different ServiceLB/klipper-lb path and was disabled at cluster bootstrap).
 
 Since both controllers bind hostPort 80/443, they can never run on the same node at the same time. Placement is controlled per-node with a label:
