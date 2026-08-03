@@ -4,7 +4,7 @@ Tracks every live `Ingress` resource in the cluster and its migration status. Up
 
 **Approach note (2026-08-03):** the coexistence phase (dual nginx/Traefik annotations per app, gated behind a boolean flag) is being skipped going forward — repos are moved straight to Traefik-only, with nginx-specific annotations/logic removed entirely. `kompassi` and `kompassi-v2-frontend` (which initially went through the coexistence pattern for their staging environments) have been cleaned up to match.
 
-**Cutover complete (2026-08-03):** all 4 nodes (qb1, qb2, qb3, qb4) are now labeled `qb.con2.fi/ingress-controller=traefik`. The `ingress-nginx` DaemonSet is scaled to 0/0/0 cluster-wide — no ingress-nginx pods remain anywhere. All 27 live Certificates are `Ready=True`. Every deployed app was verified serving correctly via real DNS end-to-end (not `--resolve` overrides) after the flip. Remaining work is Phase 5 (decommission): flip the `letsencrypt-prod` ClusterIssuer's default solver from nginx to traefik, then `helm uninstall ingress-nginx`, then remove the `nginx` IngressClass — see `README.md`.
+**Migration fully complete, including decommission (2026-08-03):** all 4 nodes (qb1, qb2, qb3, qb4) run `traefik`. `letsencrypt-prod`'s ACME solver now targets `traefik` unconditionally (verified with a real forced renewal of the `static` cert). `ingress-nginx` has been `helm uninstall`ed — this also removed its admission webhook and the `nginx` `IngressClass` automatically. The now-empty `ingress-nginx` namespace has also been deleted. A cluster-wide sweep found zero leftover ClusterRoles/ClusterRoleBindings/webhooks/resources referencing ingress-nginx. See `README.md` for the full writeup, including a pitfall hit along the way (the admission webhook's `failurePolicy: Ignore` fix was reverted twice by Helm upgrades before being persisted into the values file properly).
 
 One pre-existing, unrelated finding surfaced during verification: `dev.conikuvat.fi` (conikuvat-staging) returns 503 because its `edegal`/`celery`/`nginx` deployments are all scaled to 0 replicas — not caused by the migration. Decision: leave as-is, may be scaled back up if development resumes.
 
@@ -38,7 +38,7 @@ Last synced against the live cluster: 2026-08-03 (re-verified directly against `
 | conikuvat-staging | edegal | dev.conikuvat.fi | qb2 (.82) | edegal | ✅ Deployed & verified — confirmed `ingressClassName: traefik`, routes correctly. Returns 503 — pre-existing/unrelated (`edegal`/`celery`/`nginx` deployments scaled to 0 replicas), left as-is deliberately in case development resumes |
 | larppikuvat | edegal | larppikuvat.fi | qb2 (.82) | edegal | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect`+`body-100m` middlewares confirmed live. |
 | ~~empresenten-staging~~ | ~~empresenten~~ | ~~dev.infotv.tracon.fi~~ | — | — | ✅ Deleted — namespace removed 2026-08-03, confirmed no leftover cluster-scoped resources (PVs, ClusterRoles/Bindings, ClusterIssuers, etc.) |
-| freescout-tracon | freescout | freescout.tracon.fi | qb2 (.82) | — | 👤 External — own admin. Live-patching now (agreed with admin); they'll fix the Helm chart values properly tomorrow |
+| freescout-tracon | freescout | freescout.tracon.fi | qb2 (.82) | — | 👤 External — own admin. ✅ Live-patched & verified 2026-08-03 — `ingressClassName: traefik`, `https-redirect` middleware confirmed live. Admin fixing the Helm chart values properly tomorrow so this survives their next `helm upgrade` |
 | infokala | infokala | infokala.tracon.fi | qb2 (.82) | infokala-tracon | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect` middleware confirmed live. |
 | infotv | infotv | infotv.tracon.fi | qb2 (.82) | infotv-tracon | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect` middleware confirmed live. |
 | ~~infotv~~ | ~~infotv-insecure~~ | ~~infotv-insecure.tracon.fi~~ | external (91.105.252.70, not in this cluster) | infotv-tracon | ✅ Deleted 2026-08-03 — confirmed gone from the cluster. Note: `infotv-insecure.tracon.fi` still listed in `production.vars.yaml`'s Django `ALLOWED_HOSTS` — harmless, left as-is, optional follow-up cleanup |
@@ -64,12 +64,12 @@ Last synced against the live cluster: 2026-08-03 (re-verified directly against `
 
 ### Node cutover: complete (2026-08-03)
 
-Both qb2 and qb3 have been flipped to `traefik`. All 4 nodes now run Traefik; ingress-nginx is fully drained cluster-wide (DaemonSet `0/0/0`, no pods). Every deployed app was re-verified against real DNS after the flip. See the "Cutover complete" note at the top of this file for the full verification summary and the one bug found (konsti's www-redirect) and fixed along the way.
+Both qb2 and qb3 have been flipped to `traefik`. All 4 nodes now run Traefik; ingress-nginx has been fully uninstalled and its namespace deleted. Every deployed app was re-verified against real DNS after the flip. See the "Migration fully complete" note at the top of this file for the full verification summary, the one bug found (konsti's www-redirect) and fixed along the way, and the admission-webhook pitfall hit during decommissioning.
 
 ### Still outstanding
 
-1. **konsti** repo fix (commit `f237de36` on `main`) — not yet PR'd to the konsti team; the live cluster patch is already in place so there's no urgency, just needs the proper fix to land so it survives their next deploy.
-2. **freescout** — being live-patched today (agreed with its admin); they'll fix the Helm chart's values properly tomorrow so the live patch survives their next `helm upgrade`.
-3. **Phase 5 (decommission)** — flip `letsencrypt-prod`'s default ACME solver from nginx to traefik (verify with a real renewal), then `helm uninstall ingress-nginx -n ingress-nginx`, then remove the `nginx` IngressClass. Not started yet — recommend a soak period first.
+1. **konsti** repo fix (commit `f237de36` on `main`) — PR submitted to the team 2026-08-03; live cluster patch remains in place until it's merged/deployed.
+2. **freescout** — ✅ live-patched and verified; admin fixing the Helm chart values properly tomorrow.
+3. **Phase 5 (decommission)** — ✅ complete: ACME solver flipped and verified, ingress-nginx uninstalled, namespace deleted, cluster-wide sweep found no leftovers.
 
 Node rollout: qb1, qb2, qb3, qb4 all run Traefik. See `README.md`.

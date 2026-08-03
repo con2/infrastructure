@@ -101,17 +101,19 @@ Using Longhorn as an example:
 
 Yes, that's five `longhorn`s in the same command.
 
-## ingress-nginx to Traefik migration
+## ingress-nginx to Traefik migration (complete, 2026-08-03)
 
-Per-app migration status is tracked in [`traefik-migration-inventory.md`](traefik-migration-inventory.md) - update it as apps move over.
+Per-app migration status is tracked in [`traefik-migration-inventory.md`](traefik-migration-inventory.md).
 
-The cluster is migrating its ingress controller from `ingress-nginx` to `traefik`. Both are installed side by side during the migration, using DaemonSets with `hostNetwork: true` and `hostPort` 80/443 (same operational model `ingress-nginx` has always used - not k3s's bundled Traefik, which uses a different ServiceLB/klipper-lb path and was disabled at cluster bootstrap).
+The cluster has migrated its ingress controller from `ingress-nginx` to `traefik`. All 4 nodes run Traefik as a DaemonSet with `hostNetwork: true` and `hostPort` 80/443 (same operational model `ingress-nginx` always used - not k3s's bundled Traefik, which uses a different ServiceLB/klipper-lb path and was disabled at cluster bootstrap). `ingress-nginx` has been fully uninstalled (`helm uninstall ingress-nginx -n ingress-nginx`) - this also removed its admission webhook and the `nginx` `IngressClass`; `ingress-nginx.values.yml` is kept around as a rollback reference even though nothing installs from it anymore.
 
-Since both controllers bind hostPort 80/443, they can never run on the same node at the same time. Placement is controlled per-node with a label:
+During the migration, placement was controlled per-node with a label (kept here for reference, in case a future migration needs the same swap mechanism):
 
     kubectl label node <name> qb.con2.fi/ingress-controller=nginx    # or =traefik
 
-`ingress-nginx.values.yml` and `traefik.values.yml` each carry a matching `nodeSelector`, so relabeling a node is a swap (evicts one controller's pod, schedules the other's), never a steady-state overlap. ingress-nginx's pod has a 5-minute `terminationGracePeriodSeconds` with a connection-draining `preStop` hook, so expect a relabel to take up to ~5 minutes to settle, not instantaneous - the incoming controller's pod will transiently `CrashLoopBackOff` on the hostPort bind until the outgoing one fully exits.
+Since both controllers bind hostPort 80/443, they could never run on the same node at the same time - `ingress-nginx.values.yml` and `traefik.values.yml` each carried a matching `nodeSelector`, so relabeling a node was a swap (evicts one controller's pod, schedules the other's), never a steady-state overlap. ingress-nginx's pod has a 5-minute `terminationGracePeriodSeconds` with a connection-draining `preStop` hook, so a relabel took up to ~5 minutes to settle, not instantaneous - the incoming controller's pod would transiently `CrashLoopBackOff` on the hostPort bind until the outgoing one fully exited.
+
+**Pitfall hit during decommissioning**: the admission webhook's `failurePolicy: Ignore` fix (needed once ingress-nginx has zero running pods, so its now-endpoint-less admission service doesn't fail every Ingress create/update cluster-wide) was originally applied as a one-off `kubectl patch`, not persisted into `ingress-nginx.values.yml`. Every subsequent `helm upgrade` silently reverted it (the chart's webhook-patch hook regenerates the config from its template, which hardcodes `Fail`), causing a real cluster-wide outage of Ingress applies until this was found and fixed properly in the values file. Lesson: any imperative `kubectl patch` against a Helm-managed resource needs to be back-ported into the chart's values before the next upgrade, or it will not survive.
 
 Install Traefik:
 
@@ -129,7 +131,7 @@ Also install the upstream [Gateway API](https://gateway-api.sigs.k8s.io/) CRDs (
 
 Don't `kubectl apply` a `GatewayClass` manifest yourself - with `providers.kubernetesGateway.enabled: true` (set in `traefik.values.yml`), the Traefik chart creates and Helm-owns its own `traefik` `GatewayClass`. A separately-applied, non-Helm-owned `GatewayClass` of the same name existing *before* `helm install traefik` runs makes the install fail outright ("cannot be imported into the current release: invalid ownership metadata") - confirmed by reproducing this exact failure in a from-scratch rehearsal (`garagefs-playground`, see its README/PLAN.md). This is why the Gateway API CRDs must still be applied first (the chart's `GatewayClass` template needs the CRD to exist) while the `GatewayClass` object itself is left for the chart to manage.
 
-The `letsencrypt-prod` `ClusterIssuer` carries two HTTP-01 solvers during the migration (see `letsencrypt-prod.clusterissuer.yaml`) - the `nginx` one stays the unconditional default until every node is on Traefik; only then does the `traefik` solver become the default and the `nginx` one gets removed.
+The `letsencrypt-prod` `ClusterIssuer` now carries a single HTTP-01 solver targeting `traefik` (see `letsencrypt-prod.clusterissuer.yaml`) - the `nginx` solver it carried during the migration has been removed. Verified with a real forced renewal (`kubectl delete secret ingress-letsencrypt -n static`) after the switch.
 
 ### Per-app annotation translation
 
@@ -143,7 +145,7 @@ Every app's `Ingress` stays a plain `networking.k8s.io/v1 Ingress` (no need to c
 | `nginx.ingress.kubernetes.io/proxy-body-size` / `nginx.org/client-max-body-size` | Attach the matching shared Middleware from `traefik-middlewares.yaml` via `traefik.ingress.kubernetes.io/router.middlewares: default-body-<size>@kubernetescrd` (Traefik has no default cap, unlike nginx's implicit 1m - only attach where a cap is actually wanted) |
 | `nginx.ingress.kubernetes.io/proxy-read-timeout` / `proxy-send-timeout` | Try dropping first (Traefik's default forwarding timeouts are effectively unlimited); only add a `ServersTransport` CRD if testing shows a real regression |
 | `nginx.ingress.kubernetes.io/enable-access-log: "false"` | Drop; filter at the Loki/Alloy layer instead if log volume becomes an issue |
-| `nginx.ingress.kubernetes.io/from-to-www-redirect` | Attach the shared `www-redirect` Middleware from `traefik-middlewares.yaml` |
+| `nginx.ingress.kubernetes.io/from-to-www-redirect` | Attach the shared `www-redirect` Middleware from `traefik-middlewares.yaml` **and** give the alias host (e.g. `www.example.com`) its own `rules` entry pointing at the same backend. Unlike ingress-nginx, Traefik has no annotation that redirects a host with no ingress rule of its own - a host that's only a TLS cert SAN (no route) gets a 404, not a redirect. This caused a real, briefly-live production bug for konsti (`www.ropekonsti.fi`) during the migration - caught by testing the www-alias direction explicitly, not just the bare domain |
 | `nginx.ingress.kubernetes.io/auth-type` / `auth-secret` / `auth-realm` (basic auth) | A `Middleware` of type `basicAuth`, created per-app as needed (no shared one exists yet) |
 
 Ingresses with no explicit `ingressClassName` should be given one (`traefik`) rather than relying on classless-adoption behaviour, which differs between controllers.
