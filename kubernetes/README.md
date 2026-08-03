@@ -123,10 +123,11 @@ Also install the Traefik CRDs (Middleware, ServersTransport, IngressRoute, etc. 
 
     kubectl apply -f traefik-middlewares.yaml
 
-And the upstream [Gateway API](https://gateway-api.sigs.k8s.io/) CRDs (standard channel), plus a cluster-scoped `GatewayClass` - installed ahead of need so apps can move from `Ingress` to `Gateway`/`HTTPRoute` one at a time later, without a further cluster-level cutover:
+Also install the upstream [Gateway API](https://gateway-api.sigs.k8s.io/) CRDs (standard channel) - installed ahead of need so apps can move from `Ingress` to `Gateway`/`HTTPRoute` one at a time later, without a further cluster-level cutover. **Do this before** `helm install traefik` above, not after:
 
     kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/vX.Y.Z/standard-install.yaml
-    kubectl apply -f gatewayclass.yaml
+
+Don't `kubectl apply` a `GatewayClass` manifest yourself - with `providers.kubernetesGateway.enabled: true` (set in `traefik.values.yml`), the Traefik chart creates and Helm-owns its own `traefik` `GatewayClass`. A separately-applied, non-Helm-owned `GatewayClass` of the same name existing *before* `helm install traefik` runs makes the install fail outright ("cannot be imported into the current release: invalid ownership metadata") - confirmed by reproducing this exact failure in a from-scratch rehearsal (`garagefs-playground`, see its README/PLAN.md). This is why the Gateway API CRDs must still be applied first (the chart's `GatewayClass` template needs the CRD to exist) while the `GatewayClass` object itself is left for the chart to manage.
 
 The `letsencrypt-prod` `ClusterIssuer` carries two HTTP-01 solvers during the migration (see `letsencrypt-prod.clusterissuer.yaml`) - the `nginx` one stays the unconditional default until every node is on Traefik; only then does the `traefik` solver become the default and the `nginx` one gets removed.
 
@@ -151,7 +152,7 @@ The `router.middlewares` annotation takes a comma-separated list when an app nee
 
 ### Future work: per-app Gateway API migration
 
-Traefik is installed with both the Kubernetes `Ingress` and Gateway API providers enabled from the start, plus the Gateway API CRDs and a `GatewayClass`, precisely so this can happen later without another shared/cluster-level cutover. Once the ingress-nginx -> Traefik migration is complete and settled, apps can move from `Ingress` to `Gateway`/`HTTPRoute` independently, at their own pace. Recommended pattern: **one `Gateway` per app/namespace** (not one shared cluster-wide `Gateway`), since each app's domain has its own distinct TLS cert - this mirrors today's one-`Ingress`-per-app model and lets cert-manager issue directly to the `Gateway`'s listener via the same `cert-manager.io/cluster-issuer` annotation used today.
+Traefik is installed with both the Kubernetes `Ingress` and Gateway API providers enabled from the start, plus the Gateway API CRDs and the chart's own Helm-managed `GatewayClass`, precisely so this can happen later without another shared/cluster-level cutover. Once the ingress-nginx -> Traefik migration is complete and settled, apps can move from `Ingress` to `Gateway`/`HTTPRoute` independently, at their own pace. Recommended pattern: **one `Gateway` per app/namespace** (not one shared cluster-wide `Gateway`), since each app's domain has its own distinct TLS cert - this mirrors today's one-`Ingress`-per-app model and lets cert-manager issue directly to the `Gateway`'s listener via the same `cert-manager.io/cluster-issuer` annotation used today.
 
 ## Miscellaneous
 
