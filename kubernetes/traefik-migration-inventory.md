@@ -6,7 +6,7 @@ Tracks every live `Ingress` resource in the cluster and its migration status. Up
 
 **Cutover complete (2026-08-03):** all 4 nodes (qb1, qb2, qb3, qb4) are now labeled `qb.con2.fi/ingress-controller=traefik`. The `ingress-nginx` DaemonSet is scaled to 0/0/0 cluster-wide — no ingress-nginx pods remain anywhere. All 27 live Certificates are `Ready=True`. Every deployed app was verified serving correctly via real DNS end-to-end (not `--resolve` overrides) after the flip. Remaining work is Phase 5 (decommission): flip the `letsencrypt-prod` ClusterIssuer's default solver from nginx to traefik, then `helm uninstall ingress-nginx`, then remove the `nginx` IngressClass — see `README.md`.
 
-One pre-existing, unrelated finding surfaced during verification: `dev.conikuvat.fi` (conikuvat-staging) returns 503 because its `edegal`/`celery`/`nginx` deployments are all scaled to 0 replicas — not caused by the migration, same situation as the now-deleted `larpit-staging`. Worth a decision on whether to clean up this namespace too.
+One pre-existing, unrelated finding surfaced during verification: `dev.conikuvat.fi` (conikuvat-staging) returns 503 because its `edegal`/`celery`/`nginx` deployments are all scaled to 0 replicas — not caused by the migration. Decision: leave as-is, may be scaled back up if development resumes.
 
 Last synced against the live cluster: 2026-08-03 (re-verified directly against `kubectl get ingress -A` after both node flips — several deploys had landed without an explicit report-back, so status below reflects actual cluster state, not just what was reported).
 
@@ -35,10 +35,10 @@ Last synced against the live cluster: 2026-08-03 (re-verified directly against `
 | ~~larpit-staging~~ | ~~larpit~~ | ~~dev.larpit.fi~~ | — | larpit-fi | ✅ Deleted — environment was stale/not actively deployed; namespace removed 2026-08-03 (DB, which lives outside this namespace, untouched). No cluster-scoped orphans found |
 | larpit-production | larpit | larpit.fi | qb2 (.82) | larpit-fi | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect`+`body-1m` middlewares confirmed live. |
 | conikuvat-production | edegal | conikuvat.fi | qb2 (.82) | edegal | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect`+`body-100m` middlewares confirmed live. |
-| conikuvat-staging | edegal | dev.conikuvat.fi | qb2 (.82) | edegal | ✅ Deployed & verified — confirmed `ingressClassName: traefik`, routes correctly. Returns 503 as of 2026-08-03, but that's pre-existing and unrelated: `edegal`/`celery`/`nginx` deployments in this namespace are all scaled to 0 replicas (same situation as the now-deleted `larpit-staging`) |
+| conikuvat-staging | edegal | dev.conikuvat.fi | qb2 (.82) | edegal | ✅ Deployed & verified — confirmed `ingressClassName: traefik`, routes correctly. Returns 503 — pre-existing/unrelated (`edegal`/`celery`/`nginx` deployments scaled to 0 replicas), left as-is deliberately in case development resumes |
 | larppikuvat | edegal | larppikuvat.fi | qb2 (.82) | edegal | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect`+`body-100m` middlewares confirmed live. |
 | ~~empresenten-staging~~ | ~~empresenten~~ | ~~dev.infotv.tracon.fi~~ | — | — | ✅ Deleted — namespace removed 2026-08-03, confirmed no leftover cluster-scoped resources (PVs, ClusterRoles/Bindings, ClusterIssuers, etc.) |
-| freescout-tracon | freescout | freescout.tracon.fi | qb2 (.82) | — | 👤 External — own admin |
+| freescout-tracon | freescout | freescout.tracon.fi | qb2 (.82) | — | 👤 External — own admin. Live-patching now (agreed with admin); they'll fix the Helm chart values properly tomorrow |
 | infokala | infokala | infokala.tracon.fi | qb2 (.82) | infokala-tracon | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect` middleware confirmed live. |
 | infotv | infotv | infotv.tracon.fi | qb2 (.82) | infotv-tracon | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect` middleware confirmed live. |
 | ~~infotv~~ | ~~infotv-insecure~~ | ~~infotv-insecure.tracon.fi~~ | external (91.105.252.70, not in this cluster) | infotv-tracon | ✅ Deleted 2026-08-03 — confirmed gone from the cluster. Note: `infotv-insecure.tracon.fi` still listed in `production.vars.yaml`'s Django `ALLOWED_HOSTS` — harmless, left as-is, optional follow-up cleanup |
@@ -68,8 +68,8 @@ Both qb2 and qb3 have been flipped to `traefik`. All 4 nodes now run Traefik; in
 
 ### Still outstanding
 
-1. **conikuvat-staging** (`dev.conikuvat.fi`) — returns 503, but pre-existing/unrelated: its deployments are scaled to 0 replicas. Decide whether to clean up this namespace like `larpit-staging`.
-2. **konsti** repo fix (commit `f237de36` on `main`) — not yet PR'd to the konsti team; the live cluster patch is already in place so there's no urgency, just needs the proper fix to land so it survives their next deploy.
+1. **konsti** repo fix (commit `f237de36` on `main`) — not yet PR'd to the konsti team; the live cluster patch is already in place so there's no urgency, just needs the proper fix to land so it survives their next deploy.
+2. **freescout** — being live-patched today (agreed with its admin); they'll fix the Helm chart's values properly tomorrow so the live patch survives their next `helm upgrade`.
 3. **Phase 5 (decommission)** — flip `letsencrypt-prod`'s default ACME solver from nginx to traefik (verify with a real renewal), then `helm uninstall ingress-nginx -n ingress-nginx`, then remove the `nginx` IngressClass. Not started yet — recommend a soak period first.
 
 Node rollout: qb1, qb2, qb3, qb4 all run Traefik. See `README.md`.
