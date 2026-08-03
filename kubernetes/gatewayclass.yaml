@@ -1,0 +1,8 @@
+# Cluster-scoped, one-time resource. Inert until an app creates a Gateway referencing
+# it - see "Future work: per-app Gateway API migration" in kubernetes/README.md.
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: traefik
+spec:
+  controllerName: traefik.io/gateway-controller

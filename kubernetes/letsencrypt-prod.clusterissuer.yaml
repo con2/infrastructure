@@ -12,7 +12,25 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-prod
     # Enable the HTTP-01 challenge provider
+    #
+    # NOTE (ingress-nginx -> Traefik migration): keep the nginx solver as the sole
+    # unconditional (empty-selector) default for as long as ANY node is still running
+    # ingress-nginx, since an HTTP-01 challenge can land on any node via DNS and must be
+    # served by whichever controller is actually bound to hostPort 80 there. The second
+    # solver below is deliberately gated behind a matchLabels selector that no live
+    # Certificate carries, so it can never be selected by accident (an empty/absent
+    # dnsZones or dnsNames selector is treated by cert-manager as "no restriction", i.e.
+    # matches everything, which would make it a second, ambiguous default - this
+    # matchLabels form avoids that trap). Once every node has been flipped to Traefik,
+    # swap this to be the unconditional default (remove the selector) and delete the
+    # nginx solver. See infrastructure/kubernetes/README.md and the migration plan.
     solvers:
     - http01:
         ingress:
-          class: nginx
+          ingressClassName: nginx
+    - selector:
+        matchLabels:
+          qb.con2.fi/traefik-migration-inert-placeholder: "true"
+      http01:
+        ingress:
+          ingressClassName: traefik

@@ -1,4 +1,9 @@
 controller:
+  # only run on nodes still assigned to ingress-nginx during the Traefik migration;
+  # see traefik.values.yml and kubernetes/README.md for the node-label mechanism
+  nodeSelector:
+    qb.con2.fi/ingress-controller: nginx
+
   # run on every node
   kind: DaemonSet
 

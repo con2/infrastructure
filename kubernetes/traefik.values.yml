@@ -1,0 +1,125 @@
+# Traefik, installed as a drop-in replacement for ingress-nginx.
+#
+# Mirrors ingress-nginx.values.yml's operational model (DaemonSet, hostNetwork,
+# hostPort 80/443) rather than k3s's bundled Traefik (which uses a different
+# ServiceLB/klipper-lb path) - this keeps one consistent ingress architecture and
+# avoids touching k3s server install flags on live control-plane nodes.
+#
+# During the migration, ingress-nginx and Traefik are scheduled onto mutually
+# exclusive sets of nodes via the qb.con2.fi/ingress-controller node label (see
+# ingress-nginx.values.yml and kubernetes/README.md) - never onto the same node,
+# since both bind hostPort 80/443 and would otherwise conflict.
+deployment:
+  kind: DaemonSet
+
+hostNetwork: true
+
+# The chart's container runs as non-root (podSecurityContext.runAsUser: 65532) by
+# default, so it can't bind the privileged ports 80/443 on its own. ingress-nginx's own
+# DaemonSet handles this by adding the NET_BIND_SERVICE capability to its non-root
+# container (uid 101) - tried the identical pattern here first (capabilities.add:
+# [NET_BIND_SERVICE]), but the capability didn't actually take effect at runtime for
+# this image (still got "bind: permission denied") - looks like an ambient-capability
+# propagation quirk specific to this image/runtime combination, not a config mistake.
+# Running as root sidesteps privileged-port binding entirely and is what many real-world
+# Traefik + hostPort deployments do. Root still needs its capabilities NOT dropped -
+# the chart's own default (capabilities.drop: [ALL]) would strip NET_BIND_SERVICE from
+# root too and reproduce the exact same bind failure, since dropping capabilities
+# applies regardless of UID. allowPrivilegeEscalation: false and readOnlyRootFilesystem
+# stay in place from the chart defaults.
+podSecurityContext:
+  runAsNonRoot: false
+  runAsUser: 0
+  runAsGroup: 0
+securityContext:
+  capabilities:
+    drop: []
+
+# Matches ingress-nginx.values.yml's own reasoning: we reach the controller via
+# hostPort on hostNetwork, not via a real LoadBalancer/NodePort Service - a Service
+# object is only needed to satisfy the chart's internal requirements. Without this,
+# the chart's default Service type (LoadBalancer) causes k3s's built-in ServiceLB to
+# auto-deploy a `svclb-traefik` DaemonSet that binds hostPort 80/443 on EVERY node
+# (unconstrained by our nodeSelector), directly colliding with ingress-nginx's own
+# hostPort 80/443 on the nodes still running it. This caused a real (briefly
+# production-impacting) incident during the initial rollout - see migration notes.
+service:
+  spec:
+    type: ClusterIP
+
+# Required by the chart whenever hostNetwork is true: with maxUnavailable: 0, a future
+# rolling update could never proceed, since a new pod can't bind the same hostPort until
+# the old one on that node is gone. 1 node at a time updating is fine given 4 nodes total.
+# maxSurge must be explicitly 0 here - Kubernetes' DaemonSet validation requires exactly
+# one of maxUnavailable/maxSurge to be zero, and the chart's own default sets maxSurge: 1.
+updateStrategy:
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 0
+
+nodeSelector:
+  qb.con2.fi/ingress-controller: traefik
+
+ports:
+  web:
+    # With hostNetwork enabled, containerPort must equal hostPort (no NAT to bridge
+    # them), so this also overrides the chart's default containerPort of 8000.
+    port: 80
+    hostPort: 80
+    # Deliberately NOT doing the nginx.ingress.kubernetes.io/ssl-redirect
+    # replacement at the entrypoint level here. An entrypoint-level redirect
+    # would catch every request on port 80 unconditionally - including
+    # cert-manager's ephemeral HTTP-01 solver Ingress, which serves the ACME
+    # challenge token in plain HTTP and has no annotation-based way to opt out
+    # of a global entrypoint redirect (unlike ingress-nginx, where cert-manager
+    # explicitly sets ssl-redirect: false on the solver Ingress it creates).
+    # Instead, the https-redirect Middleware in traefik-middlewares.yaml is
+    # attached per-app, same as nginx's annotation was - so the untouched
+    # solver Ingress is naturally exempt and HTTP-01 keeps working.
+  websecure:
+    # Same containerPort == hostPort requirement (chart default containerPort is 8443).
+    port: 443
+    hostPort: 443
+
+  # Chart default is 9100 (its own comment even warns: "When using hostNetwork, use
+  # another port to avoid conflict with node exporter") - but the default wasn't actually
+  # changed, and this cluster's pre-existing Prometheus node-exporter DaemonSet already
+  # binds hostPort 9100 on every node. With hostNetwork: true, every declared port is
+  # implicitly host-exposed regardless of an explicit hostPort field, so this collided
+  # and silently blocked ALL Traefik pod scheduling (misleading generic "no free ports"
+  # scheduler message) until traced down. Moved off the conflicting default.
+  metrics:
+    port: 9101
+
+ingressClass:
+  enabled: true
+  isDefaultClass: false
+
+providers:
+  kubernetesIngress:
+    enabled: true
+    ingressClass: traefik
+  kubernetesCRD:
+    enabled: true
+  # Enabled ahead of need: lets apps migrate from Ingress to Gateway API one at a time,
+  # later, without a second controller-level cutover. Inert until an app creates its own
+  # Gateway - see "Future work: per-app Gateway API migration" in the migration plan.
+  kubernetesGateway:
+    enabled: true
+
+# This is the chart's own auto-provisioned default Gateway (separate from
+# providers.kubernetesGateway above, which just enables the controller to watch for
+# Gateway/HTTPRoute objects). We deliberately don't want a chart-managed shared Gateway -
+# the intended pattern is each app creating its own Gateway later (see "Future work:
+# per-app Gateway API migration" in the migration plan) - so disable it here.
+gateway:
+  enabled: false
+
+# Dashboard is never safe to hostPort-expose in this hostNetwork setup (unlike a
+# ClusterIP-only setup, any exposed port here is directly internet-facing). Leave
+# disabled; if wanted later, front it with its own authenticated Ingress instead.
+ingressRoute:
+  dashboard:
+    enabled: false
+api:
+  dashboard: false

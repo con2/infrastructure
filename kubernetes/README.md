@@ -5,7 +5,7 @@
 * [K3s](https://k3s.io) as the Kubernetes distribution
 * [Longhorn](https://longhorn.io/) for distributed storage
 * [Minio](https://min.io/) for object storage
-* [ingress-nginx](https://kubernetes.github.io/ingress-nginx/)
+* [Traefik](https://traefik.io/) (migrating from [ingress-nginx](https://kubernetes.github.io/ingress-nginx/) - see "ingress-nginx to Traefik migration" below)
 
 TODO:
 
@@ -78,7 +78,7 @@ Now you should be able to `kubectl` locally for increased happiness and comfort.
 Install the following using Helm:
 
 * [`kubernetes-secret-generator`](https://github.com/mittwald/kubernetes-secret-generator#helm)
-* [`ingress-nginx`](https://kubernetes.github.io/ingress-nginx/deploy/#using-helm)
+* [`traefik`](https://github.com/traefik/traefik-helm-chart) (replacing `ingress-nginx` - see below)
 * [`cert-manager`](https://cert-manager.io/docs/installation/kubernetes/#installing-with-helm)
 * [`longhorn`](https://longhorn.io/docs/0.8.0/install/install-with-helm/)
 
@@ -100,6 +100,56 @@ Using Longhorn as an example:
     helm install -n longhorn-system -f longhorn.values.yml longhorn longhorn/longhorn
 
 Yes, that's five `longhorn`s in the same command.
+
+## ingress-nginx to Traefik migration
+
+The cluster is migrating its ingress controller from `ingress-nginx` to `traefik`. Both are installed side by side during the migration, using DaemonSets with `hostNetwork: true` and `hostPort` 80/443 (same operational model `ingress-nginx` has always used - not k3s's bundled Traefik, which uses a different ServiceLB/klipper-lb path and was disabled at cluster bootstrap).
+
+Since both controllers bind hostPort 80/443, they can never run on the same node at the same time. Placement is controlled per-node with a label:
+
+    kubectl label node <name> qb.con2.fi/ingress-controller=nginx    # or =traefik
+
+`ingress-nginx.values.yml` and `traefik.values.yml` each carry a matching `nodeSelector`, so relabeling a node is a swap (evicts one controller's pod, schedules the other's), never a steady-state overlap. ingress-nginx's pod has a 5-minute `terminationGracePeriodSeconds` with a connection-draining `preStop` hook, so expect a relabel to take up to ~5 minutes to settle, not instantaneous - the incoming controller's pod will transiently `CrashLoopBackOff` on the hostPort bind until the outgoing one fully exits.
+
+Install Traefik:
+
+    helm repo add traefik https://traefik.github.io/charts
+    helm repo update
+    helm install traefik traefik/traefik -n traefik --create-namespace -f traefik.values.yml
+
+Also install the Traefik CRDs (Middleware, ServersTransport, IngressRoute, etc. - see the chart's docs for the current recommended install method) and the shared Middlewares:
+
+    kubectl apply -f traefik-middlewares.yaml
+
+And the upstream [Gateway API](https://gateway-api.sigs.k8s.io/) CRDs (standard channel), plus a cluster-scoped `GatewayClass` - installed ahead of need so apps can move from `Ingress` to `Gateway`/`HTTPRoute` one at a time later, without a further cluster-level cutover:
+
+    kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/vX.Y.Z/standard-install.yaml
+    kubectl apply -f gatewayclass.yaml
+
+The `letsencrypt-prod` `ClusterIssuer` carries two HTTP-01 solvers during the migration (see `letsencrypt-prod.clusterissuer.yaml`) - the `nginx` one stays the unconditional default until every node is on Traefik; only then does the `traefik` solver become the default and the `nginx` one gets removed.
+
+### Per-app annotation translation
+
+Every app's `Ingress` stays a plain `networking.k8s.io/v1 Ingress` (no need to convert to Traefik's `IngressRoute` CRD) - just update `ingressClassName` and annotations:
+
+| nginx annotation | Traefik equivalent |
+|---|---|
+| `cert-manager.io/cluster-issuer` | No change - cert-manager is ingress-controller-agnostic |
+| `kubernetes.io/tls-acme: "true"` (legacy) | Replace with `cert-manager.io/cluster-issuer: letsencrypt-prod` |
+| `nginx.ingress.kubernetes.io/ssl-redirect` | Attach the shared `https-redirect` Middleware from `traefik-middlewares.yaml` via `traefik.ingress.kubernetes.io/router.middlewares`, only on Ingresses that actually have TLS configured. **Deliberately not** done as a global entrypoint redirect in `traefik.values.yml` - that would also catch cert-manager's plain-HTTP HTTP-01 solver Ingress, which has no annotation-based way to opt out of an entrypoint-level redirect (unlike ingress-nginx, where cert-manager sets `ssl-redirect: false` on the solver Ingress itself), breaking certificate issuance/renewal |
+| `nginx.ingress.kubernetes.io/proxy-body-size` / `nginx.org/client-max-body-size` | Attach the matching shared Middleware from `traefik-middlewares.yaml` via `traefik.ingress.kubernetes.io/router.middlewares: default-body-<size>@kubernetescrd` (Traefik has no default cap, unlike nginx's implicit 1m - only attach where a cap is actually wanted) |
+| `nginx.ingress.kubernetes.io/proxy-read-timeout` / `proxy-send-timeout` | Try dropping first (Traefik's default forwarding timeouts are effectively unlimited); only add a `ServersTransport` CRD if testing shows a real regression |
+| `nginx.ingress.kubernetes.io/enable-access-log: "false"` | Drop; filter at the Loki/Alloy layer instead if log volume becomes an issue |
+| `nginx.ingress.kubernetes.io/from-to-www-redirect` | Attach the shared `www-redirect` Middleware from `traefik-middlewares.yaml` |
+| `nginx.ingress.kubernetes.io/auth-type` / `auth-secret` / `auth-realm` (basic auth) | A `Middleware` of type `basicAuth`, created per-app as needed (no shared one exists yet) |
+
+Ingresses with no explicit `ingressClassName` should be given one (`traefik`) rather than relying on classless-adoption behaviour, which differs between controllers.
+
+The `router.middlewares` annotation takes a comma-separated list when an app needs more than one (e.g. `default-https-redirect@kubernetescrd,default-body-100m@kubernetescrd`) - see `kompassi/kubernetes/default.vars.yaml` for a worked example that also gates `https-redirect` on whether TLS is actually enabled for that environment.
+
+### Future work: per-app Gateway API migration
+
+Traefik is installed with both the Kubernetes `Ingress` and Gateway API providers enabled from the start, plus the Gateway API CRDs and a `GatewayClass`, precisely so this can happen later without another shared/cluster-level cutover. Once the ingress-nginx -> Traefik migration is complete and settled, apps can move from `Ingress` to `Gateway`/`HTTPRoute` independently, at their own pace. Recommended pattern: **one `Gateway` per app/namespace** (not one shared cluster-wide `Gateway`), since each app's domain has its own distinct TLS cert - this mirrors today's one-`Ingress`-per-app model and lets cert-manager issue directly to the `Gateway`'s listener via the same `cert-manager.io/cluster-issuer` annotation used today.
 
 ## Miscellaneous
 

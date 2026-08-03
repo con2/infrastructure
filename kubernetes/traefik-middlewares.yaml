@@ -1,0 +1,68 @@
+# Shared Traefik Middleware objects referenced by app Ingresses cluster-wide via the
+# `traefik.ingress.kubernetes.io/router.middlewares: default-<name>@kubernetescrd`
+# annotation (the `default-` prefix selects the Middleware's namespace, `default` here -
+# Traefik's Ingress-annotation middleware references are namespace-qualified by design,
+# so a Middleware defined once in `default` can be referenced from any namespace).
+#
+# Apply with: kubectl apply -f kubernetes/traefik-middlewares.yaml
+#
+# These replace the nginx.ingress.kubernetes.io/proxy-body-size /
+# nginx.org/client-max-body-size annotation pairs seen across the cluster. Traefik has
+# no default request body size cap (unlike nginx's implicit 1m default), so only attach
+# one of these where a cap is actually still wanted.
+# Replaces nginx.ingress.kubernetes.io/ssl-redirect: "true". Deliberately a per-app
+# opt-in Middleware, NOT an entrypoint-level redirect - an entrypoint-level redirect
+# would also catch cert-manager's ephemeral HTTP-01 solver Ingress (which serves the
+# ACME challenge in plain HTTP and never gets this annotation), breaking certificate
+# issuance/renewal. Only attach this to Ingresses that already have TLS configured.
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: https-redirect
+  namespace: default
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: body-1m
+  namespace: default
+spec:
+  buffering:
+    maxRequestBodyBytes: 1000000
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: body-100m
+  namespace: default
+spec:
+  buffering:
+    maxRequestBodyBytes: 100000000
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: body-2048m
+  namespace: default
+spec:
+  buffering:
+    maxRequestBodyBytes: 2048000000
+---
+# Generic www.<host> -> <host> redirect, replacing
+# nginx.ingress.kubernetes.io/from-to-www-redirect: "true" (currently used by konsti).
+# Not host-specific - works for any app that attaches it, since the capture group
+# preserves whatever the apex host is.
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: www-redirect
+  namespace: default
+spec:
+  redirectRegex:
+    regex: "^https://www\\.(.+)"
+    replacement: "https://${1}"
+    permanent: true
