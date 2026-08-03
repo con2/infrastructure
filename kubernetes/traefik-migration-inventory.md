@@ -43,7 +43,7 @@ Last synced against the live cluster: 2026-08-03.
 | kirppu-staging | kirppu | kirppudev.tracon.fi | qb2 (.82) | kirppu | 🤝 2nd party — committed on `traefik-migration` branch, not pushed; PR to be opened separately; held until qb2 migrates |
 | konsti-production | konsti | ropekonsti.fi | qb3 (.83) | konsti | 🤝 2nd party — committed on `traefik-migration` branch, not pushed; PR to be opened separately; held until qb3 migrates |
 | konsti-staging | konsti | dev.ropekonsti.fi | qb2 (.82) | konsti | 🤝 2nd party — committed on `traefik-migration` branch, not pushed; PR to be opened separately; held until qb2 migrates |
-| minio | minio | minio.con2.fi | qb3 (.83) | infrastructure (`kubernetes/minio.ingress.yaml`, standalone, not via Helm) | 🔧 Spec ready, not yet applied — see file for why `kubectl replace` (not `apply`/Helm). Held until qb3 migrates. Legacy install, slated for GarageFS replacement (priority raised) |
+| minio | minio | minio.con2.fi | qb3 (.83) | infrastructure (`kubernetes/minio.ingress.yaml`, standalone, not via Helm) | ✅ Applied 2026-08-03 — `ingressClassName: traefik` confirmed live in cluster. Held until qb3 migrates. Legacy install, slated for GarageFS replacement (priority raised) |
 | outline | outline | outline.con2.fi | qb3 (.83) | outline (our own fork, `con2` branch) | 🔧 Committed locally (not pushed) — traefik-only, held until qb3 migrates |
 | outline-kotae | outline | wiki.kotae.fi | qb2 (.82) | outline | 🔧 Committed locally (not pushed) — traefik-only, held until qb2 migrates |
 | outline-kuplii | outline | wiki.tamperekuplii.fi | qb2 (.82) | outline | 🔧 Committed locally (not pushed) — traefik-only, held until qb2 migrates |
@@ -52,9 +52,9 @@ Last synced against the live cluster: 2026-08-03.
 | rallly | rallly | rallly.con2.fi | qb3 (.83) | rallly-con2 | ⛔ On hold — replicas: 0, pending other fixes |
 | redirects | redirects | tracon.fi, www.tracon.fi, hitpoint.tracon.fi, +40 more | **qb2 (.82) + qb3 (.83) — split across one Ingress** (qb3 hosts: con2.fi, www.con2.fi, doodle.con2.fi, rally.con2.fi, rallly.con2.fi, www.conit.fi; rest qb2) | redirects | 🔧 Committed locally (not pushed) — traefik-only, held until **both** qb2 and qb3 migrate (no redirect middleware, matches prior intentional behavior) |
 | redmine | redmine | pora.tracon.fi | qb2 (.82) | — | ⛔ On hold — replicas: 0, pending other fixes |
-| static | static | 2005–2015.tracon.fi, media.tracon.fi, 2024.tracon.fi | qb2 (.82) | static | 🔧 Committed locally (not pushed) — traefik-only, held until qb2 migrates |
-| tracontent-con2 | tracontent | con2.fi | qb3 (.83) | tracontent-premium | 🔧 Committed locally (not pushed) — traefik-only, held until qb3 migrates |
-| tracontent-tracon | tracontent | 2015–2023.{hitpoint.,}tracon.fi, blog/r/ry.tracon.fi | qb2 (.82) | tracontent-premium | 🔧 Committed locally (not pushed) — traefik-only, held until qb2 migrates |
+| static | static | 2005–2015.tracon.fi, media.tracon.fi, 2024.tracon.fi | qb2 (.82) | static | 🔧 CI build broken (needs docker, self-hosted runners don't have it — to be fixed separately) — worked around via a direct live `kubectl annotate`/`kubectl patch` of the Ingress to match the already-committed traefik-only config. Held until qb2 migrates |
+| tracontent-con2 | tracontent | con2.fi | qb3 (.83) | tracontent-premium | 🔧 Pushed, CI build failing — user addressing directly. Held until qb3 migrates |
+| tracontent-tracon | tracontent | 2015–2023.{hitpoint.,}tracon.fi, blog/r/ry.tracon.fi | qb2 (.82) | tracontent-premium | 🔧 Pushed, CI build failing — user addressing directly. Held until qb2 migrates |
 
 **31 Ingress resources currently live in the cluster** (`empresenten-staging` is tracked above too, struck through, since it was already deleted and is no longer part of this count): **2 migrated, 19 committed locally awaiting deploy, 5 2nd-party (PR workflow), 2 on hold, 1 pending deletion (`infotv-insecure`), 1 external, 1 minimal-changes-only.**
 
