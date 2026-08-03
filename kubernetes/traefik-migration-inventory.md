@@ -41,7 +41,7 @@ Last synced against the live cluster: 2026-08-03.
 | kirppu-staging | kirppu | kirppudev.tracon.fi | kirppu | 🤝 2nd party — committed on `traefik-migration` branch, not pushed; PR to be opened separately |
 | konsti-production | konsti | ropekonsti.fi | konsti | 🤝 2nd party — committed on `traefik-migration` branch, not pushed; PR to be opened separately |
 | konsti-staging | konsti | dev.ropekonsti.fi | konsti | 🤝 2nd party — committed on `traefik-migration` branch, not pushed; PR to be opened separately |
-| minio | minio | minio.con2.fi | infrastructure (Helm values) | 🧊 Minimal changes only — legacy install, slated for GarageFS replacement |
+| minio | minio | minio.con2.fi | infrastructure (`kubernetes/minio.ingress.yaml`, standalone, not via Helm) | 🔧 Spec ready, not yet applied — see file for why `kubectl replace` (not `apply`/Helm). Legacy install, slated for GarageFS replacement (priority raised) |
 | outline | outline | outline.con2.fi | outline (our own fork, `con2` branch) | 🔧 Committed locally (not pushed) — traefik-only, awaiting deploy |
 | outline-kotae | outline | wiki.kotae.fi | outline | 🔧 Committed locally (not pushed) — traefik-only, awaiting deploy |
 | outline-kuplii | outline | wiki.tamperekuplii.fi | outline | 🔧 Committed locally (not pushed) — traefik-only, awaiting deploy |

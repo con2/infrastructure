@@ -2,12 +2,16 @@
 # the real accessKey/secretKey, or `helm get values -n minio minio` on the live cluster.
 #
 # This is a legacy install (chart minio-8.0.0, installed 2020) slated for replacement
-# with GarageFS or similar - see infrastructure/kubernetes/traefik-migration-inventory.md.
-# Keep changes here minimal until that replacement happens. Note: chart version 8.0.0 no
-# longer exists in the current minio.github.io/charts index (only up to 3.1.8 remains,
-# from 2021) - MinIO has since discontinued/restructured their official Helm chart, so
-# this release can't be cleanly `helm upgrade`d from the public repo anymore without
-# pinning to a mirrored/vendored copy of the original chart.
+# with GarageFS or similar (priority raised) - see
+# infrastructure/kubernetes/traefik-migration-inventory.md. Keep changes here minimal
+# until that replacement happens. Chart version 8.0.0 no longer exists in the current
+# minio.github.io/charts index at all (that lineage was reset/restructured at some
+# point - the newest chart there today is 5.4.0, appVersion RELEASE.2024-12-18T13-15-44Z,
+# which is itself already the last version whose image is still pullable - MinIO
+# discontinued the community edition entirely in 2025/2026, so there's no path to a
+# genuinely current version regardless of chart lineage). Upgrading this release via
+# Helm would mean re-platforming onto an unrelated chart generation, not a version bump -
+# see the exact deployed chart extracted from the release Secret if that's ever needed.
 mode: distributed
 
 accessKey: redacted
@@ -21,10 +25,12 @@ resources:
   requests:
     memory: 1Gi
 
-# ingressClassName on the live Ingress object is "nginx" - not set here as a
-# user-supplied value (confirmed via `helm get values`), so it must come from a chart
-# default. Left alone per the "minimal changes" note above; not part of the active
-# ingress-nginx -> Traefik migration.
+# STALE / no longer authoritative: the live Ingress is now managed directly via
+# kubernetes/minio.ingress.yaml (kubectl replace, not Helm) to avoid needing to touch
+# this ancient chart at all for ingress changes. This block is left here only as a
+# historical record of what the chart used to render - it no longer reflects the live
+# object's annotations/ingressClassName and isn't reconciled against reality. Don't
+# `helm upgrade` this release expecting it to touch the Ingress in sync with this block.
 ingress:
   enabled: true
   hosts:

@@ -1,0 +1,49 @@
+# Standalone Ingress for minio, managed directly via `kubectl apply -f` - deliberately
+# NOT part of the Helm chart's `ingress:` values block anymore. The installed chart
+# (minio-8.0.0, from 2020) is effectively unmaintainable in place - see the Traefik
+# migration inventory and the chart-extraction exercise that led here - so rather than
+# touching the chart/values to change ingress behavior, this bypasses Helm entirely.
+#
+# Caveat: the chart's own `ingress.enabled: true` (in minio.values.yml) still exists, so
+# if anyone ever runs `helm upgrade minio ...` again, Helm may try to reconcile this
+# Ingress back to its old nginx-templated form. Given this release hasn't been
+# `helm upgrade`d since 2020 and minio itself is being replaced by GarageFS (or similar),
+# this is an accepted, low-probability risk rather than something actively guarded
+# against here.
+#
+# Apply with: kubectl replace -f minio.ingress.yaml
+#
+# Deliberately `replace`, not `apply`: the live object was created by Helm and has no
+# kubectl.kubernetes.io/last-applied-configuration baseline, so `apply`'s strategic merge
+# only adds/updates keys present here - it would leave the old
+# nginx.ingress.kubernetes.io/* annotations and Helm-ownership labels
+# (app.kubernetes.io/managed-by, chart, heritage, release, meta.helm.sh/*) dangling on
+# the object. `replace` does a full overwrite, cleanly dropping all of that. Verified via
+# `kubectl replace -f minio.ingress.yaml --dry-run=server -o yaml` before committing this.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio
+  namespace: minio
+  labels:
+    app: minio
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: default-https-redirect@kubernetescrd,default-body-2048m@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - minio.con2.fi
+      secretName: minio-letsencrypt
+  rules:
+    - host: minio.con2.fi
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: minio
+                port:
+                  number: 9000
