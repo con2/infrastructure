@@ -25,3 +25,14 @@ controller:
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "10254"
+
+  # the migration to Traefik has moved every node off ingress-nginx, so this
+  # controller now has zero running pods and its admission service has no
+  # endpoints - without failurePolicy: Ignore, that fails closed and blocks
+  # every Ingress create/update cluster-wide, not just ones meant for nginx.
+  # Setting this here (not just via a one-off kubectl patch) is required
+  # because every `helm upgrade` re-runs the chart's webhook-patch job, which
+  # regenerates the ValidatingWebhookConfiguration from the chart template
+  # (hardcoded Fail) and silently reverts any imperative patch.
+  admissionWebhooks:
+    failurePolicy: Ignore
