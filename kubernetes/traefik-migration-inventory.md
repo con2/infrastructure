@@ -53,14 +53,14 @@ Last synced against the live cluster: 2026-08-03 (re-verified directly against `
 | outline-kuplii | outline | wiki.tamperekuplii.fi | qb2 (.82) | outline | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect` middleware confirmed live. |
 | outline-ropecon | outline | wiki.ropecon.fi | qb2 (.82) | outline | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect` middleware confirmed live. |
 | outline-tracon | outline | wiki.tracon.fi | qb2 (.82) | outline | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect` middleware confirmed live. |
-| rallly | rallly | rallly.con2.fi | qb3 (.83) | rallly-con2 | ⛔ On hold — replicas: 0, pending other fixes |
+| rallly | rallly | rallly.con2.fi | qb3 (.83) | rallly-con2 | ✅ Live-patched & verified 2026-08-04 — `ingressClassName: traefik`, `https-redirect` middleware confirmed live (301->https, valid LE cert). `manifest.ts` updated to match, not yet merged to `main`. |
 | redirects | redirects | tracon.fi, www.tracon.fi, hitpoint.tracon.fi, +40 more | **qb2 (.82) + qb3 (.83) — split across one Ingress** (qb3 hosts: con2.fi, www.con2.fi, doodle.con2.fi, rally.con2.fi, rallly.con2.fi, www.conit.fi; rest qb2) | redirects | ✅ Deployed & verified — `ingressClassName: traefik` confirmed live, no middleware annotation (matches prior intentional behavior). |
 | redmine | redmine | pora.tracon.fi | qb2 (.82) | — | ⛔ On hold — replicas: 0, pending other fixes |
 | static | static | 2005–2015.tracon.fi, media.tracon.fi, 2024.tracon.fi | qb2 (.82) | static | ✅ Live-patched & verified — `ingressClassName: traefik`, `https-redirect` middleware confirmed live (CI build still broken, needs docker; to be fixed separately). |
 | tracontent-con2 | tracontent | con2.fi | qb3 (.83) | tracontent-premium | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect`+`body-100m` middlewares confirmed live (build issue user was addressing appears resolved). |
 | tracontent-tracon | tracontent | 2015–2023.{hitpoint.,}tracon.fi, blog/r/ry.tracon.fi | qb2 (.82) | tracontent-premium | ✅ Deployed & verified — `ingressClassName: traefik`, `https-redirect`+`body-100m` middlewares confirmed live. |
 
-**29 Ingress resources currently live in the cluster** (`larpit-staging`, `empresenten-staging`, and `infotv-insecure` tracked above too, struck through, since all three were deleted and are no longer part of this count): **25 deployed+verified, 2 on hold, 1 external, 1 minimal-changes-only.**
+**29 Ingress resources currently live in the cluster** (`larpit-staging`, `empresenten-staging`, and `infotv-insecure` tracked above too, struck through, since all three were deleted and are no longer part of this count): **26 deployed+verified, 1 on hold, 1 external, 1 minimal-changes-only.**
 
 ### Node cutover: complete (2026-08-03)
 
