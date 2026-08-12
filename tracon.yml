@@ -53,6 +53,8 @@
       tags: [base]
     - role: node-exporter
       tags: [node-exporter]
+    - role: prebackup
+      tags: [prebackup]
     - role: postgresql-barman
       tags: [postgresql-barman]
 

@@ -34,6 +34,44 @@ If you ever place `garage_base_dir` under a directory the `garage` user cannot
 traverse (e.g. another service's restrictive home), add the relevant group via
 `garage_extra_groups` so the `garage` user can reach it.
 
+## Metadata backup
+
+This role installs a script into `/etc/pre-backup.d` (see the `prebackup`
+role) that runs `garage meta snapshot` to take a consistent live snapshot of
+the LMDB metadata database, then copies the latest snapshot to
+`/var/backups/garage/{{ garage_hostname }}-metadata`. The external BackupPC
+setup picks that path up along with the rest of `/var/backups`. The bucket
+data under `garage_data_dir` is expected to be backed up directly from
+`/srv/garage`, alongside the metadata snapshot copy.
+
+## Restoring from backup
+
+Given a restored copy of `/srv/garage` (i.e. `garage_base_dir`, covering
+`garage_data_dir`) and a restored metadata snapshot (from
+`/var/backups/garage/{{ garage_hostname }}-metadata`):
+
+1. Stop garage: `systemctl stop garage`.
+2. Restore `/srv/garage` to its original location, owned by the `garage`
+   user, so `garage_data_dir` (bucket objects) is back in place.
+3. Swap in the trusted metadata snapshot rather than trusting whatever
+   `db.lmdb` came back with the raw `/srv/garage` restore (it may have been
+   copied while garage was running and be inconsistent):
+   ```
+   mv {{ garage_metadata_dir }}/db.lmdb {{ garage_metadata_dir }}/db.lmdb.bak
+   cp -r /var/backups/garage/{{ garage_hostname }}-metadata {{ garage_metadata_dir }}/db.lmdb
+   chown -R garage:garage {{ garage_metadata_dir }}
+   ```
+4. Start garage: `systemctl start garage`.
+5. Resync anything that changed between the snapshot and the outage:
+   `garage -c {{ garage_config_file }} repair -a --yes tables`.
+
+See the upstream
+[Recovering from failures](https://garagehq.deuxfleurs.fr/documentation/operations/recovering/)
+and
+[Durability & Repairs](https://garagehq.deuxfleurs.fr/documentation/operations/durability-repairs/)
+docs for the full picture (multi-node recovery, layout recovery, etc.) — this
+single-node setup only ever needs the metadata-snapshot-swap path above.
+
 ## Requirements
 
 This role expects the `nginx` and `letsencrypt` roles to have run earlier in

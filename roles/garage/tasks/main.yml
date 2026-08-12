@@ -149,3 +149,17 @@
     path: "/etc/nginx/sites-enabled/{{ garage_hostname }}"
     state: link
   notify: restart nginx
+
+- name: make sure backup directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /var/backups
+    - /var/backups/garage
+
+- name: set up garage pre-backup script
+  template:
+    src: pre-backup.sh.j2
+    dest: /etc/pre-backup.d/{{ garage_hostname }}-garage.sh
+    mode: 0755

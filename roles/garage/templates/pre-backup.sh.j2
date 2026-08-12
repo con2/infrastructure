@@ -1,0 +1,14 @@
+#!/bin/bash
+set -euo pipefail
+umask 077
+
+CONFIG_FILE="{{ garage_config_file }}"
+SNAPSHOTS_DIR="{{ garage_metadata_dir }}/snapshots"
+DEST_DIR="/var/backups/garage/{{ garage_hostname }}-metadata"
+
+garage -c "$CONFIG_FILE" meta snapshot
+
+LATEST_SNAPSHOT="$(ls -1 "$SNAPSHOTS_DIR" | sort | tail -n1)"
+
+rm -rf "$DEST_DIR"
+cp -a "$SNAPSHOTS_DIR/$LATEST_SNAPSHOT" "$DEST_DIR"

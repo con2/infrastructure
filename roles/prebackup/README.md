@@ -12,3 +12,4 @@ This role sets up the said script to run any executable scripts from under `/etc
 
 * `postgresql-docker`
 * `tracontent`
+* `garage`
