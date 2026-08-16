@@ -1,0 +1,62 @@
+# Mirrors every bucket on minio.con2.fi into the minio-backup bucket on
+# piilo-s3.tracon.fi (Garage) every 15 minutes. Uses `rclone copy`, never `sync` -
+# this job must never be given a delete-capable verb, since Garage has no bucket
+# versioning to fall back on if it deleted something it shouldn't have. Version
+# history for overwritten/deleted objects instead comes from --backup-dir, which
+# moves the previous copy aside instead of clobbering it.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: minio-backup-sync
+  namespace: minio-backup
+spec:
+  schedule: "*/15 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      # Kept under the 15-minute schedule so a hung run is killed before it could
+      # overlap the next one's intended slot (concurrencyPolicy: Forbid would just
+      # skip that slot otherwise, silently stretching the effective RPO).
+      activeDeadlineSeconds: 840
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: rclone
+              image: rclone/rclone:1.75.0
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -eu
+                  rclone copy minio_backup_src: minio_backup_dst:minio-backup/current \
+                    --backup-dir "minio_backup_dst:minio-backup/versions/$(date -u +%Y%m%dT%H%M%SZ)" \
+                    --fast-list
+              env:
+                - name: RCLONE_CONFIG
+                  value: /config/rclone/rclone.conf
+                # nginx on piilo terminates TLS with http2 enabled, and Go's HTTP/2
+                # client can't retry a PutObject after a GOAWAY arrives mid-upload
+                # (streamed request bodies have no Request.GetBody) - forcing
+                # HTTP/1.1 avoids that failure mode entirely.
+                - name: RCLONE_DISABLE_HTTP2
+                  value: "true"
+              envFrom:
+                - secretRef:
+                    name: minio-backup-rclone-credentials
+              volumeMounts:
+                - name: rclone-config
+                  mountPath: /config/rclone
+                  readOnly: true
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+                limits:
+                  memory: 512Mi
+          volumes:
+            - name: rclone-config
+              configMap:
+                name: minio-backup-rclone-config

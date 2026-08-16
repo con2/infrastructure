@@ -136,6 +136,32 @@
   register: garage_bucket_allow
   changed_when: "'access' in garage_bucket_allow.stdout or 'New permissions' in garage_bucket_allow.stdout"
 
+- name: create minio-backup bucket
+  command: "garage -c {{ garage_config_file }} bucket create {{ garage_minio_backup_bucket }}"
+  when: garage_minio_backup_bucket not in garage_buckets.stdout
+
+- name: check minio-backup s3 access key exists
+  command: "garage -c {{ garage_config_file }} key info {{ garage_minio_backup_key_id }}"
+  register: garage_minio_backup_key_info
+  changed_when: false
+  failed_when: false
+
+- name: import minio-backup s3 access key
+  command: >
+    garage -c {{ garage_config_file }} key import
+    {{ garage_minio_backup_key_id }} {{ garage_minio_backup_secret_key }}
+    -n {{ garage_minio_backup_key_name }} --yes
+  when: garage_minio_backup_key_info.rc != 0
+  no_log: true
+
+- name: grant the key full access to the minio-backup bucket
+  command: >
+    garage -c {{ garage_config_file }} bucket allow
+    --read --write --owner
+    --key {{ garage_minio_backup_key_id }} {{ garage_minio_backup_bucket }}
+  register: garage_minio_backup_bucket_allow
+  changed_when: "'access' in garage_minio_backup_bucket_allow.stdout or 'New permissions' in garage_minio_backup_bucket_allow.stdout"
+
 - name: install garage nginx vhost
   template:
     src: garage.nginx.j2

@@ -1,0 +1,25 @@
+# Non-secret rclone remote definitions for the minio.con2.fi -> piilo-s3.tracon.fi
+# off-site backup mirror. Credentials are deliberately NOT here - they're supplied
+# at runtime via RCLONE_CONFIG_<REMOTE>_ACCESS_KEY_ID / _SECRET_ACCESS_KEY env vars
+# from the minio-backup-rclone-credentials Secret (see minio-backup.README.md),
+# keeping this file safe to commit.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minio-backup-rclone-config
+  namespace: minio-backup
+data:
+  rclone.conf: |
+    [minio_backup_src]
+    type = s3
+    provider = Minio
+    endpoint = https://minio.con2.fi
+    env_auth = false
+
+    [minio_backup_dst]
+    type = s3
+    provider = Other
+    endpoint = https://piilo-s3.tracon.fi
+    region = garage
+    force_path_style = true
+    env_auth = false

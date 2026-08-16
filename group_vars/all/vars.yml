@@ -38,6 +38,11 @@ garage_rpc_secret: "{{ vault_garage_rpc_secret }}"
 garage_s3_key_id: "{{ vault_garage_s3_key_id }}"
 garage_s3_secret_key: "{{ vault_garage_s3_secret_key }}"
 
+# Garage key for the minio-backup bucket, consumed by the rclone CronJobs in qb
+# that mirror minio.con2.fi off-site (see infrastructure/kubernetes/minio-backup.*)
+garage_minio_backup_key_id: "{{ vault_garage_minio_backup_key_id }}"
+garage_minio_backup_secret_key: "{{ vault_garage_minio_backup_secret_key }}"
+
 base_authorized_keys:
   - username: japsu
     key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLZsRbpS/geKF2xrnYqiOBhbERFBB5T57CQck/HCjhmUeZX4+LG5kQonyMhGD73Z5aU80FvoKEM/t0FNHzX6Z5k= japsu@claire-20241212

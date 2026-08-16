@@ -1,0 +1,66 @@
+# Enforces the 90-day retention window on version snapshots written by
+# minio-backup-sync's --backup-dir. Deliberately a separate CronJob from the
+# frequent sync, so a bug in the sync path can never cascade into deleting
+# backup data - this is the only workload in minio-backup that is allowed to
+# delete anything at all, and it runs once a day.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: minio-backup-prune
+  namespace: minio-backup
+spec:
+  schedule: "37 3 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 3600
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: rclone
+              image: rclone/rclone:1.75.0
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -eu
+                  retention_days=90
+                  cutoff=$(( $(date -u +%s) - retention_days * 86400 ))
+                  rclone lsf --dirs-only minio_backup_dst:minio-backup/versions/ | while read -r dir; do
+                    ts="${dir%/}"
+                    # Alpine's busybox `date` (not GNU coreutils) is what's actually
+                    # available in this image - verify -D/-d parse timestamps as
+                    # expected here (see plan verification step) before relying on it.
+                    ts_epoch=$(date -u -D "%Y%m%dT%H%M%SZ" -d "$ts" +%s 2>/dev/null) || continue
+                    if [ "$ts_epoch" -lt "$cutoff" ]; then
+                      echo "pruning version snapshot older than ${retention_days}d: $ts"
+                      rclone purge "minio_backup_dst:minio-backup/versions/$ts"
+                    fi
+                  done
+              env:
+                - name: RCLONE_CONFIG
+                  value: /config/rclone/rclone.conf
+                # See minio-backup-sync's RCLONE_DISABLE_HTTP2 comment: same GOAWAY/
+                # http2 interaction with nginx on piilo can hit lsf/purge too.
+                - name: RCLONE_DISABLE_HTTP2
+                  value: "true"
+              envFrom:
+                - secretRef:
+                    name: minio-backup-rclone-credentials
+              volumeMounts:
+                - name: rclone-config
+                  mountPath: /config/rclone
+                  readOnly: true
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+                limits:
+                  memory: 512Mi
+          volumes:
+            - name: rclone-config
+              configMap:
+                name: minio-backup-rclone-config

@@ -35,12 +35,19 @@ garage_capacity: 1G
 garage_bucket: cnpg-backups
 garage_s3_key_name: cnpg-backup-key
 
+# Second bucket + key: destination for the off-site minio.con2.fi backup mirror
+# (rclone CronJobs running in the qb cluster, not on this host - see
+# infrastructure/kubernetes/minio-backup.*).
+garage_minio_backup_bucket: minio-backup
+garage_minio_backup_key_name: minio-backup-key
+
 # Public hostname for the S3 endpoint (nginx server_name + TLS certificate).
 garage_hostname: "{{ inventory_hostname }}"
 garage_ssl_certificate: "/srv/letsencrypt/secrets/{{ garage_hostname }}/chained.pem"
 garage_ssl_certificate_key: "/srv/letsencrypt/secrets/{{ garage_hostname }}/domain.key"
 
 # Secrets (defined in group_vars/all/vars.yml -> vault):
-#   garage_rpc_secret, garage_s3_key_id, garage_s3_secret_key
+#   garage_rpc_secret, garage_s3_key_id, garage_s3_secret_key,
+#   garage_minio_backup_key_id, garage_minio_backup_secret_key
 
 garage_ssl: true
