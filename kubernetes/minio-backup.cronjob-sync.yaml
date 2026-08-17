@@ -1,5 +1,5 @@
 # Mirrors every bucket on minio.con2.fi into the minio-backup bucket on
-# piilo-s3.tracon.fi (Garage) every 15 minutes. Uses `rclone copy`, never `sync` -
+# piilo-s3.tracon.fi (Garage) every hour. Uses `rclone copy`, never `sync` -
 # this job must never be given a delete-capable verb, since Garage has no bucket
 # versioning to fall back on if it deleted something it shouldn't have. Version
 # history for overwritten/deleted objects instead comes from --backup-dir, which
@@ -10,17 +10,19 @@ metadata:
   name: minio-backup-sync
   namespace: minio-backup
 spec:
-  schedule: "*/15 * * * *"
+  schedule: "0 * * * *"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       backoffLimit: 1
-      # Kept under the 15-minute schedule so a hung run is killed before it could
-      # overlap the next one's intended slot (concurrencyPolicy: Forbid would just
-      # skip that slot otherwise, silently stretching the effective RPO).
-      activeDeadlineSeconds: 840
+      # A full sync currently takes ~11m; kept well under the 1h schedule so a
+      # hung run is killed before it could overlap the next one's intended slot
+      # (concurrencyPolicy: Forbid would just skip that slot otherwise, silently
+      # stretching the effective RPO) while still giving real headroom for the
+      # sync to grow slower as the mirror's data volume grows.
+      activeDeadlineSeconds: 1800
       template:
         spec:
           restartPolicy: Never
@@ -31,9 +33,13 @@ spec:
               args:
                 - |
                   set -eu
+                  # Lower than the rclone defaults (4/8) - this is a background
+                  # off-site backup, not a latency-sensitive transfer, and fewer
+                  # concurrent workers means fewer simultaneous connections to
+                  # piilo contributing to TIME_WAIT/conntrack churn.
                   rclone copy minio_backup_src: minio_backup_dst:minio-backup/current \
                     --backup-dir "minio_backup_dst:minio-backup/versions/$(date -u +%Y%m%dT%H%M%SZ)" \
-                    --fast-list
+                    --fast-list --transfers 2 --checkers 4
               env:
                 - name: RCLONE_CONFIG
                   value: /config/rclone/rclone.conf

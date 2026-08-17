@@ -51,3 +51,11 @@ garage_ssl_certificate_key: "/srv/letsencrypt/secrets/{{ garage_hostname }}/doma
 #   garage_minio_backup_key_id, garage_minio_backup_secret_key
 
 garage_ssl: true
+
+# The minio-backup rclone CronJobs churn through many short-lived HTTPS
+# connections against this host every run (thousands of small-object PUT/LIST
+# requests every hour) - large enough to deplete the OS's default conntrack
+# table. Bump its size and shorten how long a TIME_WAIT entry occupies a slot
+# so entries free up faster than they did.
+garage_conntrack_max: 262144
+garage_conntrack_tcp_timeout_time_wait: 30

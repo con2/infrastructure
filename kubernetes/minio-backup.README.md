@@ -3,9 +3,10 @@
 Off-site backup mirror: continuously copies every bucket on `minio.con2.fi` into
 the `minio-backup` bucket on `piilo-s3.tracon.fi` (Garage), with 90 days of
 version history for anything overwritten or deleted at the source. Runs as two
-Kubernetes CronJobs in this (`qb`) cluster — `minio-backup-sync` (every 15
-minutes, `rclone copy`, never deletes) and `minio-backup-prune` (daily, the only
-job allowed to delete anything, enforcing the 90-day window). See
+Kubernetes CronJobs in this (`qb`) cluster — `minio-backup-sync` (hourly,
+`rclone copy`, never deletes; a full sync currently takes ~11m) and
+`minio-backup-prune` (daily, the only job allowed to delete anything, enforcing
+the 90-day window). See
 `infrastructure/roles/garage` for the Piilo/Garage side (bucket + key
 provisioning only — Garage itself runs no backup logic, it's just the S3 target).
 
