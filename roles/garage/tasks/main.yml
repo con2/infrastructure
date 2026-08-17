@@ -1,17 +1,4 @@
 ---
-# Depends on nf_conntrack already being loaded, which the base role's ufw setup
-# (earlier in the play) guarantees.
-- name: raise conntrack table size and shorten TIME_WAIT occupancy
-  ansible.posix.sysctl:
-    name: "{{ item.name }}"
-    value: "{{ item.value }}"
-    sysctl_set: true
-    state: present
-    reload: true
-  loop:
-    - { name: net.netfilter.nf_conntrack_max, value: "{{ garage_conntrack_max }}" }
-    - { name: net.netfilter.nf_conntrack_tcp_timeout_time_wait, value: "{{ garage_conntrack_tcp_timeout_time_wait }}" }
-
 - name: create garage group
   group:
     name: "{{ garage_user }}"
