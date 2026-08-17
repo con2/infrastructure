@@ -71,11 +71,13 @@ def main():
     print(client.meta.endpoint_url)
 
     grand_total_bytes = 0
+    grand_total_objects = 0
     for bucket in client.list_buckets()["Buckets"]:
         total_bytes, object_count = bucket_size(client, bucket["Name"])
         grand_total_bytes += total_bytes
+        grand_total_objects += object_count
         print(f"  {bucket['Name']:<40} {human_size(total_bytes):>12} ({object_count} objects)")
-    print(f"  {'total':<40} {human_size(grand_total_bytes):>12}")
+    print(f"  {'total':<40} {human_size(grand_total_bytes):>12} ({grand_total_objects} objects)")
 
 
 if __name__ == "__main__":
