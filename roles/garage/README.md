@@ -29,6 +29,23 @@ The nginx vhost (`server_name {{ garage_hostname }}`, e.g. `piilo-s3.tracon.fi`)
 `client_max_body_size 0`, long proxy timeouts and `proxy_request_buffering off`
 so multi-gigabyte base backups and restores stream straight through.
 
+## Logging
+
+Garage logs every S3 request at `info` level, which floods syslog/journald on
+a busy host. `garage.service.j2` sets `RUST_LOG=garage=info,garage_api_common=warn`
+so only 5xx server errors are logged (Garage logs 4xx client errors at `info`
+too, so those are silenced along with the per-request access-log lines — trade
+that back to `garage_api_common=info` if you need to see them), and writes
+stdout/stderr straight to `{{ garage_log_file }}` instead of the journal, with
+`/etc/logrotate.d/garage` rotating it daily (or at 100M) and keeping 7 copies.
+
+`garage_log_dir` is created by this role (same task as the data/metadata
+dirs), not by systemd's `LogsDirectory=` — that directive sets the directory
+up too late for `StandardOutput=append:`/`StandardError=append:` to use it
+([systemd/systemd#27591](https://github.com/systemd/systemd/issues/27591)),
+so the unit fails to start with "Failed to set up standard output" if the
+directory isn't already there.
+
 ## Storage location
 
 `garage_base_dir` (default `/var/lib/garage`) sets where metadata and data live

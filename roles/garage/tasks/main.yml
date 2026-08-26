@@ -25,6 +25,7 @@
     - "{{ garage_base_dir }}"
     - "{{ garage_metadata_dir }}"
     - "{{ garage_data_dir }}"
+    - "{{ garage_log_dir }}"
 
 - name: ensure /etc/garage exists
   file:
@@ -68,6 +69,19 @@
   notify:
     - reload systemd
     - restart garage
+
+- name: install logrotate
+  apt:
+    name: logrotate
+    state: present
+
+- name: install garage logrotate config
+  template:
+    src: garage.logrotate.j2
+    dest: /etc/logrotate.d/garage
+    owner: root
+    group: root
+    mode: "0644"
 
 - name: flush handlers so garage is (re)started before cluster init
   meta: flush_handlers

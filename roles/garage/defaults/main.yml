@@ -8,6 +8,15 @@ garage_binary_url: "https://garagehq.deuxfleurs.fr/_releases/{{ garage_version }
 garage_user: garage
 garage_config_file: /etc/garage.toml
 
+# Garage logs every S3 request at info level (see garage.service.j2), which
+# floods syslog/journald on a busy backup target. Send it to its own file with
+# tight rotation instead of the journal. The directory must exist before
+# systemd starts the unit (StandardOutput=append: fails if it's missing, and
+# LogsDirectory= is set up too late to help - systemd/systemd#27591), so it's
+# created explicitly below rather than left to systemd.
+garage_log_dir: /var/log/garage
+garage_log_file: "{{ garage_log_dir }}/garage.log"
+
 # Where Garage stores its data. Override garage_base_dir to place everything on
 # a specific disk (e.g. a large data volume); metadata and data live under it.
 garage_base_dir: /var/lib/garage

@@ -4,7 +4,11 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-Environment=RUST_LOG=garage=info
+# garage_api_common logs every S3 request (and 4xx) at info; keep it at warn so
+# only 5xx server errors come through, instead of an access-log line per request.
+Environment=RUST_LOG=garage=info,garage_api_common=warn
+StandardOutput=append:{{ garage_log_file }}
+StandardError=append:{{ garage_log_file }}
 ExecStart=/usr/local/bin/garage -c {{ garage_config_file }} server
 User={{ garage_user }}
 Group={{ garage_user }}
