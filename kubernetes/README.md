@@ -127,7 +127,9 @@ Also install the Traefik CRDs (Middleware, ServersTransport, IngressRoute, etc. 
 
 Also install the upstream [Gateway API](https://gateway-api.sigs.k8s.io/) CRDs (standard channel) - installed ahead of need so apps can move from `Ingress` to `Gateway`/`HTTPRoute` one at a time later, without a further cluster-level cutover. **Do this before** `helm install traefik` above, not after:
 
-    kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/vX.Y.Z/standard-install.yaml
+    kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/standard-install.yaml
+
+The CRD bundle version must be the one the installed Traefik version documents (v1.6.1 for Traefik 3.7, see the Kubernetes Gateway provider page in Traefik's docs). Traefik's Gateway provider waits for informers on every standard-channel kind, `BackendTLSPolicy` and `TLSRoute` included; with an older bundle that lacks them it logs `Failed to watch *v1.TLSRoute` forever and never reconciles a single `Gateway` (the `GatewayClass` stays `Accepted=Unknown: Waiting for controller`). This bit the first Gateway API app (edegal v4) on 2026-09-10. Re-apply the bundle when upgrading Traefik.
 
 Don't `kubectl apply` a `GatewayClass` manifest yourself - with `providers.kubernetesGateway.enabled: true` (set in `traefik.values.yml`), the Traefik chart creates and Helm-owns its own `traefik` `GatewayClass`. A separately-applied, non-Helm-owned `GatewayClass` of the same name existing *before* `helm install traefik` runs makes the install fail outright ("cannot be imported into the current release: invalid ownership metadata") - confirmed by reproducing this exact failure in a from-scratch rehearsal (`garagefs-playground`, see its README/PLAN.md). This is why the Gateway API CRDs must still be applied first (the chart's `GatewayClass` template needs the CRD to exist) while the `GatewayClass` object itself is left for the chart to manage.
 
