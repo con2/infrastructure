@@ -31,6 +31,19 @@
   tags:
     - k3s-base-internal-ip-address
 
+# Inotify limits are per UID host-wide, so all root containers on a node share them.
+# The 128-instance default makes Alloy fail with "failed to create fsnotify watcher: too many open files".
+- name: raise inotify limits
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_file: /etc/sysctl.d/60-inotify.conf
+  with_items:
+    - { name: fs.inotify.max_user_instances, value: "8192" }
+    - { name: fs.inotify.max_user_watches, value: "524288" }
+  tags:
+    - k3s-base-sysctl
+
 - name: enable universe repo
   apt_repository:
     repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release|lower }} universe"
