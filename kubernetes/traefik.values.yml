@@ -66,6 +66,10 @@ ports:
     # them), so this also overrides the chart's default containerPort of 8000.
     port: 80
     hostPort: 80
+    # Routers without an explicit entrypoint bind to every asDefault entrypoint. With
+    # none marked, they bind to all of them, which serves every Ingress on the metrics
+    # port too (plain HTTP on each node's 9101, since hostNetwork host-exposes it).
+    asDefault: true
     # Deliberately NOT doing the nginx.ingress.kubernetes.io/ssl-redirect
     # replacement at the entrypoint level here. An entrypoint-level redirect
     # would catch every request on port 80 unconditionally - including
@@ -80,6 +84,7 @@ ports:
     # Same containerPort == hostPort requirement (chart default containerPort is 8443).
     port: 443
     hostPort: 443
+    asDefault: true
 
   # Chart default is 9100 (its own comment even warns: "When using hostNetwork, use
   # another port to avoid conflict with node exporter") - but the default wasn't actually
