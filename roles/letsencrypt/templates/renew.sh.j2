@@ -22,4 +22,4 @@ mv $SIGNED $OLDCRT || true
 mv $NEWCRT $SIGNED
 # wget -O $INTERMEDIATE $INTERMEDIATE_URL
 cat $SIGNED $INTERMEDIATE > $CHAINED
-# sudo service nginx reload
+sudo -n /usr/bin/systemctl reload nginx

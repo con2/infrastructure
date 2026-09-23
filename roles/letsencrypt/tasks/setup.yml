@@ -58,3 +58,13 @@
     owner: letsencrypt
     group: letsencrypt
     mode: 0640
+
+- name: allow letsencrypt user to reload nginx
+  copy:
+    dest: /etc/sudoers.d/letsencrypt
+    content: |
+      letsencrypt ALL=(root) NOPASSWD: /usr/bin/systemctl reload nginx
+    owner: root
+    group: root
+    mode: 0440
+    validate: visudo -cf %s
