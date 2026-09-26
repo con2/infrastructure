@@ -5,7 +5,7 @@
 # ///
 # usage: bin/mc_bucket_sizes.py [--mc-config PATH --mc-alias ALIAS]
 # by default, connects using the standard AWS environment configuration
-# (e.g. eval $(uv run bin/garage_env.py)); pass --mc-alias to instead use an
+# (e.g. eval $(uv run bin/garage_env.py cnpg_backup)); pass --mc-alias to instead use an
 # alias from an mc config.json
 
 import argparse

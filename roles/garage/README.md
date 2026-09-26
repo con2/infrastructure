@@ -122,8 +122,14 @@ from those values.
 
 ## Accessing Garage S3 with `aws` CLI
 
-    eval $(uv run bin/garage_env.py)
+    eval $(uv run bin/garage_env.py cnpg_backup)
     aws s3 ls
+
+or run a single command with the environment set:
+
+    uv run bin/garage_env.py minio_backup -- aws s3 ls
+
+Profiles are defined in `bin/garage_env.py`.
 
 ## minio-backup bucket/key
 
