@@ -31,6 +31,19 @@ kubectl -n garage get pvc
 kubectl -n garage get pod -o wide
 ```
 
+Pods stay `0/1 Ready` until the layout below is applied; that is expected. Two things
+bit the first install (2026-09-26):
+
+- The `local-path-big` provisioner runs a single helper pod with a fixed name, so
+  provisioning four PVCs at once races. One data directory was created by the kubelet
+  (root-owned 0755) instead of the helper (0777), and that pod crashed with
+  `Permission denied` on startup. Fix: `chmod 0777` the empty directory on the node
+  (a throwaway busybox pod with a `hostPath` mount of `/mnt/big/localpath` works;
+  there is no `ls` in the Garage image).
+- `deployment.podManagementPolicy` is immutable on a StatefulSet. Changing it means
+  `kubectl -n garage delete statefulset garage` (PVCs survive) and re-running the
+  install; node identities live in the `meta` PVCs, so nodes keep their IDs.
+
 ## Layout bootstrap (one time)
 
 The chart never touches the cluster layout. Pods are `Ready` before a layout exists

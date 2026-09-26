@@ -28,6 +28,9 @@ garage:
 deployment:
   kind: StatefulSet
   replicaCount: 4
+  # Readiness (below) stays false until a layout is applied, and a layout needs all
+  # four nodes running, so OrderedReady would never start garage-1.
+  podManagementPolicy: Parallel
 
 # Neither local-path class enforces quotas: size is a request only. The data size
 # documents intent and must stay below the 1 TB /mnt/big volume.
@@ -63,9 +66,12 @@ resources:
 
 # /health on the admin API is unauthenticated. No admin token is configured; all admin
 # work goes through kubectl exec ... /garage.
+#
+# /health answers 503 whenever the cluster is unavailable (no layout yet, or quorum
+# lost), so it must not drive liveness: the kubelet would restart every pod in a loop
+# and the layout could never be applied. Liveness only checks the process listens.
 livenessProbe:
-  httpGet:
-    path: /health
+  tcpSocket:
     port: 3903
   initialDelaySeconds: 10
   periodSeconds: 30
