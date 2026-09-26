@@ -4,7 +4,7 @@
 
 * [K3s](https://k3s.io) as the Kubernetes distribution
 * [Longhorn](https://longhorn.io/) for distributed storage
-* [Minio](https://min.io/) for object storage
+* [Garage](https://garagehq.deuxfleurs.fr/) for object storage (replacing [Minio](https://min.io/), whose community edition was discontinued)
 * [Traefik](https://traefik.io/) (migrating from [ingress-nginx](https://kubernetes.github.io/ingress-nginx/) - see "ingress-nginx to Traefik migration" below)
 
 TODO:
@@ -15,7 +15,7 @@ TODO:
 * [ ] In-cluster PostgreSQL using a PostgreSQL operator:
   * [CrunchyData](https://github.com/CrunchyData/postgres-operator)
   * [Zalando](https://github.com/zalando/postgres-operator)
-* [ ] Minio in distributed mode (requires `qb4`)
+* [x] Minio in distributed mode (requires `qb4`) - superseded by Garage, see [`garage.README.md`](garage.README.md)
 * [ ] Harbor should probably use external database
 
 ## Pre-requisites
@@ -87,6 +87,7 @@ In the above the order does not matter, but these must be installed after `longh
 * [`redis-ha`](https://github.com/DandyDeveloper/charts/tree/master/charts/redis-ha)
 * [`minio`](https://github.com/minio/charts)
 * [`harbor`](https://github.com/goharbor/harbor-helm)
+* [`garage`](garage.README.md) - installed from a git clone of the Garage repository at a pinned tag, not from a Helm repo; needs the `local-path` and `local-path-big` storage classes
 
 Links above are to Helm installation instructions of each app. If a value file is required, it should be placed in this directory for future reference.
 
@@ -145,7 +146,7 @@ Every app's `Ingress` stays a plain `networking.k8s.io/v1 Ingress` (no need to c
 | `kubernetes.io/tls-acme: "true"` (legacy) | Replace with `cert-manager.io/cluster-issuer: letsencrypt-prod` |
 | `nginx.ingress.kubernetes.io/ssl-redirect` | Attach the shared `https-redirect` Middleware from `traefik-middlewares.yaml` via `traefik.ingress.kubernetes.io/router.middlewares`, only on Ingresses that actually have TLS configured. **Deliberately not** done as a global entrypoint redirect in `traefik.values.yml` - that would also catch cert-manager's plain-HTTP HTTP-01 solver Ingress, which has no annotation-based way to opt out of an entrypoint-level redirect (unlike ingress-nginx, where cert-manager sets `ssl-redirect: false` on the solver Ingress itself), breaking certificate issuance/renewal |
 | `nginx.ingress.kubernetes.io/proxy-body-size` / `nginx.org/client-max-body-size` | Attach the matching shared Middleware from `traefik-middlewares.yaml` via `traefik.ingress.kubernetes.io/router.middlewares: default-body-<size>@kubernetescrd` (Traefik has no default cap, unlike nginx's implicit 1m - only attach where a cap is actually wanted) |
-| `nginx.ingress.kubernetes.io/proxy-read-timeout` / `proxy-send-timeout` | Try dropping first (Traefik's default forwarding timeouts are effectively unlimited); only add a `ServersTransport` CRD if testing shows a real regression |
+| `nginx.ingress.kubernetes.io/proxy-read-timeout` / `proxy-send-timeout` | Try dropping first (Traefik's default forwarding timeouts are effectively unlimited); only add a `ServersTransport` CRD if testing shows a real regression. Client-side, Traefik's entrypoint `readTimeout` (60s by default, covering the whole request body) is disabled in `traefik.values.yml` for both entrypoints so long uploads are not cut off; this cannot be set per route |
 | `nginx.ingress.kubernetes.io/enable-access-log: "false"` | Drop; filter at the Loki/Alloy layer instead if log volume becomes an issue |
 | `nginx.ingress.kubernetes.io/from-to-www-redirect` | Attach the shared `www-redirect` Middleware from `traefik-middlewares.yaml` **and** give the alias host (e.g. `www.example.com`) its own `rules` entry pointing at the same backend. Unlike ingress-nginx, Traefik has no annotation that redirects a host with no ingress rule of its own - a host that's only a TLS cert SAN (no route) gets a 404, not a redirect. This caused a real, briefly-live production bug for konsti (`www.ropekonsti.fi`) during the migration - caught by testing the www-alias direction explicitly, not just the bare domain |
 | `nginx.ingress.kubernetes.io/auth-type` / `auth-secret` / `auth-realm` (basic auth) | A `Middleware` of type `basicAuth`, created per-app as needed (no shared one exists yet) |

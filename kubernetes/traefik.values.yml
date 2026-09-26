@@ -66,6 +66,13 @@ ports:
     # them), so this also overrides the chart's default containerPort of 8000.
     port: 80
     hostPort: 80
+    # Traefik v3 defaults readTimeout to 60s, and it covers reading the whole request
+    # body, so any upload slower than that is cut off. It is entrypoint-level only, no
+    # per-route override exists. 0 disables it (v2 behaviour); writeTimeout already
+    # defaults to 0. Needed for multi-GB S3 uploads to garage.con2.fi and minio.con2.fi.
+    transport:
+      respondingTimeouts:
+        readTimeout: 0
     # Routers without an explicit entrypoint bind to every asDefault entrypoint. With
     # none marked, they bind to all of them, which serves every Ingress on the metrics
     # port too (plain HTTP on each node's 9101, since hostNetwork host-exposes it).
@@ -85,6 +92,10 @@ ports:
     port: 443
     hostPort: 443
     asDefault: true
+    # Same readTimeout reasoning as on web above.
+    transport:
+      respondingTimeouts:
+        readTimeout: 0
 
   # Chart default is 9100 (its own comment even warns: "When using hostNetwork, use
   # another port to avoid conflict with node exporter") - but the default wasn't actually

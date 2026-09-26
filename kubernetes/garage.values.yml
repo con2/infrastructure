@@ -1,0 +1,85 @@
+# Garage (garagehq.deuxfleurs.fr), replacing Minio as the cluster's object store. Installed
+# from the Helm chart inside the Garage git repository, cloned at a pinned tag - see
+# garage.README.md. Rehearsed from scratch in Hobby/garagefs-playground before this.
+#
+# No image.tag: the chart's appVersion matches the git tag it is cloned at, so the image
+# follows the clone. Bump by re-cloning at a newer tag.
+
+garage:
+  # Cannot be changed after the layout is applied without a full re-layout.
+  replicationFactor: "3"
+  consistencyMode: consistent
+  # LMDB is prone to corruption on unclean shutdown; periodic snapshots under
+  # /mnt/meta/snapshots give a recovery point.
+  metadataAutoSnapshotInterval: "6h"
+  s3:
+    api:
+      region: garage
+      # Only matters for virtual-hosted-style requests. Only the apex is CNAMEd, so
+      # clients must use path-style addressing.
+      rootDomain: ".garage.con2.fi"
+  # metadata_fsync costs write throughput but protects LMDB on power loss. data_fsync
+  # stays off: three replicas on independent hosts cover a single host crash.
+  additionalTopLevelConfig: |-
+    metadata_fsync = true
+
+# One replica per node, qb1-qb4. Pod names garage-0..3 are stable, which the README's
+# kubectl exec commands rely on.
+deployment:
+  kind: StatefulSet
+  replicaCount: 4
+
+# Neither local-path class enforces quotas: size is a request only. The data size
+# documents intent and must stay below the 1 TB /mnt/big volume.
+persistence:
+  enabled: true
+  meta:
+    # k3s default provisioner, /var/lib/rancher/k3s/storage on the SSD. Garage
+    # recommends SSD for the LMDB metadata directory.
+    storageClass: local-path
+    size: 20Gi
+  data:
+    # /mnt/big/localpath, shared with Minio's PVCs during the migration.
+    storageClass: local-path-big
+    size: 900Gi
+
+# No nodeSelector on purpose so qb4 (agent-only) gets a replica too. Anti-affinity
+# alone guarantees one pod per node.
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: garage
+            app.kubernetes.io/instance: garage
+        topologyKey: kubernetes.io/hostname
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    memory: 2Gi
+
+# /health on the admin API is unauthenticated. No admin token is configured; all admin
+# work goes through kubectl exec ... /garage.
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 3903
+  initialDelaySeconds: 10
+  periodSeconds: 30
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 3903
+  periodSeconds: 10
+
+# Grafana Alloy in this cluster scrapes pods by these annotations. The chart's
+# monitoring.metrics.enabled only annotates a Service, which Alloy ignores.
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "3903"
+  prometheus.io/path: /metrics
+
+# Chart ingress stays disabled; exposure is garage.gateway.yaml.

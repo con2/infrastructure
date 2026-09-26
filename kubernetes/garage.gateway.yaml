@@ -1,0 +1,89 @@
+# Public S3 endpoint for Garage at garage.con2.fi via the Gateway API, modelled on
+# edegal/chart/templates/gateway.yaml. Apply after the Helm install: the HTTPRoute needs
+# the `garage` Service to exist. cert-manager in this cluster runs without Gateway API
+# support, so the Certificate is explicit.
+#
+# No body-size Middleware: Traefik's buffering middleware spools the whole request body,
+# which is wrong for multi-GB S3 uploads. Traefik streams bodies unbuffered by default.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: garage
+  namespace: garage
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: garage.con2.fi
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: garage.con2.fi
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: garage-tls
+      allowedRoutes:
+        namespaces:
+          from: Same
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: garage
+  namespace: garage
+spec:
+  secretName: garage-tls
+  privateKey:
+    rotationPolicy: Always
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  dnsNames:
+    - garage.con2.fi
+---
+# Plain HTTP only redirects to HTTPS. Done per app instead of at the Traefik entrypoint so
+# cert-manager's HTTP-01 solver Ingress keeps working.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: redirect-https
+  namespace: garage
+spec:
+  parentRefs:
+    - name: garage
+      sectionName: http
+  hostnames:
+    - garage.con2.fi
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: s3
+  namespace: garage
+spec:
+  parentRefs:
+    - name: garage
+      sectionName: https
+  hostnames:
+    - garage.con2.fi
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: garage
+          port: 3900
