@@ -88,6 +88,7 @@ In the above the order does not matter, but these must be installed after `longh
 * [`minio`](https://github.com/minio/charts)
 * [`harbor`](https://github.com/goharbor/harbor-helm)
 * [`garage`](garage.README.md) - installed from a git clone of the Garage repository at a pinned tag, not from a Helm repo; needs the `local-path` and `local-path-big` storage classes
+* [`garage-backup`](garage-backup.README.md) - rclone CronJobs mirroring the originals in `garage` off-site to piilo-s3 (plain manifests, no chart); see also [`minio-backup`](minio-backup.README.md)
 
 Links above are to Helm installation instructions of each app. If a value file is required, it should be placed in this directory for future reference.
 

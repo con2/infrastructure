@@ -1,0 +1,80 @@
+# Copies the media originals (`pictures/` prefix) of every site bucket on garage.con2.fi
+# into the garage-backup bucket on piilo-s3.tracon.fi every hour. Previews, thumbnails
+# and in-flight uploads are left out: the media worker regenerates the former from the
+# originals, and the latter are transient. Uses `rclone copy`, never `sync` - this job
+# must never be given a delete-capable verb, since Garage has no bucket versioning to
+# fall back on if it deleted something it shouldn't have. Version history for
+# overwritten/deleted objects instead comes from --backup-dir, which moves the previous
+# copy aside instead of clobbering it. The source key is read-only on Garage's side too
+# (see garage-backup.README.md).
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: garage-backup-sync
+  namespace: garage-backup
+spec:
+  # Half an hour off minio-backup-sync so the two mirrors don't load piilo at once.
+  schedule: "30 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  # Left suspended until the initial full copy has been run by hand (README); a scheduled
+  # run would be killed by the deadline below long before hundreds of GB are through.
+  suspend: true
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      # Sized for steady-state hourly deltas, not the initial copy. Kept under the 1h
+      # schedule so a hung run is killed before it could overlap the next one's slot
+      # (concurrencyPolicy: Forbid would just skip that slot otherwise, silently
+      # stretching the effective RPO). Re-check after the first scheduled runs.
+      activeDeadlineSeconds: 3000
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: rclone
+              image: rclone/rclone:1.75.0
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -eu
+                  ts=$(date -u +%Y%m%dT%H%M%SZ)
+                  # One site bucket per edegal deployment; add here when a site joins.
+                  for site in larppikuvat conikuvat; do
+                    echo "syncing $site"
+                    # Lower than the rclone defaults (4/8) - this is a background
+                    # off-site backup, not a latency-sensitive transfer, and fewer
+                    # concurrent workers means fewer simultaneous connections to
+                    # piilo contributing to TIME_WAIT/conntrack churn.
+                    rclone copy "garage_backup_src:$site/pictures" \
+                      "garage_backup_dst:garage-backup/$site/current/pictures" \
+                      --backup-dir "garage_backup_dst:garage-backup/$site/versions/$ts/pictures" \
+                      --fast-list --transfers 2 --checkers 4
+                  done
+              env:
+                - name: RCLONE_CONFIG
+                  value: /config/rclone/rclone.conf
+                # nginx on piilo terminates TLS with http2 enabled, and Go's HTTP/2
+                # client can't retry a PutObject after a GOAWAY arrives mid-upload
+                # (streamed request bodies have no Request.GetBody) - forcing
+                # HTTP/1.1 avoids that failure mode entirely.
+                - name: RCLONE_DISABLE_HTTP2
+                  value: "true"
+              envFrom:
+                - secretRef:
+                    name: garage-backup-rclone-credentials
+              volumeMounts:
+                - name: rclone-config
+                  mountPath: /config/rclone
+                  readOnly: true
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+                limits:
+                  memory: 512Mi
+          volumes:
+            - name: rclone-config
+              configMap:
+                name: garage-backup-rclone-config

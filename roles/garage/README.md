@@ -144,3 +144,15 @@ credentials the rclone CronJobs in `qb` authenticate to `piilo-s3.tracon.fi` wit
 They're independent of `vault_garage_s3_key_id`/`_secret_key` (which stay scoped
 to `cnpg-backups`), so a leaked backup-mirror credential can't be used against
 the CloudNativePG bucket or vice versa.
+
+## garage-backup bucket/key
+
+Same shape as `minio-backup` above, for the off-site copy of the originals stored in
+`garage.con2.fi` (see `infrastructure/kubernetes/garage-backup.README.md`). Before running the
+role, add to the vault:
+
+    uv run ansible-vault edit group_vars/all/vault
+
+`vault_garage_garage_backup_key_id` (`GK$(openssl rand -hex 12)`: Garage key ids are `GK` plus
+24 hex characters) and `vault_garage_garage_backup_secret_key` (`openssl rand -hex 32`). The key
+has read/write/owner on `garage-backup` only.

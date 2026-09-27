@@ -49,6 +49,8 @@ garage_s3_key_name: cnpg-backup-key
 # infrastructure/kubernetes/minio-backup.*).
 garage_minio_backup_bucket: minio-backup
 garage_minio_backup_key_name: minio-backup-key
+garage_garage_backup_bucket: garage-backup
+garage_garage_backup_key_name: garage-backup-key
 
 # Public hostname for the S3 endpoint (nginx server_name + TLS certificate).
 garage_hostname: "{{ inventory_hostname }}"

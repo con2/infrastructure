@@ -1,0 +1,28 @@
+# Non-secret rclone remote definitions for the garage.con2.fi -> piilo-s3.tracon.fi
+# off-site copy of media originals. Credentials are deliberately NOT here - they're
+# supplied at runtime via RCLONE_CONFIG_<REMOTE>_ACCESS_KEY_ID / _SECRET_ACCESS_KEY
+# env vars from the garage-backup-rclone-credentials Secret (see
+# garage-backup.README.md), keeping this file safe to commit.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: garage-backup-rclone-config
+  namespace: garage-backup
+data:
+  rclone.conf: |
+    # In-cluster address of the Garage S3 API: plain HTTP, never leaves the cluster.
+    [garage_backup_src]
+    type = s3
+    provider = Other
+    endpoint = http://garage.garage.svc.cluster.local:3900
+    region = garage
+    force_path_style = true
+    env_auth = false
+
+    [garage_backup_dst]
+    type = s3
+    provider = Other
+    endpoint = https://piilo-s3.tracon.fi
+    region = garage
+    force_path_style = true
+    env_auth = false

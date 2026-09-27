@@ -31,6 +31,10 @@ profiles = {
         garage_hostname="piilo-s3.tracon.fi",
         vault_infix="minio_backup",
     ),
+    "garage_backup": Profile(
+        garage_hostname="piilo-s3.tracon.fi",
+        vault_infix="garage_backup",
+    ),
     "garage_test": Profile(
         garage_hostname="garage.con2.fi",
         vault_infix="test",
