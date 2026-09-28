@@ -83,7 +83,7 @@ CronJob).
    private until step 6 is done:
 
    ```
-   for k in $(kubectl -n garage exec garage-0 -- /garage key list | awk 'NR>1 {print $2}'); do
+   for k in $(kubectl -n garage exec garage-0 -- /garage key list | awk 'NR>1 {print $1}'); do
      kubectl -n garage exec garage-0 -- /garage key info --show-secret $k
    done
    for b in $(kubectl -n garage exec garage-0 -- /garage bucket list | awk 'NR>1 {print $1}'); do
