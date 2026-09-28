@@ -142,9 +142,10 @@ TLS is off inside the cluster on purpose. CloudNativePG issues its own CA and ro
 copy of its `ca.crt` in the app's namespace would go stale on rotation and there is no
 secret-sync tool on qb to keep it fresh. Traffic never leaves the pod network. The default
 `pg_hba` ends in `host all all all scram-sha-256`, so plain connections authenticate with the
-role's password. Django apps that add `?sslmode=require` through `POSTGRES_EXTRAS` or settings
-must drop it; the update script does not touch that. Revisit if a secret reflector is ever
-installed.
+role's password. Django apps that set `sslmode=require` (kompassi's `POSTGRES_SSLMODE`, the
+emskaffolden `POSTGRES_EXTRAS`) keep working unchanged: `require` encrypts without checking the
+certificate, and every instance serves TLS. Only `verify-ca`/`verify-full` would fail against
+the operator's private CA. Revisit if a secret reflector is ever installed.
 
 Rotating a password is editing `<app>-db-credentials` in `postgres` (the operator applies it
 because of the reload label) and running update-secret again.

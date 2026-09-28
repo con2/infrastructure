@@ -36,7 +36,7 @@ case "$shape" in
     kubectl -n "$namespace" patch secret "$secret" --type=merge -p "{\"stringData\":{
       \"hostname\":\"$host\",\"database\":\"$app\",\"username\":\"$app\",\"password\":\"$password\"}}"
     echo "Updated $namespace/$secret keys: $django_keys (Django convention)"
-    echo "If the app sets sslmode elsewhere (POSTGRES_EXTRAS, settings), it must not require TLS."
+    echo "sslmode=require (set elsewhere, e.g. POSTGRES_SSLMODE) works; verify-ca/verify-full would not."
     ;;
   node)
     url="postgresql://$app:$password@$host:$port/$app?sslmode=disable"
