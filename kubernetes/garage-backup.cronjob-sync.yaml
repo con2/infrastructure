@@ -1,7 +1,8 @@
-# Copies the media originals (`pictures/` prefix) of every site bucket on garage.con2.fi
-# into the garage-backup bucket on piilo-s3.tracon.fi every hour. Previews, thumbnails
-# and in-flight uploads are left out: the media worker regenerates the former from the
-# originals, and the latter are transient. Uses `rclone copy`, never `sync` - this job
+# Copies buckets on garage.con2.fi into the garage-backup bucket on piilo-s3.tracon.fi
+# every hour: the media originals (`pictures/` prefix) of the edegal site buckets, and
+# whole buckets for apps whose every object is irreplaceable (Kompassi). Edegal previews,
+# thumbnails and in-flight uploads are left out: the media worker regenerates the former
+# from the originals, and the latter are transient. Uses `rclone copy`, never `sync` - this job
 # must never be given a delete-capable verb, since Garage has no bucket versioning to
 # fall back on if it deleted something it shouldn't have. Version history for
 # overwritten/deleted objects instead comes from --backup-dir, which moves the previous
@@ -40,17 +41,25 @@ spec:
                 - |
                   set -eu
                   ts=$(date -u +%Y%m%dT%H%M%SZ)
+                  # Lower than the rclone defaults (4/8) - this is a background
+                  # off-site backup, not a latency-sensitive transfer, and fewer
+                  # concurrent workers means fewer simultaneous connections to
+                  # piilo contributing to TIME_WAIT/conntrack churn.
+                  copy() {
+                    rclone copy "garage_backup_src:$1" "garage_backup_dst:garage-backup/$2/current/$3" \
+                      --backup-dir "garage_backup_dst:garage-backup/$2/versions/$ts/$3" \
+                      --fast-list --transfers 2 --checkers 4
+                  }
                   # One site bucket per edegal deployment; add here when a site joins.
                   for site in larppikuvat conikuvat; do
-                    echo "syncing $site"
-                    # Lower than the rclone defaults (4/8) - this is a background
-                    # off-site backup, not a latency-sensitive transfer, and fewer
-                    # concurrent workers means fewer simultaneous connections to
-                    # piilo contributing to TIME_WAIT/conntrack churn.
-                    rclone copy "garage_backup_src:$site/pictures" \
-                      "garage_backup_dst:garage-backup/$site/current/pictures" \
-                      --backup-dir "garage_backup_dst:garage-backup/$site/versions/$ts/pictures" \
-                      --fast-list --transfers 2 --checkers 4
+                    echo "syncing $site originals"
+                    copy "$site/pictures" "$site" pictures
+                  done
+                  # Whole buckets. kompassidev is Kompassi staging; production `kompassi`
+                  # joins when it moves off Minio (kompassi/docs/minio-to-garage-migration.md).
+                  for bucket in kompassidev; do
+                    echo "syncing $bucket"
+                    copy "$bucket" "$bucket" ""
                   done
               env:
                 - name: RCLONE_CONFIG

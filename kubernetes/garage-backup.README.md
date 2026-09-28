@@ -1,19 +1,22 @@
 # garage-backup
 
-Off-site copy of the media originals stored in `garage.con2.fi` (the cluster's Garage, see
-`garage.README.md`): the `pictures/` prefix of every edegal site bucket (`larppikuvat`,
-`conikuvat`) is copied into the `garage-backup` bucket on `piilo-s3.tracon.fi`, with 90 days of
-version history for anything overwritten or deleted at the source. Previews, thumbnails and
-in-flight uploads are not copied: the media worker regenerates the former from the originals, and
-the latter are transient. Two CronJobs in namespace `garage-backup`:
+Off-site copy of buckets on `garage.con2.fi` (the cluster's Garage, see `garage.README.md`) into
+the `garage-backup` bucket on `piilo-s3.tracon.fi`, with 90 days of version history for anything
+overwritten or deleted at the source. Edegal site buckets (`larppikuvat`, `conikuvat`) contribute
+only their `pictures/` prefix: previews, thumbnails and in-flight uploads are not copied, since the
+media worker regenerates the former from the originals and the latter are transient. Kompassi's
+buckets (`kompassidev` today) are copied whole. Layout on piilo: `garage-backup/<bucket>/current/`
+and `garage-backup/<bucket>/versions/<timestamp>/`. Two CronJobs in namespace `garage-backup`:
 `garage-backup-sync` (hourly, `rclone copy`, never deletes) and `garage-backup-prune` (daily, the
 only job allowed to delete, enforcing the 90-day window).
 
 Originals that still live on the NFS export (all legacy content until stage 2 of con2/edegal#245
 moves them into Garage) are outside this job. Once they are migrated, this copy covers them too.
 
-Sizing (2026-09-26): 837 GB of originals across both sites, so the piilo bucket needs about 1 TB
-with headroom for growth and versions.
+Sizing (2026-09-26): 837 GB of edegal originals across both sites plus 105 MB for `kompassidev`,
+so the piilo bucket needs about 1 TB with headroom for growth and versions. Adding a bucket means a
+line in both CronJobs, a `bucket allow --read` for the reader key, and a decision whether to copy
+it whole or only a prefix.
 
 ## One-time setup
 
@@ -30,6 +33,7 @@ with headroom for growth and versions.
    kubectl -n garage exec garage-0 -- /garage key create garage-backup-reader   # prints key ID and secret
    kubectl -n garage exec garage-0 -- /garage bucket allow --read larppikuvat --key garage-backup-reader
    kubectl -n garage exec garage-0 -- /garage bucket allow --read conikuvat --key garage-backup-reader
+   kubectl -n garage exec garage-0 -- /garage bucket allow --read kompassidev --key garage-backup-reader
    ```
 
 3. Fetch the destination key created by the `garage` Ansible role's `garage-backup` bucket support
