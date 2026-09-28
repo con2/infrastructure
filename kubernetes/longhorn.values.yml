@@ -1,2 +1,0 @@
-csi:
-  kubeletRootDir: /var/lib/kubelet
