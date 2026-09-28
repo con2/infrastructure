@@ -161,7 +161,7 @@ history.
 ### redis-ha
 
     helm repo add dandydev https://dandydeveloper.github.io/charts
-    helm upgrade --install redis-ha dandydev/redis-ha -n redis-ha --create-namespace -f redis-ha.values.yml
+    helm upgrade --install redis-ha dandydev/redis-ha --version 4.39.0 -n redis-ha --create-namespace -f redis-ha.values.yml
 
 Apps reach it at `redis-ha-haproxy.redis-ha.svc.cluster.local`.
 

@@ -1,6 +1,6 @@
 image:
-  repository: redis
-  tag: 6.0.8-buster
+  repository: public.ecr.aws/docker/library/redis
+  tag: 8.10.2-alpine
 
 redis:
   # must match ^[\\w-\\.]+$) and can be templated
@@ -8,6 +8,8 @@ redis:
 
 haproxy:
   enabled: true
+  image:
+    tag: 3.3.15-alpine
   timeout:
     # redis default timeout is "about 5 minutes" so make this longer
     # NOTE: these are milliseconds if no unit is provided :)))
@@ -16,6 +18,7 @@ haproxy:
 
 exporter:
   enabled: true
+  tag: v1.92.1
 
 persistentVolume:
   enabled: true
