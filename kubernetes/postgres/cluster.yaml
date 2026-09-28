@@ -1,0 +1,70 @@
+# The shared production PostgreSQL cluster. Apps get a role and a database each via
+# cloudnative-pg.database-manifest.sh, so nothing app-specific lives in this file. Apps connect
+# to postgres-rw.postgres.svc.cluster.local:5432 (always the primary) or postgres-ro for reads.
+# See README.md.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+  namespace: postgres
+spec:
+  # Pinned explicitly so an operator upgrade never rolls the database image on its own. The
+  # standard flavor ships every glibc locale, which fi_FI.UTF-8 below depends on.
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie
+
+  instances: 3
+  affinity:
+    # qb has four nodes, so three instances always land on three distinct nodes.
+    podAntiAffinityType: required
+
+  # local-path is the SSD-backed k3s class. Its volumes are pinned to a node: if that node
+  # dies, the instance stays Pending until its PVC is deleted and the operator re-clones it
+  # elsewhere (runbook in README.md). All data is a few gigabytes.
+  storage:
+    size: 20Gi
+    storageClass: local-path
+
+  # Equal memory request and limit gives Guaranteed QoS, so the kernel never OOM-kills a
+  # database pod to make room for something else.
+  resources:
+    requests:
+      cpu: 500m
+      memory: 2Gi
+    limits:
+      cpu: "2"
+      memory: 2Gi
+
+  postgresql:
+    parameters:
+      # siilo's value; many apps share this server.
+      max_connections: "300"
+      shared_buffers: 512MB
+      effective_cache_size: 1536MB
+      timezone: UTC
+      # siilo sets this too; app queries may rely on the Finnish stemmer being the default.
+      default_text_search_config: pg_catalog.finnish
+
+  bootstrap:
+    initdb:
+      # Finnish everywhere, on ICU. ICU collation versions are tracked by PostgreSQL and do not
+      # move with the container's glibc, so a base-image upgrade cannot silently reorder indexes.
+      # The libc locale still serves the few functions that bypass ICU.
+      localeProvider: icu
+      icuLocale: fi-FI
+      localeCollate: fi_FI.UTF-8
+      localeCType: fi_FI.UTF-8
+      encoding: UTF8
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: piilo-s3
+
+  inheritedMetadata:
+    annotations:
+      # Alloy discovers scrape targets from these pod annotations; there is no Prometheus
+      # Operator on qb.
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9187"
+      prometheus.io/path: /metrics

@@ -1,0 +1,10 @@
+# Barman Cloud CNPG-I plugin (chart cnpg/plugin-barman-cloud). Must run in the operator's
+# namespace, cnpg-system. The plugin talks to the operator over mTLS issued by cert-manager.
+# See README.md.
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    memory: 256Mi

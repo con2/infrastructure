@@ -12,9 +12,7 @@ TODO:
 * [ ] Automate Helm chart installations
   * Ansible?
   * Some in-cluster Helm operator/controller?
-* [ ] In-cluster PostgreSQL using a PostgreSQL operator:
-  * [CrunchyData](https://github.com/CrunchyData/postgres-operator)
-  * [Zalando](https://github.com/zalando/postgres-operator)
+* [x] In-cluster PostgreSQL using a PostgreSQL operator - CloudNativePG, see [`postgres/README.md`](postgres/README.md)
 * [x] Minio in distributed mode (requires `qb4`) - superseded by Garage, see [`garage.README.md`](garage.README.md)
 * [ ] Harbor should probably use external database
 
@@ -89,6 +87,7 @@ In the above the order does not matter, but these must be installed after `longh
 * [`harbor`](https://github.com/goharbor/harbor-helm)
 * [`garage`](garage.README.md) - installed from a git clone of the Garage repository at a pinned tag, not from a Helm repo; needs the `local-path` and `local-path-big` storage classes
 * [`garage-backup`](garage-backup.README.md) - rclone CronJobs mirroring the originals in `garage` off-site to piilo-s3 (plain manifests, no chart); see also [`minio-backup`](minio-backup.README.md)
+* [`cloudnative-pg`](postgres/README.md) - PostgreSQL operator plus the Barman Cloud plugin, both in namespace `cnpg-system` (the plugin must share the operator's namespace); the `postgres` Cluster itself is plain manifests in namespace `postgres`; everything lives under `postgres/` because it is many files
 
 Links above are to Helm installation instructions of each app. If a value file is required, it should be placed in this directory for future reference.
 

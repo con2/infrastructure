@@ -1,0 +1,46 @@
+# Backup target for the postgres Cluster: the cnpg-backups bucket on piilo-s3.tracon.fi
+# (single-node Garage provisioned by infrastructure/roles/garage). Credentials come from the
+# cnpg-backups-s3 Secret, created by hand from the Ansible vault (see README.md).
+# Barman Cloud addresses the bucket path-style, which is what Garage expects without any DNS
+# tricks, so no addressing setting is needed here.
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: piilo-s3
+  namespace: postgres
+spec:
+  configuration:
+    endpointURL: https://piilo-s3.tracon.fi
+    # Each Cluster archives under its own serverName (its name) below this prefix.
+    destinationPath: s3://cnpg-backups/
+    s3Credentials:
+      accessKeyId:
+        name: cnpg-backups-s3
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: cnpg-backups-s3
+        key: ACCESS_SECRET_KEY
+      region:
+        name: cnpg-backups-s3
+        key: REGION
+    wal:
+      compression: gzip
+    data:
+      compression: gzip
+  # Base backups and WALs older than this are pruned by the sidecar, keeping a 30-day
+  # point-in-time recovery window.
+  retentionPolicy: 30d
+  instanceSidecarConfiguration:
+    env:
+      # Recent AWS SDKs send CRC checksums with every upload by default; only AWS S3 itself is
+      # guaranteed to accept them. Garage must keep working across SDK upgrades.
+      - name: AWS_REQUEST_CHECKSUM_CALCULATION
+        value: when_required
+      - name: AWS_RESPONSE_CHECKSUM_VALIDATION
+        value: when_required
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi

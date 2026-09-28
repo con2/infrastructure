@@ -1,0 +1,17 @@
+# CloudNativePG operator (chart cnpg/cloudnative-pg). Installed into cnpg-system rather than a
+# namespace of its own name because the Barman Cloud plugin has to share the operator's
+# namespace and its docs assume cnpg-system. See README.md.
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 200Mi
+  limits:
+    memory: 500Mi
+
+monitoring:
+  # No Prometheus Operator CRDs on qb; Alloy scrapes the instance pods via annotations set in
+  # cluster.yaml instead.
+  podMonitorEnabled: false
+  grafanaDashboard:
+    create: false

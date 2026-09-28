@@ -112,13 +112,13 @@ Point the object store at the public TLS endpoint and use **path-style** access
 | endpoint URL     | `https://piilo-s3.tracon.fi`                        |
 | region           | `garage`                                         |
 | bucket / path    | `cnpg-backups`                                   |
-| force path style | `true` (`s3PathStyle: true`)                     |
+| addressing       | path style; Barman Cloud does this by default    |
 | access key id    | `garage_s3_key_id` (vault)                       |
 | secret access key| `garage_s3_secret_key` (vault)                   |
 
 The credentials live in `group_vars/all/vault` as `vault_garage_s3_key_id` and
-`vault_garage_s3_secret_key`; create the Kubernetes Secret CloudNativePG reads
-from those values.
+`vault_garage_s3_secret_key`. The Kubernetes side (Secret, ObjectStore, Cluster)
+is documented in `infrastructure/kubernetes/postgres/README.md`.
 
 ## Accessing Garage S3 with `aws` CLI
 
