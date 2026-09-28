@@ -12,6 +12,8 @@ set -eu
 
 source_namespace=postgres
 host=postgres-rw.postgres.svc.cluster.local
+# Streaming replicas only; apps that read DATABASE_URL_REPLICA send public reads here.
+ro_host=postgres-ro.postgres.svc.cluster.local
 port=5432
 
 if [ $# -ne 3 ]; then
@@ -38,8 +40,10 @@ case "$shape" in
     ;;
   node)
     url="postgresql://$app:$password@$host:$port/$app?sslmode=disable"
-    kubectl -n "$namespace" patch secret "$secret" --type=merge -p "{\"stringData\":{\"DATABASE_URL\":\"$url\"}}"
-    echo "Updated $namespace/$secret key: DATABASE_URL (Node convention)"
+    replica_url="postgresql://$app:$password@$ro_host:$port/$app?sslmode=disable"
+    kubectl -n "$namespace" patch secret "$secret" --type=merge -p "{\"stringData\":{
+      \"DATABASE_URL\":\"$url\",\"DATABASE_URL_REPLICA\":\"$replica_url\"}}"
+    echo "Updated $namespace/$secret keys: DATABASE_URL, DATABASE_URL_REPLICA (Node convention)"
     ;;
   *)
     report_unknown_shape "$namespace" "$secret"

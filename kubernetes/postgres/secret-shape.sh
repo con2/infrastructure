@@ -2,7 +2,7 @@
 # database settings. Our apps use one of two shapes:
 #
 #   - Django apps: keys hostname, database, username, password (exactly these, lower case).
-#   - Node apps: key DATABASE_URL.
+#   - Node apps: key DATABASE_URL, optionally DATABASE_URL_REPLICA for the read replicas.
 #
 # read_secret_shape NAMESPACE SECRET sets $shape to django, node or none, and $keys to the
 # key names present. report_unknown_shape prints why a Secret matched neither, pointing out

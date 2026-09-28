@@ -113,7 +113,8 @@ shapes, and the second command detects which:
 
 - Django apps: keys `hostname`, `database`, `username`, `password`, exactly these and lower
   case.
-- Node apps: key `DATABASE_URL`.
+- Node apps: key `DATABASE_URL`. These also get `DATABASE_URL_REPLICA`, pointing at
+  `postgres-ro`; an app that does not read it ignores the extra variable.
 
 ```sh
 ./update-secret.sh larpit larpit-production larpit
@@ -128,11 +129,14 @@ What the app ends up with:
 
 ```
 hostname: postgres-rw.postgres.svc.cluster.local   (Django)
-postgresql://<app>:<password>@postgres-rw.postgres.svc.cluster.local:5432/<app>?sslmode=disable   (Node)
+postgresql://<app>:<password>@postgres-rw.postgres.svc.cluster.local:5432/<app>?sslmode=disable   (Node, DATABASE_URL)
+postgresql://<app>:<password>@postgres-ro.postgres.svc.cluster.local:5432/<app>?sslmode=disable   (Node, DATABASE_URL_REPLICA)
 ```
 
-`postgres-rw` always points at the current primary and follows failovers; `postgres-ro` load
-balances over the replicas for read-only work.
+`postgres-rw` always points at the current primary and follows failovers. `postgres-ro` load
+balances over the replicas only, so reads there may trail the primary by replication lag and
+fail if no replica is up (rolling updates restart one instance at a time, so that takes two
+instances down at once). larpit-fi is the first app to use it, for its public pages and API.
 
 TLS is off inside the cluster on purpose. CloudNativePG issues its own CA and rotates it, so a
 copy of its `ca.crt` in the app's namespace would go stale on rotation and there is no
