@@ -13,7 +13,7 @@ metadata:
   name: garage-backup-sync
   namespace: garage-backup
 spec:
-  # Half an hour off minio-backup-sync so the two mirrors don't load piilo at once.
+  # Off the top of the hour, when other jobs against piilo tend to run.
   schedule: "30 * * * *"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3

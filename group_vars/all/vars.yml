@@ -38,8 +38,8 @@ garage_rpc_secret: "{{ vault_garage_rpc_secret }}"
 garage_s3_key_id: "{{ vault_garage_s3_key_id }}"
 garage_s3_secret_key: "{{ vault_garage_s3_secret_key }}"
 
-# Garage key for the minio-backup bucket, consumed by the rclone CronJobs in qb
-# that mirror minio.con2.fi off-site (see infrastructure/kubernetes/minio-backup.*)
+# Garage key for the minio-backup bucket. Its consumer, the minio.con2.fi mirror in qb,
+# was removed with Minio in 2026-09; the bucket holds the last mirrored state.
 garage_minio_backup_key_id: "{{ vault_garage_minio_backup_key_id }}"
 garage_minio_backup_secret_key: "{{ vault_garage_minio_backup_secret_key }}"
 

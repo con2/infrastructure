@@ -42,7 +42,7 @@ persistence:
     storageClass: local-path
     size: 20Gi
   data:
-    # /mnt/big/localpath, shared with Minio's PVCs during the migration.
+    # /mnt/big/localpath.
     storageClass: local-path-big
     size: 900Gi
 

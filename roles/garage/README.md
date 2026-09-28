@@ -18,12 +18,14 @@ comparison against SeaweedFS.
 - Initialises the single-node cluster layout, creates the `cnpg-backups`
   bucket, and imports a fixed S3 access key (from the vault) with read/write/
   owner access to that bucket. All init steps are idempotent.
-- Does the same for a second bucket, `minio-backup` — the destination for the
-  off-site `minio.con2.fi` backup mirror. That mirror itself runs as Kubernetes
-  CronJobs in the `qb` cluster, not on this host; see
-  `infrastructure/kubernetes/minio-backup.*`. This host only ever provisions the
-  bucket and key — keeping Garage a "dumb" S3 target that could be swapped for
-  any other S3-compatible store without touching the backup logic.
+- Does the same for the `garage-backup` bucket, the destination for the off-site
+  mirror of garage.con2.fi's media originals, and for `minio-backup`, which held
+  the mirror of the now-retired minio.con2.fi (its CronJobs were removed with
+  Minio in 2026-09; the bucket and key stay until someone deletes them). The
+  mirrors themselves run as Kubernetes CronJobs in the `qb` cluster, not on this
+  host; see `infrastructure/kubernetes/garage-backup.*`. This host only ever
+  provisions buckets and keys — keeping Garage a "dumb" S3 target that could be
+  swapped for any other S3-compatible store without touching the backup logic.
 
 The nginx vhost (`server_name {{ garage_hostname }}`, e.g. `piilo-s3.tracon.fi`) sets
 `client_max_body_size 0`, long proxy timeouts and `proxy_request_buffering off`

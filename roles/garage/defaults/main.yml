@@ -44,9 +44,9 @@ garage_capacity: 1G
 garage_bucket: cnpg-backups
 garage_s3_key_name: cnpg-backup-key
 
-# Second bucket + key: destination for the off-site minio.con2.fi backup mirror
-# (rclone CronJobs running in the qb cluster, not on this host - see
-# infrastructure/kubernetes/minio-backup.*).
+# Further buckets + keys for the off-site mirrors run as rclone CronJobs in the qb
+# cluster (see infrastructure/kubernetes/garage-backup.*). minio-backup held the
+# mirror of the retired minio.con2.fi and is kept as is.
 garage_minio_backup_bucket: minio-backup
 garage_minio_backup_key_name: minio-backup-key
 garage_garage_backup_bucket: garage-backup

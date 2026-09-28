@@ -12,9 +12,11 @@ If your SSH agent (eg. Secretive on macOS) dislikes multiple simultaneous authen
 
 Password hashes are in `group_vars/all/vault`. You need to put the vault password in `.vault_pass.txt` in the root directory of this repository. To get the vault password, ask Japsu or see [Tracon KeePassXC](https://github.com/tracon/keepassxc-tracon).
 
-## Kubernetes stuff
+## Kubernetes (the qb cluster)
 
-Helm values files etc. (without secrets) can be found under `kubernetes/`.
+Everything that runs on the qb k3s cluster is documented in [`kubernetes/README.md`](kubernetes/README.md):
+Helm values files (without secrets), plain manifests, the PostgreSQL runbook under
+`kubernetes/postgres/`, and the object store and its off-site backup.
 
 ## License
 
