@@ -65,7 +65,8 @@ distinct nodes within the zone. Capacity is a relative weight, equal on all four
 ## Rebuilding the cluster (keys and buckets preserved)
 
 Done once, on 2026-09-28, to go from replication factor 3 to 2 while the buckets were still
-small. Garage cannot change the factor in place in a supported way, so the cluster is torn
+small: the edegal buckets held no objects yet, so only `kompassidev` (about 105 MB) was
+restored, and the whole thing took an evening. Garage cannot change the factor in place in a supported way, so the cluster is torn
 down and rebuilt, and the data comes back from the piilo mirror. Keys keep their id and
 secret through `key import`, so no vault or application Secret changes; only the
 `garage-rpc-secret` is new, which is invisible to clients. S3 is down from step 3 until
