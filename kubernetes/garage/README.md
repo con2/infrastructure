@@ -62,61 +62,103 @@ kubectl -n garage exec garage-0 -- /garage layout apply --version N+1
 All nodes are in one site, so a single zone `qb`; Garage spreads the replicas across
 distinct nodes within the zone. Capacity is a relative weight, equal on all four.
 
-## Changing the replication factor
+## Rebuilding the cluster (keys and buckets preserved)
 
-Done once, 3 to 2 on 2026-09-28, for headroom on the 900 GB volumes. Garage calls this
-"technically possible but not officially supported": the layout must be deleted with the
-whole cluster down and recreated under the new factor. Keys, buckets and grants live in
-the metadata tables, not the layout, so they survive untouched; node identities live in
-`node_key`, also untouched. Data blocks stay on disk and are rebalanced afterwards.
-S3 is unavailable from the scale-down until the new layout is applied, so stop or
-expect failures from uploaders (edegal's presigned uploads, the mirror CronJob).
+Done once, on 2026-09-28, to go from replication factor 3 to 2 while the buckets were still
+small. Garage cannot change the factor in place in a supported way, so the cluster is torn
+down and rebuilt, and the data comes back from the piilo mirror. Keys keep their id and
+secret through `key import`, so no vault or application Secret changes; only the
+`garage-rpc-secret` is new, which is invisible to clients. S3 is down from step 3 until
+step 7, so stop or expect failures from uploaders (edegal's presigned uploads, the mirror
+CronJob).
 
-1. Snapshot the metadata on every node and note the current state:
-
-   ```
-   kubectl -n garage exec garage-0 -- /garage meta snapshot --all
-   kubectl -n garage exec garage-0 -- /garage status
-   kubectl -n garage exec garage-0 -- /garage layout show
-   kubectl -n garage exec garage-0 -- /garage bucket list
-   kubectl -n garage exec garage-0 -- /garage key list
-   ```
-
-2. Stop the cluster: `kubectl -n garage scale statefulset garage --replicas=0` and wait for
-   the pods to be gone.
-
-3. Delete `cluster_layout` from each node's metadata volume. A throwaway pod per PVC is
-   the simplest way in; the PV's node affinity places it on the right node:
+1. Make sure the mirror is current: run `garage-backup-sync` by hand (see
+   `backup.README.md`, Testing) and wait for it to finish. Then suspend it:
 
    ```
-   for n in 0 1 2 3; do
-     kubectl -n garage run meta-reset-$n --rm -i --restart=Never --image=busybox \
-       --overrides="{\"spec\":{\"containers\":[{\"name\":\"meta-reset-$n\",\"image\":\"busybox\",\"command\":[\"sh\",\"-c\",\"ls -la /mnt/meta && rm -v /mnt/meta/cluster_layout\"],\"volumeMounts\":[{\"name\":\"meta\",\"mountPath\":\"/mnt/meta\"}]}],\"volumes\":[{\"name\":\"meta\",\"persistentVolumeClaim\":{\"claimName\":\"meta-garage-$n\"}}]}}"
+   kubectl -n garage-backup patch cronjob garage-backup-sync -p '{"spec":{"suspend":true}}'
+   ```
+
+2. Export every key with its secret, and every bucket's grants. Keep the output somewhere
+   private until step 6 is done:
+
+   ```
+   for k in $(kubectl -n garage exec garage-0 -- /garage key list | awk 'NR>1 {print $2}'); do
+     kubectl -n garage exec garage-0 -- /garage key info --show-secret $k
+   done
+   for b in $(kubectl -n garage exec garage-0 -- /garage bucket list | awk 'NR>1 {print $1}'); do
+     kubectl -n garage exec garage-0 -- /garage bucket info $b
    done
    ```
 
-   `db.lmdb`, `node_key` and `snapshots/` must remain; only `cluster_layout` goes.
-
-4. Change `replicationFactor` in `values.yml`, then `helm upgrade` as in Install. The
-   chart hashes its ConfigMap into a pod annotation, so this also brings the four pods
-   back with the new config (`replicaCount` is 4 again). Pods stay not-ready until the
-   next step.
-
-5. Recreate the layout as in Layout bootstrap, with the same four node IDs and
-   capacities, and apply it. `garage status` should list all four as healthy.
-
-6. Confirm nothing was lost, then let rebalancing finish:
+3. Tear down. PVC deletion runs the provisioner's `rm -rf` helper on every node, which is
+   the point here:
 
    ```
-   kubectl -n garage exec garage-0 -- /garage bucket list
-   kubectl -n garage exec garage-0 -- /garage key list
-   kubectl -n garage exec garage-0 -- /garage stats -a        # resync queue drains to 0
-   kubectl -n garage exec garage-0 -- /garage block list-errors
-   uv run bin/garage_env.py garage_test -- aws s3 ls s3://garage-test/   # from the repo root
+   helm -n garage uninstall garage
+   kubectl -n garage delete pvc --all
+   kubectl -n garage get pvc,pv,pod        # nothing left
    ```
 
-   Excess third copies are garbage-collected by the resync workers over the following
-   hours; disk usage on `/mnt/big` drops accordingly.
+4. Install again as in Install with the new `values.yml`, then Layout bootstrap. The node
+   IDs are new (`node_key` went with the volumes); take them from `garage status`.
+
+5. Recreate the buckets and re-import the keys under their old ids and secrets, then the
+   grants from step 2:
+
+   ```
+   kubectl -n garage exec garage-0 -- /garage bucket create <bucket>
+   kubectl -n garage exec garage-0 -- /garage key import <key id> <secret> -n <name> --yes
+   kubectl -n garage exec garage-0 -- /garage bucket allow --read [--write] [--owner] <bucket> --key <name>
+   ```
+
+   Per-bucket settings that are not in `bucket info` have to be redone by their owners:
+   edegal's CORS rules come back with `npm run s3:setup` per site (edegal `chart/README.md`).
+
+6. Restore the data with a temporary write key and a one-off rclone Job in `garage-backup`,
+   reusing the CronJob's ConfigMap. The mirror holds `pictures/` of the edegal buckets under
+   `garage-backup/<site>/current/pictures` and whole buckets otherwise:
+
+   ```
+   kubectl -n garage exec garage-0 -- /garage key create restore        # note id and secret
+   for b in larppikuvat conikuvat kompassidev; do
+     kubectl -n garage exec garage-0 -- /garage bucket allow --read --write $b --key restore
+   done
+   kubectl -n garage-backup create secret generic garage-restore-credentials \
+     --from-literal=RCLONE_CONFIG_GARAGE_BACKUP_SRC_ACCESS_KEY_ID=<restore key id> \
+     --from-literal=RCLONE_CONFIG_GARAGE_BACKUP_SRC_SECRET_ACCESS_KEY=<restore secret> \
+     --from-literal=RCLONE_CONFIG_GARAGE_BACKUP_DST_ACCESS_KEY_ID=<piilo garage-backup key id> \
+     --from-literal=RCLONE_CONFIG_GARAGE_BACKUP_DST_SECRET_ACCESS_KEY=<piilo garage-backup secret>
+   kubectl -n garage-backup create job --from=cronjob/garage-backup-sync garage-restore \
+     --dry-run=client -o yaml \
+     | sed -e 's/garage-backup-rclone-credentials/garage-restore-credentials/' -e '/activeDeadlineSeconds/d' \
+     > /tmp/garage-restore.yaml
+   ```
+
+   Edit `/tmp/garage-restore.yaml`: replace the container's script with the reverse copies,
+   then apply and follow it:
+
+   ```
+   rclone copy garage_backup_dst:garage-backup/larppikuvat/current/pictures garage_backup_src:larppikuvat/pictures --fast-list --transfers 4
+   rclone copy garage_backup_dst:garage-backup/conikuvat/current/pictures   garage_backup_src:conikuvat/pictures   --fast-list --transfers 4
+   rclone copy garage_backup_dst:garage-backup/kompassidev/current          garage_backup_src:kompassidev          --fast-list --transfers 4
+   ```
+
+   Previews and thumbnails were never mirrored; edegal regenerates them from the originals
+   (`npm run media:backfill` in the edegal repo queues the work). Afterwards:
+
+   ```
+   kubectl -n garage exec garage-0 -- /garage key delete --yes <restore key id>
+   kubectl -n garage-backup delete secret garage-restore-credentials job garage-restore
+   ```
+
+7. Verify and resume: bucket and key lists match step 2, `aws s3 ls` with an app key works,
+   the sites serve images, then unsuspend the mirror. Its next run finds the destination
+   already current and copies nothing.
+
+   ```
+   kubectl -n garage-backup patch cronjob garage-backup-sync -p '{"spec":{"suspend":false}}'
+   ```
 
 ## Public endpoint
 

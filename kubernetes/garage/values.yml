@@ -6,8 +6,8 @@
 # follows the clone. Bump by re-cloning at a newer tag.
 
 garage:
-  # Changing this means deleting the cluster layout and re-applying it with all nodes
-  # down; the README has the procedure. 2 gives 1.8 TB usable on four 900 GB volumes.
+  # Changing this means rebuilding the cluster and restoring from the mirror (README,
+  # "Rebuilding the cluster"). 2 gives 1.8 TB usable on four 900 GB volumes.
   replicationFactor: "2"
   # Every write needs both copies, so a node being down fails writes to the partitions it
   # holds. Chosen over `degraded` so reads never return stale data.
