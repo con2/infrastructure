@@ -19,9 +19,8 @@ spec:
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
-  # Left suspended until the initial full copy has been run by hand (README); a scheduled
-  # run would be killed by the deadline below long before hundreds of GB are through.
-  suspend: true
+  # Set suspend: true before a bulk arrival at the source (the edegal picture migration), run
+  # the first copy by hand without the deadline below, then unsuspend; see backup.README.md.
   jobTemplate:
     spec:
       backoffLimit: 1

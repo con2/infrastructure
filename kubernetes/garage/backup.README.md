@@ -13,10 +13,12 @@ only job allowed to delete, enforcing the 90-day window).
 Originals that still live on the NFS export (all legacy content until stage 2 of con2/edegal#245
 moves them into Garage) are outside this job. Once they are migrated, this copy covers them too.
 
-Sizing (2026-09-26): 837 GB of edegal originals across both sites plus 105 MB for `kompassidev`,
-so the piilo bucket needs about 1 TB with headroom for growth and versions. Adding a bucket means a
-line in both CronJobs, a `bucket allow --read` for the reader key, and a decision whether to copy
-it whole or only a prefix.
+Sizing: the mirror went live on 2026-09-28 while the edegal site buckets were still nearly empty
+(their 837 GB of originals are on the NFS export until the picture migration), so the first copy
+was small and quick. Once the pictures move, the piilo bucket needs about 1 TB with headroom for
+growth and versions, and that first post-migration sync must be run by hand (step 6). Adding a
+bucket means a line in both CronJobs, a `bucket allow --read` for the reader key, and a decision
+whether to copy it whole or only a prefix.
 
 ## One-time setup
 
@@ -54,7 +56,7 @@ it whole or only a prefix.
      --from-literal=RCLONE_CONFIG_GARAGE_BACKUP_DST_SECRET_ACCESS_KEY=<piilo garage-backup secret>
    ```
 
-5. Apply the config and CronJobs. The sync CronJob ships `suspend: true`:
+5. Apply the config and CronJobs:
 
    ```
    kubectl apply -f backup.rclone-config.configmap.yaml
@@ -62,22 +64,24 @@ it whole or only a prefix.
    kubectl apply -f backup.cronjob-prune.yaml
    ```
 
-6. Initial full copy, by hand and without the deadline (hundreds of GB take hours):
+   The sync CronJob is live as committed. That was fine on 2026-09-28 because the source was
+   small; the first copy ran within the scheduled deadline.
+
+6. Before a bulk arrival at the source (the edegal picture migration, hundreds of GB), suspend
+   the schedule, run one copy by hand without the deadline, then unsuspend and check the next two
+   scheduled runs against `activeDeadlineSeconds` in the sync manifest:
 
    ```
+   kubectl -n garage-backup patch cronjob garage-backup-sync -p '{"spec":{"suspend":true}}'
    kubectl -n garage-backup create job --from=cronjob/garage-backup-sync garage-backup-initial \
      --dry-run=client -o yaml | sed '/activeDeadlineSeconds/d' | kubectl apply -f -
    kubectl -n garage-backup logs job/garage-backup-initial --follow
-   ```
-
-7. Unsuspend once the initial copy is complete, then check the duration of the next two scheduled
-   runs against `activeDeadlineSeconds` in the sync manifest:
-
-   ```
    kubectl -n garage-backup patch cronjob garage-backup-sync -p '{"spec":{"suspend":false}}'
    ```
 
-   Commit the same change to `backup.cronjob-sync.yaml` so a re-apply does not suspend it again.
+   A scheduled run that starts on a source that big is killed by the deadline long before it
+   finishes, and `rclone copy` resumes where it left off, so a forgotten suspend costs time, not
+   data.
 
 ## Testing
 
