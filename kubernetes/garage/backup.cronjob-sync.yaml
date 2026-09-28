@@ -7,7 +7,7 @@
 # fall back on if it deleted something it shouldn't have. Version history for
 # overwritten/deleted objects instead comes from --backup-dir, which moves the previous
 # copy aside instead of clobbering it. The source key is read-only on Garage's side too
-# (see garage-backup.README.md).
+# (see backup.README.md).
 apiVersion: batch/v1
 kind: CronJob
 metadata:

@@ -44,7 +44,7 @@ garage_minio_backup_key_id: "{{ vault_garage_minio_backup_key_id }}"
 garage_minio_backup_secret_key: "{{ vault_garage_minio_backup_secret_key }}"
 
 # Garage key for the garage-backup bucket, consumed by the rclone CronJobs in qb
-# that mirror garage.con2.fi originals off-site (see infrastructure/kubernetes/garage-backup.*)
+# that mirror garage.con2.fi originals off-site (see infrastructure/kubernetes/garage/backup.*)
 garage_garage_backup_key_id: "{{ vault_garage_garage_backup_key_id }}"
 garage_garage_backup_secret_key: "{{ vault_garage_garage_backup_secret_key }}"
 

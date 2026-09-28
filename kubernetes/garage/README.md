@@ -19,7 +19,7 @@ the tag, so this also picks the image version.
 ```
 git clone --branch v2.4.1 --depth 1 https://git.deuxfleurs.fr/Deuxfleurs/garage.git /tmp/garage-v2.4.1
 helm upgrade --install garage /tmp/garage-v2.4.1/script/helm/garage \
-  -n garage --create-namespace -f garage.values.yml --wait --timeout 5m
+  -n garage --create-namespace -f values.yml --wait --timeout 5m
 kubectl -n garage rollout status statefulset/garage
 ```
 
@@ -67,7 +67,7 @@ Replication factor 3 cannot be changed later without a full re-layout.
 ## Public endpoint
 
 ```
-kubectl apply -f garage.gateway.yaml
+kubectl apply -f gateway.yaml
 kubectl -n garage get certificate,gateway
 ```
 
@@ -123,4 +123,4 @@ kubectl -n garage exec garage-0 -- /garage block list-errors     # should be emp
 ```
 
 Metrics are on each pod's admin port 3903 at `/metrics`; the pod annotations in
-`garage.values.yml` make Alloy scrape them.
+`values.yml` make Alloy scrape them.

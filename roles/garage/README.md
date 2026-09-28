@@ -23,7 +23,7 @@ comparison against SeaweedFS.
   the mirror of the now-retired minio.con2.fi (its CronJobs were removed with
   Minio in 2026-09; the bucket and key stay until someone deletes them). The
   mirrors themselves run as Kubernetes CronJobs in the `qb` cluster, not on this
-  host; see `infrastructure/kubernetes/garage-backup.*`. This host only ever
+  host; see `infrastructure/kubernetes/garage/backup.*`. This host only ever
   provisions buckets and keys — keeping Garage a "dumb" S3 target that could be
   swapped for any other S3-compatible store without touching the backup logic.
 
@@ -150,7 +150,7 @@ the CloudNativePG bucket or vice versa.
 ## garage-backup bucket/key
 
 Same shape as `minio-backup` above, for the off-site copy of the originals stored in
-`garage.con2.fi` (see `infrastructure/kubernetes/garage-backup.README.md`). Before running the
+`garage.con2.fi` (see `infrastructure/kubernetes/garage/backup.README.md`). Before running the
 role, add to the vault:
 
     uv run ansible-vault edit group_vars/all/vault

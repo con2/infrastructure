@@ -1,6 +1,6 @@
 # garage-backup
 
-Off-site copy of buckets on `garage.con2.fi` (the cluster's Garage, see `garage.README.md`) into
+Off-site copy of buckets on `garage.con2.fi` (the cluster's Garage, see `README.md`) into
 the `garage-backup` bucket on `piilo-s3.tracon.fi`, with 90 days of version history for anything
 overwritten or deleted at the source. Edegal site buckets (`larppikuvat`, `conikuvat`) contribute
 only their `pictures/` prefix: previews, thumbnails and in-flight uploads are not copied, since the
@@ -57,9 +57,9 @@ it whole or only a prefix.
 5. Apply the config and CronJobs. The sync CronJob ships `suspend: true`:
 
    ```
-   kubectl apply -f garage-backup.rclone-config.configmap.yaml
-   kubectl apply -f garage-backup.cronjob-sync.yaml
-   kubectl apply -f garage-backup.cronjob-prune.yaml
+   kubectl apply -f backup.rclone-config.configmap.yaml
+   kubectl apply -f backup.cronjob-sync.yaml
+   kubectl apply -f backup.cronjob-prune.yaml
    ```
 
 6. Initial full copy, by hand and without the deadline (hundreds of GB take hours):
@@ -77,7 +77,7 @@ it whole or only a prefix.
    kubectl -n garage-backup patch cronjob garage-backup-sync -p '{"spec":{"suspend":false}}'
    ```
 
-   Commit the same change to `garage-backup.cronjob-sync.yaml` so a re-apply does not suspend it again.
+   Commit the same change to `backup.cronjob-sync.yaml` so a re-apply does not suspend it again.
 
 ## Testing
 

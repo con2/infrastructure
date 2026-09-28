@@ -2,7 +2,7 @@
 # off-site copy of media originals. Credentials are deliberately NOT here - they're
 # supplied at runtime via RCLONE_CONFIG_<REMOTE>_ACCESS_KEY_ID / _SECRET_ACCESS_KEY
 # env vars from the garage-backup-rclone-credentials Secret (see
-# garage-backup.README.md), keeping this file safe to commit.
+# backup.README.md), keeping this file safe to commit.
 apiVersion: v1
 kind: ConfigMap
 metadata:

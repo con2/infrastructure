@@ -11,7 +11,7 @@ an SSD for the OS and fast storage and a spinning disk mounted at `/mnt/big`.
 | TLS | [cert-manager](https://cert-manager.io/) with a Let's Encrypt HTTP-01 `ClusterIssuer` | `cert-manager.values.yml`, `letsencrypt-prod.clusterissuer.yaml` |
 | Storage | k3s's built-in `local-path` class on the SSD (the default) and a second local-path provisioner, `local-path-big`, on `/mnt/big`. Both are node-local; neither enforces size | `local-path-provisioner.values.yaml` |
 | PostgreSQL | [CloudNativePG](https://cloudnative-pg.io/): one shared three-instance cluster, backed up to piilo-s3 | [`postgres/`](postgres/README.md) |
-| Object storage | [Garage](https://garagehq.deuxfleurs.fr/) at garage.con2.fi, four nodes, replication factor 3, mirrored off-site by rclone CronJobs | [`garage.README.md`](garage.README.md), [`garage-backup.README.md`](garage-backup.README.md) |
+| Object storage | [Garage](https://garagehq.deuxfleurs.fr/) at garage.con2.fi, four nodes, replication factor 3, mirrored off-site by rclone CronJobs | [`garage/`](garage/README.md) |
 | Redis | `redis-ha` chart (Redis + HAProxy), used by kompassi and the emskaffolden-deployed Django apps | `redis-ha.values.yml` |
 | CI runners | GitHub Actions Runner Controller with one runner scale set for the `con2` org | `actions-runner-controller.yml`, `actions-runner-scaleset.*` |
 | Observability | Grafana Alloy on the nodes ships logs and pod metrics to the external Loki/Prometheus at qb-stalker.con2.fi. Alloy scrapes pods by `prometheus.io/scrape` annotations, not `ServiceMonitor`s; there is no Prometheus Operator here | (managed outside this repo) |
@@ -42,7 +42,7 @@ TODO:
 
 * **Values**: every Helm release's values file lives in this directory as `<release>.values.yml`,
   without secrets. Plain manifests are `<app>.<kind>.yaml`. An app with many files gets a
-  subdirectory (`postgres/`).
+  subdirectory (`postgres/`, `garage/`).
 * **Release name**: the same as the chart/application name.
 * **Namespace**: the same as the release name, with the exceptions noted per service below
   (`cnpg-system`, `system-upgrade`, `arc-systems`/`arc-runners`).
@@ -152,9 +152,9 @@ operator's namespace), `postgres` for the shared `Cluster`.
 
 ### Garage and its off-site mirror
 
-[`garage.README.md`](garage.README.md): installed from a git clone of the Garage repository at a
+[`garage/README.md`](garage/README.md): installed from a git clone of the Garage repository at a
 pinned tag, not from a Helm repo; `meta` on `local-path`, `data` on `local-path-big`; TLS via a
-Gateway at garage.con2.fi. [`garage-backup.README.md`](garage-backup.README.md): rclone CronJobs
+Gateway at garage.con2.fi. [`garage/backup.README.md`](garage/backup.README.md): rclone CronJobs
 in namespace `garage-backup` copying the media originals to piilo-s3 with 90 days of version
 history.
 
