@@ -6,8 +6,11 @@
 # follows the clone. Bump by re-cloning at a newer tag.
 
 garage:
-  # Cannot be changed after the layout is applied without a full re-layout.
-  replicationFactor: "3"
+  # Changing this means deleting the cluster layout and re-applying it with all nodes
+  # down; the README has the procedure. 2 gives 1.8 TB usable on four 900 GB volumes.
+  replicationFactor: "2"
+  # Every write needs both copies, so a node being down fails writes to the partitions it
+  # holds. Chosen over `degraded` so reads never return stale data.
   consistencyMode: consistent
   # LMDB is prone to corruption on unclean shutdown; periodic snapshots under
   # /mnt/meta/snapshots give a recovery point.
@@ -19,7 +22,7 @@ garage:
       # clients must use path-style addressing.
       rootDomain: ".garage.con2.fi"
   # metadata_fsync costs write throughput but protects LMDB on power loss. data_fsync
-  # stays off: three replicas on independent hosts cover a single host crash.
+  # stays off: the second replica on another host covers a single host crash.
   additionalTopLevelConfig: |-
     metadata_fsync = true
 

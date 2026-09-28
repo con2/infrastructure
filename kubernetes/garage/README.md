@@ -2,8 +2,8 @@
 
 [Garage](https://garagehq.deuxfleurs.fr/) is the S3-compatible object store replacing
 Minio (`minio.con2.fi`, a 2020-era release with no upgrade path since MinIO discontinued
-the community edition). Four nodes, one per `qb` host, replication factor 3, public
-endpoint `https://garage.con2.fi`. The install was rehearsed from scratch in
+the community edition). Four nodes, one per `qb` host, replication factor 2 (3 until
+2026-09-28), public endpoint `https://garage.con2.fi`. The install was rehearsed from scratch in
 `Hobby/garagefs-playground/`, whose Taskfile tasks (`garage:install`, `garage:layout:*`,
 `garage:key:create`, `garage:bucket:*`) work unchanged against production with
 `KUBECONFIG` exported.
@@ -59,10 +59,64 @@ kubectl -n garage exec garage-0 -- /garage layout show        # prints "Current 
 kubectl -n garage exec garage-0 -- /garage layout apply --version N+1
 ```
 
-All nodes are in one site, so a single zone `qb`; Garage spreads the three replicas
-across distinct nodes within the zone. Capacity is a relative weight, equal on all four.
+All nodes are in one site, so a single zone `qb`; Garage spreads the replicas across
+distinct nodes within the zone. Capacity is a relative weight, equal on all four.
 
-Replication factor 3 cannot be changed later without a full re-layout.
+## Changing the replication factor
+
+Done once, 3 to 2 on 2026-09-28, for headroom on the 900 GB volumes. Garage calls this
+"technically possible but not officially supported": the layout must be deleted with the
+whole cluster down and recreated under the new factor. Keys, buckets and grants live in
+the metadata tables, not the layout, so they survive untouched; node identities live in
+`node_key`, also untouched. Data blocks stay on disk and are rebalanced afterwards.
+S3 is unavailable from the scale-down until the new layout is applied, so stop or
+expect failures from uploaders (edegal's presigned uploads, the mirror CronJob).
+
+1. Snapshot the metadata on every node and note the current state:
+
+   ```
+   kubectl -n garage exec garage-0 -- /garage meta snapshot --all
+   kubectl -n garage exec garage-0 -- /garage status
+   kubectl -n garage exec garage-0 -- /garage layout show
+   kubectl -n garage exec garage-0 -- /garage bucket list
+   kubectl -n garage exec garage-0 -- /garage key list
+   ```
+
+2. Stop the cluster: `kubectl -n garage scale statefulset garage --replicas=0` and wait for
+   the pods to be gone.
+
+3. Delete `cluster_layout` from each node's metadata volume. A throwaway pod per PVC is
+   the simplest way in; the PV's node affinity places it on the right node:
+
+   ```
+   for n in 0 1 2 3; do
+     kubectl -n garage run meta-reset-$n --rm -i --restart=Never --image=busybox \
+       --overrides="{\"spec\":{\"containers\":[{\"name\":\"meta-reset-$n\",\"image\":\"busybox\",\"command\":[\"sh\",\"-c\",\"ls -la /mnt/meta && rm -v /mnt/meta/cluster_layout\"],\"volumeMounts\":[{\"name\":\"meta\",\"mountPath\":\"/mnt/meta\"}]}],\"volumes\":[{\"name\":\"meta\",\"persistentVolumeClaim\":{\"claimName\":\"meta-garage-$n\"}}]}}"
+   done
+   ```
+
+   `db.lmdb`, `node_key` and `snapshots/` must remain; only `cluster_layout` goes.
+
+4. Change `replicationFactor` in `values.yml`, then `helm upgrade` as in Install. The
+   chart hashes its ConfigMap into a pod annotation, so this also brings the four pods
+   back with the new config (`replicaCount` is 4 again). Pods stay not-ready until the
+   next step.
+
+5. Recreate the layout as in Layout bootstrap, with the same four node IDs and
+   capacities, and apply it. `garage status` should list all four as healthy.
+
+6. Confirm nothing was lost, then let rebalancing finish:
+
+   ```
+   kubectl -n garage exec garage-0 -- /garage bucket list
+   kubectl -n garage exec garage-0 -- /garage key list
+   kubectl -n garage exec garage-0 -- /garage stats -a        # resync queue drains to 0
+   kubectl -n garage exec garage-0 -- /garage block list-errors
+   uv run bin/garage_env.py garage_test -- aws s3 ls s3://garage-test/   # from the repo root
+   ```
+
+   Excess third copies are garbage-collected by the resync workers over the following
+   hours; disk usage on `/mnt/big` drops accordingly.
 
 ## Public endpoint
 
@@ -112,7 +166,9 @@ snapshots; if it is lost, every node must be reconfigured together.
 Never delete the PVCs to "restart" a node: PVC deletion runs the provisioner's `rm -rf`
 helper. After first scheduling each PV carries node affinity, so `garage-N` is
 permanently bound to one node. A dead node means that replica is gone until the node
-is rebuilt and the PVC/PV recreated; replication factor 3 keeps data available.
+is rebuilt and the PVC/PV recreated; the other replica keeps data readable, and writes
+to partitions the dead node holds fail until it is back (replication factor 2 with
+`consistent` mode needs both copies).
 
 ## Operating
 
