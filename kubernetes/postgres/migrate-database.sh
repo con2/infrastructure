@@ -88,7 +88,7 @@ fi
 echo "== copying"
 pg_dump "$SRC_URL" -Fc --no-owner --no-acl | pg_restore -d "$DST_URL" --no-owner --no-acl --exit-on-error
 # A bare ANALYZE also tries the shared catalogs and warns about each one it may not touch.
-psql "$DST_URL" -tAc "select format(\$\$analyze %I.%I\$\$, schemaname, relname) from pg_stat_user_tables" | psql "$DST_URL" -q
+psql "$DST_URL" -tAc "select format(\$\$analyze %I.%I;\$\$, schemaname, relname) from pg_stat_user_tables" | psql "$DST_URL" -q
 counts="select relname, n_live_tup from pg_stat_user_tables order by 1"
 echo "== source row counts";      psql "$SRC_URL" -tAc "$counts"
 echo "== destination row counts"; psql "$DST_URL" -tAc "$counts"
