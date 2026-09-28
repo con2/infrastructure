@@ -153,6 +153,17 @@ To remove an app's database, delete the `Database` and `DatabaseRole` objects. B
 `ReclaimPolicy: retain`, so the PostgreSQL database and role stay behind for a superuser to drop
 by hand (`kubectl cnpg psql -n postgres postgres`).
 
+## psql access
+
+Inside an instance pod the socket uses peer authentication, so only `-U postgres` works there;
+app roles authenticate with their password over TCP:
+
+```sh
+kubectl -n postgres exec -it postgres-1 -c postgres -- psql -U postgres        # then \c <app>
+kubectl -n postgres exec -it postgres-1 -c postgres -- psql -h localhost -U <app> -d <app>
+kubectl cnpg psql -n postgres postgres -- -d <app>                             # same as the first
+```
+
 ## Migrating an app off siilo
 
 Recipe used for the pilot, `larpit-fi` (chart in `larpit-fi/chart`, Secret `larpit` in namespace
