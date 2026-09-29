@@ -1,3 +1,10 @@
 crds:
   enabled: true
   keep: true
+
+# Lets a Gateway carry the cert-manager.io/cluster-issuer annotation and get a Certificate
+# for its HTTPS listeners, the same way Ingress-shim does for an Ingress. Apps converted to
+# Gateway API (kompassi first) rely on this instead of an explicit Certificate object.
+config:
+  gatewayAPI:
+    enabled: true

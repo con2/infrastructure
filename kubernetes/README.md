@@ -119,6 +119,12 @@ apps carry their own copy. Rules worth remembering:
   their own rule plus the `www-redirect` Middleware. This was a brief production bug for konsti.
 * New apps should use Gateway API: one `Gateway` per app namespace, since each app has its own
   certificate, with cert-manager issuing to the listener.
+* Traefik never retries a failed backend connection on its own, unlike nginx's default
+  `proxy_next_upstream`. A pod that is terminating stays in Traefik's backend list for the
+  2 s `providersThrottleDuration` plus API propagation, so an app that stops accepting
+  connections on SIGTERM (gunicorn, uvicorn) returns 502s on every rollout. Fix it in the app:
+  a `preStop` sleep of about 10 s, `maxUnavailable: 0`, and optionally a `retry` Middleware
+  (network errors only, no POST) as in kompassi's `kubernetes/manifest.mts`.
 
 ### cert-manager
 
@@ -129,6 +135,13 @@ apps carry their own copy. Rules worth remembering:
 `letsencrypt-prod` has one HTTP-01 solver targeting `ingressClassName: traefik`. A `Certificate`
 without an `ownerReference` to its Ingress silently ignores new hosts on that Ingress; check for
 that when a cert stops covering a hostname.
+
+Gateway API support is on (`config.gatewayAPI.enabled`), so a `Gateway` annotated with
+`cert-manager.io/cluster-issuer` gets a `Certificate` for every HTTPS listener with a hostname
+and a `certificateRefs` Secret, no explicit `Certificate` needed. The solver Ingress it creates
+still routes through Traefik's Ingress provider next to the app's Gateway; the solver's longer
+path rule wins for `/.well-known/acme-challenge/`. garage and edegal predate this and keep their
+explicit `Certificate` objects.
 
 ### local-path-provisioner (`local-path-big`)
 
