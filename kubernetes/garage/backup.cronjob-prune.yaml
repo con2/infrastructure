@@ -30,7 +30,7 @@ spec:
                   retention_days=90
                   cutoff=$(( $(date -u +%s) - retention_days * 86400 ))
                   # Every bucket the sync job writes, prefix-copied or whole.
-                  for site in larppikuvat conikuvat kompassidev; do
+                  for site in larppikuvat conikuvat kompassidev kompassi; do
                     rclone lsf --dirs-only "garage_backup_dst:garage-backup/$site/versions/" | while read -r dir; do
                       ts="${dir%/}"
                       # Alpine's busybox `date` is what's in this image; -D/-d parse

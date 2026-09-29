@@ -54,9 +54,8 @@ spec:
                     echo "syncing $site originals"
                     copy "$site/pictures" "$site" pictures
                   done
-                  # Whole buckets. kompassidev is Kompassi staging; production `kompassi`
-                  # joins when it moves off Minio (kompassi/docs/minio-to-garage-migration.md).
-                  for bucket in kompassidev; do
+                  # Whole buckets: Kompassi staging and production.
+                  for bucket in kompassidev kompassi; do
                     echo "syncing $bucket"
                     copy "$bucket" "$bucket" ""
                   done

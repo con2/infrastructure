@@ -5,7 +5,7 @@ the `garage-backup` bucket on `piilo-s3.tracon.fi`, with 90 days of version hist
 overwritten or deleted at the source. Edegal site buckets (`larppikuvat`, `conikuvat`) contribute
 only their `pictures/` prefix: previews, thumbnails and in-flight uploads are not copied, since the
 media worker regenerates the former from the originals and the latter are transient. Kompassi's
-buckets (`kompassidev` today) are copied whole. Layout on piilo: `garage-backup/<bucket>/current/`
+buckets (`kompassidev` and `kompassi`) are copied whole. Layout on piilo: `garage-backup/<bucket>/current/`
 and `garage-backup/<bucket>/versions/<timestamp>/`. Two CronJobs in namespace `garage-backup`:
 `garage-backup-sync` (hourly, `rclone copy`, never deletes) and `garage-backup-prune` (daily, the
 only job allowed to delete, enforcing the 90-day window).
@@ -36,6 +36,7 @@ whether to copy it whole or only a prefix.
    kubectl -n garage exec garage-0 -- /garage bucket allow --read larppikuvat --key garage-backup-reader
    kubectl -n garage exec garage-0 -- /garage bucket allow --read conikuvat --key garage-backup-reader
    kubectl -n garage exec garage-0 -- /garage bucket allow --read kompassidev --key garage-backup-reader
+   kubectl -n garage exec garage-0 -- /garage bucket allow --read kompassi --key garage-backup-reader
    ```
 
 3. Fetch the destination key created by the `garage` Ansible role's `garage-backup` bucket support
