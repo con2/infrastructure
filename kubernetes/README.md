@@ -140,8 +140,8 @@ Gateway API support is on (`config.gatewayAPI.enabled`), so a `Gateway` annotate
 `cert-manager.io/cluster-issuer` gets a `Certificate` for every HTTPS listener with a hostname
 and a `certificateRefs` Secret, no explicit `Certificate` needed. The solver Ingress it creates
 still routes through Traefik's Ingress provider next to the app's Gateway; the solver's longer
-path rule wins for `/.well-known/acme-challenge/`. garage and edegal predate this and keep their
-explicit `Certificate` objects.
+path rule wins for `/.well-known/acme-challenge/`. garage predates this and keeps its explicit
+`Certificate`.
 
 ### local-path-provisioner (`local-path-big`)
 
