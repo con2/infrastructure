@@ -54,8 +54,8 @@ spec:
                     echo "syncing $site originals"
                     copy "$site/pictures" "$site" pictures
                   done
-                  # Whole buckets: Kompassi staging and production.
-                  for bucket in kompassidev kompassi outline outlinetracon outlinekotae outlinekuplii outlineropecon; do
+                  # Whole buckets: apps whose every object is irreplaceable.
+                  for bucket in kompassidev kompassi outline outlinetracon outlinekotae outlinekuplii outlineropecon archive redmine; do
                     echo "syncing $bucket"
                     copy "$bucket" "$bucket" ""
                   done
