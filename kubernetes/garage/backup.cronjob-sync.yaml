@@ -59,6 +59,20 @@ spec:
                     echo "syncing $bucket"
                     copy "$bucket" "$bucket" ""
                   done
+                  # Archived static sites, one bucket per hostname. Must match static_sites in
+                  # Hobby/static kubernetes/production.vars.yaml; bin/garage-buckets.sh there
+                  # grants the reader key.
+                  for bucket in \
+                    2005.tracon.fi 2006.tracon.fi 2007.tracon.fi 2008.tracon.fi 2009.tracon.fi \
+                    2010.tracon.fi 2011.tracon.fi 2012.tracon.fi 2013.tracon.fi 2014.tracon.fi \
+                    2015.tracon.fi 2016.tracon.fi 2017.tracon.fi 2018.tracon.fi 2019.tracon.fi \
+                    2020.tracon.fi 2021.tracon.fi 2022.tracon.fi 2023.tracon.fi 2024.tracon.fi \
+                    2015.hitpoint.tracon.fi 2016.hitpoint.tracon.fi 2017.hitpoint.tracon.fi \
+                    2019.hitpoint.tracon.fi 2020.hitpoint.tracon.fi 2023.hitpoint.tracon.fi \
+                    media.tracon.fi blog.tracon.fi r.tracon.fi ry.tracon.fi con2.fi; do
+                    echo "syncing $bucket"
+                    copy "$bucket" "$bucket" ""
+                  done
               env:
                 - name: RCLONE_CONFIG
                   value: /config/rclone/rclone.conf

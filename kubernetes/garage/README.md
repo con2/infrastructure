@@ -168,7 +168,15 @@ kubectl apply -f gateway.yaml
 kubectl -n garage get certificate,gateway
 ```
 
-Wait for the `Certificate` to be `Ready` and the `Gateway` to be `Programmed`. The
+Wait for the `Certificate` to be `Ready` and the `Gateway` to be `Programmed`.
+
+The web endpoint (port 3902 on the `garage` Service) is not exposed here. The static
+sites in Hobby/static reach it through their own Gateway in the `static` namespace, which
+needs `static-referencegrant.yaml` applied in this namespace once:
+
+```
+kubectl apply -f static-referencegrant.yaml
+``` The
 manifest is a Gateway API `Gateway` plus `HTTPRoute`s, not an `Ingress`, matching
 edegal v4 and larpit-fi. There is no body-size cap on the route, and
 `traefik.values.yml` disables the entrypoint `readTimeout` so uploads longer than 60

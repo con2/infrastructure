@@ -1,0 +1,17 @@
+# Lets the HTTPRoute in the static namespace (Hobby/static, kubernetes/httproute-web.in.yaml)
+# send traffic to Garage's web endpoint on the garage Service. Without this grant the
+# Gateway API controller refuses the cross-namespace backendRef.
+apiVersion: gateway.networking.k8s.io/v1
+kind: ReferenceGrant
+metadata:
+  name: static-web
+  namespace: garage
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: static
+  to:
+    - group: ""
+      kind: Service
+      name: garage
