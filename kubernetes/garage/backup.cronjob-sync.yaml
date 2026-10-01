@@ -55,7 +55,7 @@ spec:
                     copy "$site/pictures" "$site" pictures
                   done
                   # Whole buckets: Kompassi staging and production.
-                  for bucket in kompassidev kompassi; do
+                  for bucket in kompassidev kompassi outline; do
                     echo "syncing $bucket"
                     copy "$bucket" "$bucket" ""
                   done
