@@ -16,6 +16,7 @@ Files, all in this directory (`infrastructure/kubernetes/postgres`; the commands
 - `scheduledbackup.yaml`: nightly base backup.
 - `create-app-database.sh`: one command per app, creates its role and database.
 - `migrate-database.sh`: copies an app's database from siilo into the cluster in a one-off pod.
+- `load-dump.sh`: restores a local `pg_dump -Fc` archive into an app's database via the primary pod.
 - `update-secret.sh`: writes the credentials into the Secret an app reads.
 - `secret-shape.sh`: shared by the two scripts above; how they recognise an app's Secret.
 
@@ -189,6 +190,13 @@ Recipe used for the pilot, `larpit-fi` (chart in `larpit-fi/chart`, Secret `larp
    - Any migration-marker tables the app's ORM keeps are ordinary data and come along.
    - The connection strings ride in a Secret named after the pod for the duration of the run,
      not on the pod's command line.
+   If the pod cannot pull the data itself, dump on your own machine instead and load the file:
+   `pg_dump -Fc --no-owner --no-acl "$SRC_URL" > app.dump`, then `./load-dump.sh APP app.dump`.
+   It streams the archive through `kubectl exec` into `pg_restore` on the primary instance,
+   restoring as the superuser with `--role=APP`. `--replace` drops schema `public` first when
+   the app has already run its migrations against the empty database by mistake.
+   `--skip-extension postgres_fdw` leaves out an extension only a superuser could create;
+   kompassi's dump carries an unused `postgres_fdw`.
 4. `./update-secret.sh larpit larpit-production larpit`, scale back up,
    unsuspend the CronJob, and watch the migration init container and the health endpoint.
 5. After a few days of stability, take a manual backup (`kubectl cnpg backup -n postgres postgres
