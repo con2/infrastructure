@@ -59,9 +59,9 @@ spec:
                     echo "syncing $bucket"
                     copy "$bucket" "$bucket" ""
                   done
-                  # Archived static sites, one bucket per hostname. Must match static_sites in
-                  # Hobby/static kubernetes/production.vars.yaml; bin/garage-buckets.sh there
-                  # grants the reader key.
+                  # Archived static sites, one bucket per hostname. Must match `sites` in
+                  # Hobby/static chart/values-production.yaml (bin/garage-buckets.sh there
+                  # grants the reader key) and the prune job's list.
                   for bucket in \
                     2005.tracon.fi 2006.tracon.fi 2007.tracon.fi 2008.tracon.fi 2009.tracon.fi \
                     2010.tracon.fi 2011.tracon.fi 2012.tracon.fi 2013.tracon.fi 2014.tracon.fi \
