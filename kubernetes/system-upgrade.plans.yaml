@@ -1,4 +1,5 @@
-# Automatic upgrades
+# Automatic upgrades, only in a quiet nightly window on weekdays Monday to Thursday:
+# the events served are on weekends, and node upgrades cause short database switchovers.
 # Server plan
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
@@ -15,6 +16,11 @@ spec:
         values:
           - "true"
   serviceAccountName: system-upgrade
+  window:
+    days: [monday, tuesday, wednesday, thursday]
+    startTime: "02:00"
+    endTime: "05:00"
+    timeZone: Europe/Helsinki
   upgrade:
     image: rancher/k3s-upgrade
   channel: https://update.k3s.io/v1-release/channels/stable
@@ -38,6 +44,11 @@ spec:
       - server-plan
     image: rancher/k3s-upgrade
   serviceAccountName: system-upgrade
+  window:
+    days: [monday, tuesday, wednesday, thursday]
+    startTime: "02:00"
+    endTime: "05:00"
+    timeZone: Europe/Helsinki
   upgrade:
     image: rancher/k3s-upgrade
   channel: https://update.k3s.io/v1-release/channels/stable

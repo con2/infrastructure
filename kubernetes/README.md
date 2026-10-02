@@ -75,7 +75,9 @@ operation. What it documents that still holds: `/dev/sdc1` (SSD) at `/var/lib/ra
 
 k3s itself is upgraded by the [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller)
 following the stable channel; the two `Plan`s (servers first, then the agent) are in
-`system-upgrade.plans.yaml`, namespace `system-upgrade`.
+`system-upgrade.plans.yaml`, namespace `system-upgrade`. Both plans only start nodes between 02:00
+and 05:00 (Europe/Helsinki) on Monday to Thursday; an upgrade already running when the window closes
+finishes.
 
 ## Cluster services
 
