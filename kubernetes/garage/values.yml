@@ -60,6 +60,12 @@ affinity:
             app.kubernetes.io/instance: garage
         topologyKey: kubernetes.io/hostname
 
+# garage_api_common and garage_web log every request at info. At warn the S3 API still
+# logs 5xx errors (its 4xx are info too), but the web endpoint logs none of its errors.
+environment:
+  - name: RUST_LOG
+    value: garage=info,garage_api_common=warn,garage_web=warn
+
 resources:
   requests:
     cpu: 250m
